@@ -3,41 +3,54 @@
     <img src="./assets/logo.png" alt="Kviarte Logo" />
   </div>
 
-  <div class="menu-container">
-    <nav class="nav" [class.open]="menuOpen">
-      <a routerLink="/home" routerLinkActive="active" (click)="menuOpen=false">Inicio</a>
-      <a routerLink="/galleries" routerLinkActive="active" (click)="menuOpen=false">Galerías</a>
-      <a routerLink="/exhibitions" routerLinkActive="active"
-        (click)="menuOpen=false">Exposiciones</a>
-      <a routerLink="/artists" routerLinkActive="active" (click)="menuOpen=false">Artistas</a>
-      <a routerLink="/shop" routerLinkActive="active" (click)="menuOpen=false">Tienda</a>
-    </nav>
-    <div class="actions">
-      <!-- Botón Login -->
+  <div class="header-right">
+    <!-- Botones desktop -->
+    <div class="actions desktop-only">
       <button *ngIf="!token" class="login-btn" (click)="openLoginModal()">Login</button>
+      <button *ngIf="token" class="login-btn" routerLink="/profile">Perfil</button>
       <button *ngIf="token" class="login-btn" (click)="logout()">Logout</button>
+    </div>
 
-      <!-- Botón de menú -->
-
-
+    <!-- Menú mobile -->
+    <div class="menu-container">
+      <!-- Botón hamburguesa -->
       <button class="menu-btn" (click)="menuOpen = !menuOpen" aria-label="Menú">
         <span></span>
         <span></span>
         <span></span>
       </button>
+
+      <nav class="nav" [class.open]="menuOpen">
+        <a routerLink="/home" routerLinkActive="active" (click)="menuOpen=false">Inicio</a>
+        <a routerLink="/galleries" routerLinkActive="active" (click)="menuOpen=false">Galerías</a>
+        <a routerLink="/exhibitions" routerLinkActive="active"
+          (click)="menuOpen=false">Exposiciones</a>
+        <a routerLink="/artists" routerLinkActive="active" (click)="menuOpen=false">Artistas</a>
+        <a routerLink="/shop" routerLinkActive="active" (click)="menuOpen=false">Tienda</a>
+
+        <!-- Botones mobile dentro del menú -->
+        <div class="actions mobile-only">
+          <button *ngIf="!token" class="login-btn"
+            (click)="openLoginModal(); menuOpen=false">Login</button>
+          <button *ngIf="token" class="login-btn" routerLink="/profile"
+            (click)="menuOpen=false">Perfil</button>
+          <button *ngIf="token" class="login-btn" (click)="logout(); menuOpen=false">Logout</button>
+        </div>
+      </nav>
     </div>
   </div>
 </header>
 
-<!-- Modal de Login -->
-<div class="modal" [class.show]="loginModalOpen" (click)="closeLoginModalOnOutside($event)">
+<!-- Modal Login -->
+<div class="modal" *ngIf="loginModalOpen" (click)="closeLoginModalOnOutside($event)">
   <div class="modal-content">
     <span class="close" (click)="closeLoginModal()">&times;</span>
-    <h2>Iniciar Sesión</h2>
-    <form>
-      <input type="text" placeholder="Usuario" [(ngModel)]="email" name="email" />
-      <input type="password" placeholder="Contraseña" [(ngModel)]="password" name="password" />
-      <button type="button" (click)="login()">Entrar</button>
+    <h2>Login</h2>
+    <form (ngSubmit)="login()">
+      <input type="email" placeholder="Email" [(ngModel)]="email" name="email" required />
+      <input type="password" placeholder="Contraseña" [(ngModel)]="password" name="password"
+        required />
+      <button type="submit">Entrar</button>
     </form>
   </div>
 </div>

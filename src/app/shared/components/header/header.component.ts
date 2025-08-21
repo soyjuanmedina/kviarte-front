@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { LOGIN_MUTATION } from '../../../../graphql/mutations';
 import { Apollo } from 'apollo-angular';
 import { Router } from '@angular/router';
+import { AuthService } from '../../../services/auth.service';
 
 @Component( {
   selector: 'app-header',
@@ -15,7 +16,7 @@ export class HeaderComponent {
   password = '';
   token = localStorage.getItem( 'token' );
 
-  constructor ( private apollo: Apollo, private router: Router ) { }
+  constructor ( private apollo: Apollo, private router: Router, private authService: AuthService ) { }
 
   openLoginModal () {
     this.loginModalOpen = true;
@@ -40,11 +41,11 @@ export class HeaderComponent {
       variables: { input: { email: this.email, password: this.password } }
     } ).subscribe( {
       next: ( res: any ) => {
-        console.log( 'Login exitoso:', res.data.login );
-        alert( 'Login exitoso, token: ' + res.data.login );
-        localStorage.setItem( 'token', res.data.login );
+        localStorage.setItem( 'token', res.data.login.token );
+        this.authService.setUser( res.data.login.user );
         this.token = res.data.login;
         this.closeLoginModal();
+        this.router.navigate( ['/profile'] );
       },
       error: ( err ) => {
         console.error( 'Error login:', err );
