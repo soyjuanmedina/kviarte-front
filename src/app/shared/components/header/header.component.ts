@@ -41,9 +41,10 @@ export class HeaderComponent {
       variables: { input: { email: this.email, password: this.password } }
     } ).subscribe( {
       next: ( res: any ) => {
+
         localStorage.setItem( 'token', res.data.login.token );
+        localStorage.setItem( 'login', JSON.stringify( res.data.login ) );
         this.authService.setUser( res.data.login.user );
-        this.token = res.data.login;
         this.closeLoginModal();
         this.router.navigate( ['/profile'] );
       },

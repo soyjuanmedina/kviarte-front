@@ -15,7 +15,15 @@ export class AuthService {
   private currentUserSubject = new BehaviorSubject<User | null>( null );
   currentUser$ = this.currentUserSubject.asObservable();
 
-  setUser ( user: User ) {
+  constructor () {
+    const loginData = localStorage.getItem( 'login' );
+    if ( loginData ) {
+      const parsed = JSON.parse( loginData );
+      this.currentUserSubject.next( parsed.user );
+    }
+  }
+
+  setUser ( user: any ) {
     this.currentUserSubject.next( user );
   }
 
