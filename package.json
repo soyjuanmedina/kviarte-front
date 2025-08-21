@@ -7,7 +7,9 @@
     "build": "ng build --configuration production --base-href /kviarte-front/",
     "watch": "ng build --watch --configuration development",
     "deploy": "gh-pages -d dist/kviarte-front",
-    "test": "ng test"
+    "test": "ng test",
+    "build:gh": "ng build --configuration production --base-href /kviarte-front/ && powershell -NoProfile -Command \"Move-Item -Path 'dist/kviarte-front/browser/*' -Destination 'dist/kviarte-front/' -Force; Remove-Item -Recurse -Force 'dist/kviarte-front/browser'\"",
+    "deploy:gh": "npm run build:gh && gh-pages -d dist/kviarte-front"
   },
   "private": true,
   "dependencies": {
