@@ -7,9 +7,7 @@ import { FooterComponent } from './shared/components/footer/footer.component';
 import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { GraphQLModule } from './graphql.module';
-import { Apollo, provideApollo } from 'apollo-angular';
-import { InMemoryCache } from '@apollo/client';
-import { HttpLink } from 'apollo-angular/http';
+import { FormsModule } from '@angular/forms';
 
 @NgModule( {
   declarations: [
@@ -22,7 +20,8 @@ import { HttpLink } from 'apollo-angular/http';
     AppRoutingModule,
     RouterModule,
     HttpClientModule,
-    GraphQLModule
+    GraphQLModule,
+    FormsModule
   ],
   bootstrap: [AppComponent]
 } )

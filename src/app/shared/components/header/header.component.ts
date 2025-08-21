@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { LOGIN_MUTATION } from '../../../../graphql/mutations';
+import { Apollo } from 'apollo-angular';
+import { Router } from '@angular/router';
 
 @Component( {
   selector: 'app-header',
@@ -8,6 +11,11 @@ import { Component } from '@angular/core';
 export class HeaderComponent {
   menuOpen = false;
   loginModalOpen = false;
+  email = '';
+  password = '';
+  token = localStorage.getItem( 'token' );
+
+  constructor ( private apollo: Apollo, private router: Router ) { }
 
   openLoginModal () {
     this.loginModalOpen = true;
@@ -15,5 +23,39 @@ export class HeaderComponent {
 
   closeLoginModal () {
     this.loginModalOpen = false;
+  }
+
+  // Cierra al hacer click fuera del modal
+  closeLoginModalOnOutside ( event: Event ) {
+    const target = event.target as HTMLElement;
+    if ( target.classList.contains( 'modal' ) ) {
+      this.closeLoginModal();
+    }
+  }
+
+  login () {
+    console.log( 'this.email', this.email, this.password );
+    this.apollo.mutate( {
+      mutation: LOGIN_MUTATION,
+      variables: { input: { email: this.email, password: this.password } }
+    } ).subscribe( {
+      next: ( res: any ) => {
+        console.log( 'Login exitoso:', res.data.login );
+        alert( 'Login exitoso, token: ' + res.data.login );
+        localStorage.setItem( 'token', res.data.login );
+        this.token = res.data.login;
+        this.closeLoginModal();
+      },
+      error: ( err ) => {
+        console.error( 'Error login:', err );
+        alert( 'Login fallido' );
+      }
+    } );
+  }
+
+  logout () {
+    localStorage.removeItem( 'token' );
+    this.token = null;
+    this.router.navigate( ['/'] );
   }
 }
