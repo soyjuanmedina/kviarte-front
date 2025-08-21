@@ -18,6 +18,8 @@
           "builder": "@angular-devkit/build-angular:application",
           "options": {
             "outputPath": "dist/kviarte-front",
+            "baseHref": "/kviarte-front/",
+            "deployUrl": "/kviarte-front/",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [

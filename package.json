@@ -4,9 +4,9 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build --configuration production --base-href /kviarte-front/",
     "watch": "ng build --watch --configuration development",
-    "deploy": "gh-pages -d dist",
+    "deploy": "gh-pages -d dist/kviarte-front",
     "test": "ng test"
   },
   "private": true,
@@ -21,6 +21,9 @@
     "@angular/platform-browser": "^17.2.0",
     "@angular/platform-browser-dynamic": "^17.2.0",
     "@angular/router": "^17.2.0",
+    "@apollo/client": "^3.13.9",
+    "apollo-angular": "^10.0.3",
+    "graphql": "^16.11.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.3"
