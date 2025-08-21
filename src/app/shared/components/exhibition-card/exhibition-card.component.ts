@@ -11,6 +11,7 @@ export interface Exhibition {
 
 @Component( {
   selector: 'app-exhibition-card',
+  standalone: true,
   templateUrl: './exhibition-card.component.html',
   styleUrls: ['./exhibition-card.component.scss']
 } )

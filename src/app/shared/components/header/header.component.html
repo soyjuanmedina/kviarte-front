@@ -1,12 +1,40 @@
 <header class="header">
   <div class="logo">
-    🎨 ArteCommunity
+    <img src="./assets/logo.png" alt="Kviarte Logo" />
   </div>
-  <nav class="nav">
-    <a routerLink="/home" routerLinkActive="active">Inicio</a>
-    <a routerLink="/galleries" routerLinkActive="active">Galerías</a>
-    <a routerLink="/exhibitions" routerLinkActive="active">Exposiciones</a>
-    <a routerLink="/artists" routerLinkActive="active">Artistas</a>
-    <a routerLink="/shop" routerLinkActive="active">Tienda</a>
-  </nav>
+
+  <div class="menu-container">
+    <nav class="nav" [class.open]="menuOpen">
+      <a routerLink="/home" routerLinkActive="active" (click)="menuOpen=false">Inicio</a>
+      <a routerLink="/galleries" routerLinkActive="active" (click)="menuOpen=false">Galerías</a>
+      <a routerLink="/exhibitions" routerLinkActive="active"
+        (click)="menuOpen=false">Exposiciones</a>
+      <a routerLink="/artists" routerLinkActive="active" (click)="menuOpen=false">Artistas</a>
+      <a routerLink="/shop" routerLinkActive="active" (click)="menuOpen=false">Tienda</a>
+    </nav>
+    <div class="actions">
+      <!-- Botón Login -->
+      <button class="login-btn" (click)="openLoginModal()">Login</button>
+
+      <!-- Botón de menú -->
+      <button class="menu-btn" (click)="menuOpen = !menuOpen" aria-label="Menú">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </div>
 </header>
+
+<!-- Modal de Login -->
+<div class="modal" [class.show]="loginModalOpen">
+  <div class="modal-content">
+    <span class="close" (click)="closeLoginModal()">&times;</span>
+    <h2>Iniciar Sesión</h2>
+    <form>
+      <input type="text" placeholder="Usuario" />
+      <input type="password" placeholder="Contraseña" />
+      <button type="submit">Entrar</button>
+    </form>
+  </div>
+</div>

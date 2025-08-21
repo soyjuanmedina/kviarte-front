@@ -5,4 +5,15 @@ import { Component } from '@angular/core';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 } )
-export class HeaderComponent { }
+export class HeaderComponent {
+  menuOpen = false;
+  loginModalOpen = false;
+
+  openLoginModal () {
+    this.loginModalOpen = true;
+  }
+
+  closeLoginModal () {
+    this.loginModalOpen = false;
+  }
+}
