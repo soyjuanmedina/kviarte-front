@@ -1,0 +1,83 @@
+<div class="register-container">
+  <mat-card class="register-card">
+    <h2 class="title">Crear nueva galería</h2>
+
+    <!-- FORMULARIO -->
+    <form *ngIf="!registered" [formGroup]="form" (ngSubmit)="onSubmit()">
+
+      <!-- Usuario propietario (solo visible si eres admin) -->
+      <mat-form-field appearance="outline" *ngIf="isAdmin" class="full-width">
+        <mat-label>Propietario</mat-label>
+        <mat-select formControlName="usuarioId" required>
+          <mat-option *ngFor="let user of galleryUsers" [value]="user.id_usuario">
+            {{ user.nombre }} ({{ user.email }})
+          </mat-option>
+        </mat-select>
+        <mat-icon matSuffix>supervisor_account</mat-icon>
+      </mat-form-field>
+
+      <!-- Nombre -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Nombre de la galería</mat-label>
+        <input matInput formControlName="nombre" required />
+      </mat-form-field>
+
+      <!-- Descripción -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Descripción</mat-label>
+        <textarea matInput formControlName="descripcion"></textarea>
+      </mat-form-field>
+
+      <!-- Dirección -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Dirección</mat-label>
+        <input matInput formControlName="direccion" />
+      </mat-form-field>
+
+      <!-- Ciudad -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Ciudad</mat-label>
+        <input matInput formControlName="ciudad" />
+      </mat-form-field>
+
+      <!-- Web -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Web</mat-label>
+        <input matInput formControlName="web" />
+      </mat-form-field>
+
+      <!-- Email de contacto -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Email de contacto</mat-label>
+        <input matInput formControlName="email_contacto" type="email" />
+      </mat-form-field>
+
+      <!-- Email general -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" type="email" />
+      </mat-form-field>
+
+      <!-- Teléfono -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Teléfono</mat-label>
+        <input matInput formControlName="telefono" />
+      </mat-form-field>
+
+      <!-- Botón -->
+      <button type="submit" [disabled]="loading" class="full-width login-btn">
+        {{ loading ? 'Registrando...' : 'Registrar' }}
+      </button>
+
+      <!-- Mensaje de error -->
+      <div *ngIf="errorMessage" class="error-msg">
+        {{ errorMessage }}
+      </div>
+    </form>
+
+    <!-- MENSAJE DE ÉXITO -->
+    <div *ngIf="registered" class="success-msg">
+      <p>Galería registrada con éxito ✅</p>
+    </div>
+  </mat-card>
+</div>

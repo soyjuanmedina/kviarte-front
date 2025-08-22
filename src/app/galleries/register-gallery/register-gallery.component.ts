@@ -1,5 +1,5 @@
-import { Component, EventEmitter, Output } from '@angular/core';
-import { REGISTER_MUTATION } from '../../../graphql/mutations';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { CREATE_GALLERY_MUTATION } from '../../../graphql/mutations';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { Apollo, gql } from 'apollo-angular';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -10,32 +10,39 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { ModalService } from '../../services/modal.service';
-import { AuthService } from '../../services/auth.service';
+import { AuthService, User } from '../../services/auth.service';
+import { UsersService } from '../../services/users.service';
 
 @Component( {
   selector: 'app-register',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, MatIconModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatButtonModule, MatCardModule],
-  templateUrl: './register.component.html',
-  styleUrl: './register.component.scss'
+  templateUrl: './register-gallery.component.html',
+  styleUrl: './register-gallery.component.scss'
 } )
-export class RegisterComponent {
+export class RegisterGalleryComponent implements OnInit {
 
   @Output() openLoginModal = new EventEmitter<void>();
   registered = false;
   loading = false;
   successMessage = '';
   errorMessage = '';
+  galleryUsers: User[] = [];
 
   form = this.fb.group( {
+    usuarioId: ['', Validators.required], // admin elige propietario
     nombre: ['', Validators.required],
+    descripcion: ['', Validators.required],
+    direccion: ['', Validators.required],
+    ciudad: ['', Validators.required],
+    web: [''],
+    email_contacto: ['', [Validators.required, Validators.email]],
+    telefono: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength( 6 )]],
-    rol: ['USER', Validators.required], // valor por defecto
   } );
 
   constructor ( private fb: FormBuilder, private apollo: Apollo, private modalService: ModalService,
-    private authService: AuthService
+    private authService: AuthService, private usersService: UsersService
   ) { }
 
   get isAdmin (): boolean {
@@ -50,22 +57,33 @@ export class RegisterComponent {
     this.errorMessage = '';
 
     this.apollo.mutate( {
-      mutation: REGISTER_MUTATION,
-      variables: { input: this.form.value }
+      mutation: CREATE_GALLERY_MUTATION,
+      variables: { ...this.form.value }  // <-- pasa los valores directos
     } ).subscribe( {
       next: () => {
         this.loading = false;
         this.registered = true;
-        this.form.reset( { rol: 'USER' } );
-
-        // Abrir modal después de 3 segundos
-        setTimeout( () => this.modalService.openLogin(), 3000 );
+        this.form.reset();
       },
       error: ( err ) => {
         this.loading = false;
         this.errorMessage = err.message || 'Error al registrar ❌';
       }
     } );
+  }
+
+  ngOnInit () {
+    if ( this.isAdmin ) {
+      this.usersService.getUsuariosPorRol( 'GALLERY' ).subscribe( {
+        next: ( users ) => {
+          this.galleryUsers = users;
+        },
+        error: ( err ) => {
+          console.error( 'Error cargando usuarios GALLERY', err );
+          this.errorMessage = 'No se pudieron cargar los usuarios de galería ❌';
+        }
+      } );
+    }
   }
 
 }

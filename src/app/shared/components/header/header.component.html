@@ -6,6 +6,7 @@
   <div class="header-right">
     <!-- Botones desktop -->
     <div class="actions desktop-only">
+      <button *ngIf="!token" class="login-btn" routerLink="/register">Registro</button>
       <button *ngIf="!token" class="login-btn" (click)="openLoginModal()">Login</button>
       <button *ngIf="token" class="login-btn" routerLink="/profile">Perfil</button>
       <button *ngIf="token" class="login-btn" (click)="logout()">Logout</button>

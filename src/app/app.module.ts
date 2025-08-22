@@ -8,6 +8,7 @@ import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { GraphQLModule } from './graphql.module';
 import { FormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule( {
   declarations: [
@@ -17,6 +18,7 @@ import { FormsModule } from '@angular/forms';
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     RouterModule,
     HttpClientModule,

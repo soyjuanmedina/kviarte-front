@@ -13,3 +13,42 @@ mutation Login($input: LoginInput!) {
   }
 }
 `;
+
+export const REGISTER_MUTATION = gql`
+  mutation Register($input: RegisterInput!) {
+    register(input: $input)
+  }
+`;
+
+export const CREATE_GALLERY_MUTATION = gql`
+  mutation CreateGaleria(
+    $usuarioId: Float!
+    $nombre: String!
+    $descripcion: String
+    $direccion: String
+    $ciudad: String
+    $web: String
+    $email_contacto: String
+    $telefono: String
+    $email: String
+  ) {
+    createGaleria(
+      usuarioId: $usuarioId
+      nombre: $nombre
+      descripcion: $descripcion
+      direccion: $direccion
+      ciudad: $ciudad
+      web: $web
+      email_contacto: $email_contacto
+      telefono: $telefono
+      email: $email
+    ) {
+      id_galeria
+      nombre
+      usuario_id
+      email
+      telefono
+      ciudad
+    }
+  }
+`;

@@ -11,3 +11,17 @@
 <ng-template #notLoggedIn>
   <p>No has iniciado sesión.</p>
 </ng-template>
+
+<!-- Opciones de administrador fuera del mat-card -->
+<div *ngIf="user?.rol === 'ADMIN'" class="admin-panel">
+  <h2 class="panel-title">Opciones de Administrador</h2>
+
+  <div class="admin-buttons">
+    <button class="general-btn" (click)="goToRegister()">
+      Registrar Usuario
+    </button>
+    <button class="general-btn" (click)="goToRegisterGallery()">
+      Registrar Galería
+    </button>
+  </div>
+</div>

@@ -1,3 +1,6 @@
+<div *ngIf="user">Hola {{ user.nombre }}</div>
+
+
 <div class="gallery-container">
   <app-gallery-card *ngFor="let item of galleryItems" [gallery]="item">
   </app-gallery-card>

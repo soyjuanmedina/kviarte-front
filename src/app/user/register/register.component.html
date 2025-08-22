@@ -1,1 +1,74 @@
-<p>register works!</p>
+<div class="register-container">
+  <mat-card class="register-card">
+    <h2 class="title">Crear nueva cuenta</h2>
+
+    <!-- FORMULARIO -->
+    <form *ngIf="!registered" [formGroup]="form" (ngSubmit)="onSubmit()">
+      <!-- Nombre -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Nombre completo</mat-label>
+        <input matInput formControlName="nombre" placeholder="Ej. Juan Pérez" />
+        <mat-icon matSuffix>person</mat-icon>
+        <mat-error *ngIf="form.get('nombre')?.hasError('required')">
+          El nombre es obligatorio
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Email -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Email</mat-label>
+        <input matInput type="email" formControlName="email" placeholder="ejemplo@correo.com" />
+        <mat-icon matSuffix>mail</mat-icon>
+        <mat-error *ngIf="form.get('email')?.hasError('required')">
+          El email es obligatorio
+        </mat-error>
+        <mat-error *ngIf="form.get('email')?.hasError('email')">
+          Email inválido
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Password -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Contraseña</mat-label>
+        <input matInput type="password" formControlName="password"
+          placeholder="Mínimo 6 caracteres" />
+        <mat-icon matSuffix>lock</mat-icon>
+        <mat-error *ngIf="form.get('password')?.hasError('required')">
+          La contraseña es obligatoria
+        </mat-error>
+        <mat-error *ngIf="form.get('password')?.hasError('minlength')">
+          Mínimo 6 caracteres
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Rol -->
+      <mat-form-field appearance="outline" *ngIf="isAdmin" class="full-width">
+        <mat-label>Rol</mat-label>
+        <mat-select formControlName="rol">
+          <mat-option value="USER">Usuario</mat-option>
+          <mat-option value="ADMIN">Administrador</mat-option>
+          <mat-option value="GALLERY">Galería</mat-option>
+          <mat-option value="ARTIST">Artista</mat-option>
+        </mat-select>
+        <mat-icon matSuffix>supervisor_account</mat-icon>
+      </mat-form-field>
+
+      <!-- Botón -->
+      <button type="submit" [disabled]="loading" class="full-width login-btn">
+        {{ loading ? 'Registrando...' : 'Registrar' }}
+      </button>
+
+      <!-- Mensaje de error -->
+      <div *ngIf="errorMessage" class="error-msg">
+        {{ errorMessage }}
+      </div>
+    </form>
+
+    <!-- MENSAJE DE ÉXITO -->
+    <div *ngIf="registered" class="success-msg">
+      <p>¡Usuario registrado con éxito ✅</p>
+      <p>Abriendo login...</p>
+    </div>
+
+  </mat-card>
+</div>

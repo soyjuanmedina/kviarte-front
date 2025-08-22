@@ -3,6 +3,7 @@ import { LOGIN_MUTATION } from '../../../../graphql/mutations';
 import { Apollo } from 'apollo-angular';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
+import { ModalService } from '../../../services/modal.service';
 
 @Component( {
   selector: 'app-header',
@@ -16,14 +17,16 @@ export class HeaderComponent {
   password = '';
   token = localStorage.getItem( 'token' );
 
-  constructor ( private apollo: Apollo, private router: Router, private authService: AuthService ) { }
+  constructor ( private apollo: Apollo, private router: Router, private authService: AuthService, private modalService: ModalService ) {
+    this.modalService.loginModal$.subscribe( open => this.loginModalOpen = open );
+  }
 
   openLoginModal () {
-    this.loginModalOpen = true;
+    this.modalService.openLogin();
   }
 
   closeLoginModal () {
-    this.loginModalOpen = false;
+    this.modalService.closeLogin();
   }
 
   // Cierra al hacer click fuera del modal
@@ -44,9 +47,10 @@ export class HeaderComponent {
 
         localStorage.setItem( 'token', res.data.login.token );
         localStorage.setItem( 'login', JSON.stringify( res.data.login ) );
+        this.token = res.data.login.token;
         this.authService.setUser( res.data.login.user );
         this.closeLoginModal();
-        this.router.navigate( ['/profile'] );
+        this.router.navigate( ['/home'] );
       },
       error: ( err ) => {
         console.error( 'Error login:', err );
@@ -57,6 +61,7 @@ export class HeaderComponent {
 
   logout () {
     localStorage.removeItem( 'token' );
+    this.authService.setUser( null );
     this.token = null;
     this.router.navigate( ['/'] );
   }
