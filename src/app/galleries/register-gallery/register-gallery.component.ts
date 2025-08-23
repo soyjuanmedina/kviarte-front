@@ -12,7 +12,7 @@ import { CommonModule } from '@angular/common';
 import { ModalService } from '../../core/services/modal.service';
 import { AuthService, User } from '../../core/services/auth.service';
 import { Router } from '@angular/router';
-import { UsersService as UserService } from '../../core/services/user.service';
+import { UserService } from '../../core/services/user.service';
 
 @Component( {
   selector: 'app-register-gallery',

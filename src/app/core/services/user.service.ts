@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Apollo, gql } from 'apollo-angular';
 import { map, Observable } from 'rxjs';
-import { USER_BY_ROLE_QUERY } from '../../../graphql/queries';
+import { GET_USER_BY_ID, GET_USERS, GET_USERS_BY_ROLE, DELETE_USER } from '../../../graphql/queries';
+import { User } from './auth.service';
 
 export interface Usuario {
   id_usuario: number;
@@ -13,15 +14,40 @@ export interface Usuario {
 @Injectable( {
   providedIn: 'root',
 } )
-export class UsersService {
+export class UserService {
   constructor ( private apollo: Apollo ) { }
 
   getUsuariosPorRol ( rol: string ): Observable<Usuario[]> {
     return this.apollo
       .watchQuery<{ usuariosPorRol: Usuario[] }>( {
-        query: USER_BY_ROLE_QUERY,
+        query: GET_USERS_BY_ROLE,
         variables: { rol },
       } )
       .valueChanges.pipe( map( result => result.data.usuariosPorRol ) );
+  }
+
+  getUsuarios (): Observable<Usuario[]> {
+    return this.apollo
+      .watchQuery<{ usuarios: Usuario[] }>( {
+        query: GET_USERS,
+        fetchPolicy: 'network-only'
+      } )
+      .valueChanges.pipe( map( result => result.data.usuarios ) );
+  }
+
+  getUsuarioById ( id: number ): Observable<User> {
+    return this.apollo
+      .watchQuery<{ usuario: User }>( {
+        query: GET_USER_BY_ID,
+        variables: { id }
+      } )
+      .valueChanges.pipe( map( result => result.data.usuario ) );
+  }
+
+  deleteUser ( id: number ): Observable<any> {
+    return this.apollo.mutate( {
+      mutation: DELETE_USER,
+      variables: { id },
+    } );
   }
 }

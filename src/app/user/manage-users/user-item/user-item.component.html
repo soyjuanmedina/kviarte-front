@@ -1,0 +1,18 @@
+<div class="user-item">
+  <div class="user-info">
+    <div class="name">{{ user.nombre }}</div>
+    <div class="details">
+      <span>ID: {{ user.id_usuario }}</span> |
+      <span>Email: {{ user.email }}</span> |
+      <span>Rol: {{ user.rol }}</span>
+    </div>
+  </div>
+  <div class="user-actions">
+    <button class="general-btn icon-btn" (click)="onView()">
+      <mat-icon class="icon-left">search</mat-icon>
+    </button>
+    <button class="general-btn icon-btn danger" (click)="onDelete()">
+      <mat-icon class="icon-left">delete</mat-icon>
+    </button>
+  </div>
+</div>

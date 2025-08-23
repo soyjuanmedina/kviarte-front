@@ -9,6 +9,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { GraphQLModule } from './graphql.module';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ModalHostComponent } from './shared/components/modal-host/modal-host.component';
 
 @NgModule( {
   declarations: [
@@ -23,7 +24,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     RouterModule,
     HttpClientModule,
     GraphQLModule,
-    FormsModule
+    FormsModule,
+    ModalHostComponent
   ],
   bootstrap: [AppComponent]
 } )

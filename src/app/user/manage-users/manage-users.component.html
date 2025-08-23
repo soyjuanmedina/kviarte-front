@@ -1,0 +1,32 @@
+<div class="users-container" *ngIf="isAdmin; else notAllowed">
+
+  <!-- Barra superior -->
+  <div class="top-bar">
+    <div class="filter-wrapper">
+      <mat-form-field appearance="outline" class="filter-input">
+        <mat-label>Buscar usuario</mat-label>
+        <input matInput type="text" [(ngModel)]="filterText" placeholder="Escribe un nombre..." />
+      </mat-form-field>
+    </div>
+    <button class="general-btn add-btn" (click)="addUser()">
+      Añadir Usuario
+    </button>
+  </div>
+
+  <!-- Error -->
+  <div *ngIf="errorMessage" class="error-msg">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Listado de usuarios -->
+  <div class="users-list">
+    <app-user-item *ngFor="let user of filteredUsers()" [user]="user" (view)="viewProfile($event)"
+      (delete)="deleteUser($event)">
+    </app-user-item>
+  </div>
+
+</div>
+
+<ng-template #notAllowed>
+  <p>No tienes permisos para gestionar usuarios 🚫</p>
+</ng-template>

@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService, User } from '../../core/services/auth.service';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { UserService } from '../../core/services/user.service';
 
 @Component( {
   selector: 'app-profile',
@@ -14,14 +15,17 @@ import { Router } from '@angular/router';
 export class ProfileComponent implements OnInit {
   user: User | null = null;
 
-  constructor ( private authService: AuthService, private router: Router ) { }
+  constructor ( private authService: AuthService, private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private userService: UserService
+  ) { }
 
   get isAdmin (): boolean {
     return this.user?.rol === 'ADMIN';
   }
 
-  goToRegister () {
-    this.router.navigate( ['/register'] );
+  goToManageUser () {
+    this.router.navigate( ['/manage/users'] );
   }
 
   goToProfile () {
@@ -37,9 +41,20 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit (): void {
-    this.authService.currentUser$.subscribe( user => {
-      this.user = user;
-    } );
+    const idParam = this.activatedRoute.snapshot.paramMap.get( 'id' );
+
+    console.log( 'idParam', idParam );
+
+    if ( idParam ) {
+      // perfil de otro usuario
+      const id = +idParam;
+      this.userService.getUsuarioById( id ).subscribe( user => {
+        this.user = user;
+      } );
+    } else {
+      // perfil propio
+      this.user = this.authService.getUser();
+    }
   }
 
 }

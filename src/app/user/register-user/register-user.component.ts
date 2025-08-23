@@ -17,10 +17,10 @@ import { Router } from '@angular/router';
   selector: 'app-register',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, MatIconModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatButtonModule, MatCardModule],
-  templateUrl: './register.component.html',
-  styleUrl: './register.component.scss'
+  templateUrl: './register-user.component.html',
+  styleUrl: './register-user.component.scss'
 } )
-export class RegisterComponent {
+export class RegisterUserComponent {
 
   @Output() openLoginModal = new EventEmitter<void>();
   registered = false;
@@ -66,6 +66,8 @@ export class RegisterComponent {
         // Abrir modal después de 3 segundos
         if ( !this.isAdmin ) {
           setTimeout( () => this.modalService.openLogin(), 3000 );
+        } else {
+          this.router.navigate( ['/manage/users'] );
         }
       },
       error: ( err ) => {

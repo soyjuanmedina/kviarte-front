@@ -79,3 +79,9 @@ export const CREATE_ARTIST_MUTATION = gql`
   }
 }
 `;
+
+const DELETE_USUARIO = gql`
+  mutation DeleteUsuario($id: Int!) {
+    deleteUsuario(id: $id)
+  }
+`;

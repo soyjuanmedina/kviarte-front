@@ -3,16 +3,19 @@ import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { ExhibitionsComponent } from './exhibitions/exhibitions.component';
 import { ProfileComponent } from './user/profile/profile.component';
-import { RegisterComponent } from './user/register/register.component';
+import { RegisterUserComponent } from './user/register-user/register-user.component';
 import { registerGuard } from './guards/auth.guard';
 import { RegisterGalleryComponent } from './galleries/register-gallery/register-gallery.component';
 import { RegisterArtistComponent } from './artists/register-artist/register-artist.component';
+import { ManageUsersComponent } from './user/manage-users/manage-users.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' }, // '' redirige a 'home'
   { path: 'home', component: HomeComponent },         // ruta real para HomeComponent
   { path: 'profile', component: ProfileComponent },
-  { path: 'register', component: RegisterComponent, canActivate: [registerGuard], },
+  { path: 'profile/:id', component: ProfileComponent },
+  { path: 'register/user', component: RegisterUserComponent, canActivate: [registerGuard], },
+  { path: 'manage/users', component: ManageUsersComponent, canActivate: [registerGuard], },
   { path: 'register/gallery', component: RegisterGalleryComponent, canActivate: [registerGuard], },
   { path: 'register/artist', component: RegisterArtistComponent, canActivate: [registerGuard], },
   { path: 'galleries', loadChildren: () => import( './galleries/galleries.module' ).then( m => m.GalleriesModule ) },
