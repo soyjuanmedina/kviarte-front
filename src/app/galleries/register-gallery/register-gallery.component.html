@@ -78,6 +78,9 @@
     <!-- MENSAJE DE ÉXITO -->
     <div *ngIf="registered" class="success-msg">
       <p>Galería registrada con éxito ✅</p>
+      <button class="general-btn" (click)="goToProfile()">
+        Volver al Perfil
+      </button>
     </div>
   </mat-card>
 </div>

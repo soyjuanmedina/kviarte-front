@@ -1,5 +1,5 @@
-import { Component, EventEmitter, Output } from '@angular/core';
-import { REGISTER_MUTATION } from '../../../graphql/mutations';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { CREATE_ARTIST_MUTATION } from '../../../graphql/mutations';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { Apollo, gql } from 'apollo-angular';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -10,42 +10,41 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { ModalService } from '../../services/modal.service';
-import { AuthService } from '../../services/auth.service';
+import { AuthService, User } from '../../services/auth.service';
+import { UsersService } from '../../services/users.service';
 import { Router } from '@angular/router';
+import { Gallery } from '../../core/services/gallery.service';
 
 @Component( {
-  selector: 'app-register',
+  selector: 'app-register-artist',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, MatIconModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatButtonModule, MatCardModule],
-  templateUrl: './register.component.html',
-  styleUrl: './register.component.scss'
+  templateUrl: './register-artist.component.html',
+  styleUrl: './register-artist.component.scss'
 } )
-export class RegisterComponent {
+export class RegisterArtistComponent {
 
   @Output() openLoginModal = new EventEmitter<void>();
   registered = false;
   loading = false;
   successMessage = '';
   errorMessage = '';
+  galeries: Gallery[] = [];
 
   form = this.fb.group( {
     nombre: ['', Validators.required],
-    email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength( 6 )]],
-    rol: ['USER', Validators.required], // valor por defecto
+    biografia: [''],
+    estilo: [''],
+    id_galeria: [null]
   } );
 
   constructor ( private fb: FormBuilder, private apollo: Apollo, private modalService: ModalService,
-    private authService: AuthService, private router: Router
+    private authService: AuthService, private usersService: UsersService, private router: Router
   ) { }
 
   get isAdmin (): boolean {
     const user = this.authService.getUser();
     return user?.rol === 'ADMIN';
-  }
-
-  goToProfile () {
-    this.router.navigate( ['/profile'] );
   }
 
   onSubmit () {
@@ -55,18 +54,13 @@ export class RegisterComponent {
     this.errorMessage = '';
 
     this.apollo.mutate( {
-      mutation: REGISTER_MUTATION,
-      variables: { input: this.form.value }
+      mutation: CREATE_ARTIST_MUTATION,
+      variables: { ...this.form.value }  // <-- pasa los valores directos
     } ).subscribe( {
       next: () => {
         this.loading = false;
         this.registered = true;
-        this.form.reset( { rol: 'USER' } );
-
-        // Abrir modal después de 3 segundos
-        if ( !this.isAdmin ) {
-          setTimeout( () => this.modalService.openLogin(), 3000 );
-        }
+        this.form.reset();
       },
       error: ( err ) => {
         this.loading = false;
@@ -74,5 +68,10 @@ export class RegisterComponent {
       }
     } );
   }
+
+  goToProfile () {
+    this.router.navigate( ['/profile'] );
+  }
+
 
 }

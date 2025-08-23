@@ -24,8 +24,16 @@ export class ProfileComponent implements OnInit {
     this.router.navigate( ['/register'] );
   }
 
+  goToProfile () {
+    this.router.navigate( ['/profile'] );
+  }
+
   goToRegisterGallery () {
     this.router.navigate( ['/register/gallery'] );
+  }
+
+  goToRegisterArtist () {
+    this.router.navigate( ['/register/artist'] );
   }
 
   ngOnInit (): void {

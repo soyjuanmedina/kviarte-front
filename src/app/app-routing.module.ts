@@ -6,6 +6,7 @@ import { ProfileComponent } from './user/profile/profile.component';
 import { RegisterComponent } from './user/register/register.component';
 import { registerGuard } from './guards/auth.guard';
 import { RegisterGalleryComponent } from './galleries/register-gallery/register-gallery.component';
+import { RegisterArtistComponent } from './artists/register-artist/register-artist.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' }, // '' redirige a 'home'
@@ -13,6 +14,7 @@ const routes: Routes = [
   { path: 'profile', component: ProfileComponent },
   { path: 'register', component: RegisterComponent, canActivate: [registerGuard], },
   { path: 'register/gallery', component: RegisterGalleryComponent, canActivate: [registerGuard], },
+  { path: 'register/artist', component: RegisterArtistComponent, canActivate: [registerGuard], },
   { path: 'galleries', loadChildren: () => import( './galleries/galleries.module' ).then( m => m.GalleriesModule ) },
   { path: 'artists', loadChildren: () => import( './artists/artists.module' ).then( m => m.ArtistsModule ) },
   { path: 'exhibitions', component: ExhibitionsComponent },

@@ -12,9 +12,10 @@ import { CommonModule } from '@angular/common';
 import { ModalService } from '../../services/modal.service';
 import { AuthService, User } from '../../services/auth.service';
 import { UsersService } from '../../services/users.service';
+import { Router } from '@angular/router';
 
 @Component( {
-  selector: 'app-register',
+  selector: 'app-register-gallery',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, MatIconModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatButtonModule, MatCardModule],
   templateUrl: './register-gallery.component.html',
@@ -42,7 +43,7 @@ export class RegisterGalleryComponent implements OnInit {
   } );
 
   constructor ( private fb: FormBuilder, private apollo: Apollo, private modalService: ModalService,
-    private authService: AuthService, private usersService: UsersService
+    private authService: AuthService, private usersService: UsersService, private router: Router
   ) { }
 
   get isAdmin (): boolean {
@@ -70,6 +71,10 @@ export class RegisterGalleryComponent implements OnInit {
         this.errorMessage = err.message || 'Error al registrar ❌';
       }
     } );
+  }
+
+  goToProfile () {
+    this.router.navigate( ['/profile'] );
   }
 
   ngOnInit () {

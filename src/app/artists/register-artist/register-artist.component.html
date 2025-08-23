@@ -1,0 +1,57 @@
+<div class="register-container">
+  <mat-card class="register-card">
+    <h2 class="title">Crear nuevo artista</h2>
+
+    <!-- FORMULARIO -->
+    <form *ngIf="!registered" [formGroup]="form" (ngSubmit)="onSubmit()">
+
+      <!-- Nombre -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Nombre del artista</mat-label>
+        <input matInput formControlName="nombre" required />
+      </mat-form-field>
+
+      <!-- Biografía -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Biografía</mat-label>
+        <textarea matInput formControlName="biografia"></textarea>
+      </mat-form-field>
+
+      <!-- Estilo -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Estilo artístico</mat-label>
+        <input matInput formControlName="estilo" />
+      </mat-form-field>
+
+      <!-- Galería (opcional) -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Galería (opcional)</mat-label>
+        <mat-select formControlName="id_galeria">
+          <mat-option [value]="null">Sin galería</mat-option>
+          <mat-option *ngFor="let galery of galeries" [value]="galery.id">
+            {{ galery.name }}
+          </mat-option>
+        </mat-select>
+        <mat-icon matSuffix>museum</mat-icon>
+      </mat-form-field>
+
+      <!-- Botón -->
+      <button type="submit" [disabled]="loading" class="full-width login-btn">
+        {{ loading ? 'Registrando...' : 'Registrar' }}
+      </button>
+
+      <!-- Mensaje de error -->
+      <div *ngIf="errorMessage" class="error-msg">
+        {{ errorMessage }}
+      </div>
+    </form>
+
+    <!-- MENSAJE DE ÉXITO -->
+    <div *ngIf="registered" class="success-msg">
+      <p>Artista registrado con éxito ✅</p>
+      <button class="general-btn" (click)="goToProfile()">
+        Volver al Perfil
+      </button>
+    </div>
+  </mat-card>
+</div>

@@ -52,3 +52,30 @@ export const CREATE_GALLERY_MUTATION = gql`
     }
   }
 `;
+
+export const CREATE_ARTIST_MUTATION = gql`
+  mutation CreateArtist(
+  $nombre: String!
+  $biografia: String
+  $estilo: String
+  $id_galeria: Int
+) {
+  createArtist(
+    input: {
+      nombre: $nombre
+      biografia: $biografia
+      estilo: $estilo
+      id_galeria: $id_galeria
+    }
+  ) {
+    id_artista
+    nombre
+    biografia
+    estilo
+    galeria {
+      id_galeria
+      nombre
+    }
+  }
+}
+`;

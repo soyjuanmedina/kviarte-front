@@ -67,7 +67,10 @@
     <!-- MENSAJE DE ÉXITO -->
     <div *ngIf="registered" class="success-msg">
       <p>¡Usuario registrado con éxito ✅</p>
-      <p>Abriendo login...</p>
+      <p *ngIf="!isAdmin">Abriendo login...</p>
+      <button class="general-btn" (click)="goToProfile()">
+        Volver al Perfil
+      </button>
     </div>
 
   </mat-card>
