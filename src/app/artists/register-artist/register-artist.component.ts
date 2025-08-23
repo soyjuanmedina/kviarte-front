@@ -9,11 +9,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
-import { ModalService } from '../../services/modal.service';
-import { AuthService, User } from '../../services/auth.service';
-import { UsersService } from '../../services/users.service';
+import { ModalService } from '../../core/services/modal.service';
+import { AuthService, User } from '../../core/services/auth.service';
 import { Router } from '@angular/router';
-import { Gallery } from '../../core/services/gallery.service';
+import { Gallery, GalleryService } from '../../core/services/gallery.service';
 
 @Component( {
   selector: 'app-register-artist',
@@ -22,7 +21,7 @@ import { Gallery } from '../../core/services/gallery.service';
   templateUrl: './register-artist.component.html',
   styleUrl: './register-artist.component.scss'
 } )
-export class RegisterArtistComponent {
+export class RegisterArtistComponent implements OnInit {
 
   @Output() openLoginModal = new EventEmitter<void>();
   registered = false;
@@ -39,7 +38,7 @@ export class RegisterArtistComponent {
   } );
 
   constructor ( private fb: FormBuilder, private apollo: Apollo, private modalService: ModalService,
-    private authService: AuthService, private usersService: UsersService, private router: Router
+    private authService: AuthService, private galleryService: GalleryService, private router: Router
   ) { }
 
   get isAdmin (): boolean {
@@ -73,5 +72,18 @@ export class RegisterArtistComponent {
     this.router.navigate( ['/profile'] );
   }
 
+  ngOnInit () {
+    if ( this.isAdmin ) {
+      this.galleryService.getGalleries().subscribe( {
+        next: ( galeries ) => {
+          this.galeries = galeries;
+        },
+        error: ( err ) => {
+          console.error( 'Error cargando galerias', err );
+          this.errorMessage = 'No se pudieron cargar las galerías ❌';
+        }
+      } );
+    }
+  }
 
 }

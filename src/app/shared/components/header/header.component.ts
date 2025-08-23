@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { LOGIN_MUTATION } from '../../../../graphql/mutations';
 import { Apollo } from 'apollo-angular';
 import { Router } from '@angular/router';
-import { AuthService } from '../../../services/auth.service';
-import { ModalService } from '../../../services/modal.service';
+import { AuthService } from '../../../core/services/auth.service';
+import { ModalService } from '../../../core/services/modal.service';
 
 @Component( {
   selector: 'app-header',

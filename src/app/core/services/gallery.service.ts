@@ -1,28 +1,28 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Apollo } from 'apollo-angular';
+import { map, Observable } from 'rxjs';
+import { GET_GALLERIES } from '../../../graphql/queries';
 
 export interface Gallery {
-  id: number;
-  name: string;
-  city: string;
-  description: string;
-  imageUrl: string;
+  id_galeria: number;
+  nombre: string;
+  ciudad?: string;
+  email_contacto?: string;
 }
 
 @Injectable( {
-  providedIn: 'root'
+  providedIn: 'root',
 } )
 export class GalleryService {
-  private apiUrl = 'https://tu-backend.com/api/galleries';
-
-  constructor ( private http: HttpClient ) { }
+  constructor ( private apollo: Apollo ) { }
 
   getGalleries (): Observable<Gallery[]> {
-    return this.http.get<Gallery[]>( this.apiUrl );
-  }
-
-  getGallery ( id: number ): Observable<Gallery> {
-    return this.http.get<Gallery>( `${this.apiUrl}/${id}` );
+    return this.apollo
+      .watchQuery<{ galerias: Gallery[] }>( {
+        query: GET_GALLERIES
+      } )
+      .valueChanges.pipe(
+        map( result => result.data.galerias )
+      );
   }
 }

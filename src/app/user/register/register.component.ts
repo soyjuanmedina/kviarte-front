@@ -9,8 +9,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
-import { ModalService } from '../../services/modal.service';
-import { AuthService } from '../../services/auth.service';
+import { ModalService } from '../../core/services/modal.service';
+import { AuthService } from '../../core/services/auth.service';
 import { Router } from '@angular/router';
 
 @Component( {

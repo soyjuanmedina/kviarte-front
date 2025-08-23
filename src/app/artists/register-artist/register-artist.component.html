@@ -28,8 +28,8 @@
         <mat-label>Galería (opcional)</mat-label>
         <mat-select formControlName="id_galeria">
           <mat-option [value]="null">Sin galería</mat-option>
-          <mat-option *ngFor="let galery of galeries" [value]="galery.id">
-            {{ galery.name }}
+          <mat-option *ngFor="let galery of galeries" [value]="galery.id_galeria">
+            {{ galery.nombre }}
           </mat-option>
         </mat-select>
         <mat-icon matSuffix>museum</mat-icon>

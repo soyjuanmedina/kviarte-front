@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common'; // <-- necesario para ngFor, ngIf
 import { GalleryCardComponent } from '../shared/components/gallery-card/gallery-card.component';
-import { AuthService, User } from '../services/auth.service';
+import { AuthService, User } from '../core/services/auth.service';
 
 @Component( {
   selector: 'app-home',

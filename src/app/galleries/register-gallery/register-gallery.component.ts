@@ -9,10 +9,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
-import { ModalService } from '../../services/modal.service';
-import { AuthService, User } from '../../services/auth.service';
-import { UsersService } from '../../services/users.service';
+import { ModalService } from '../../core/services/modal.service';
+import { AuthService, User } from '../../core/services/auth.service';
 import { Router } from '@angular/router';
+import { UsersService as UserService } from '../../core/services/user.service';
 
 @Component( {
   selector: 'app-register-gallery',
@@ -43,7 +43,7 @@ export class RegisterGalleryComponent implements OnInit {
   } );
 
   constructor ( private fb: FormBuilder, private apollo: Apollo, private modalService: ModalService,
-    private authService: AuthService, private usersService: UsersService, private router: Router
+    private authService: AuthService, private usersService: UserService, private router: Router
   ) { }
 
   get isAdmin (): boolean {
