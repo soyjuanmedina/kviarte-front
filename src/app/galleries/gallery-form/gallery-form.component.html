@@ -1,14 +1,14 @@
 <div class="register-container">
   <mat-card class="register-card">
-    <h2 class="title">Crear nueva galería</h2>
+    <h2 class="title">{{ isEdit ? 'Editar galería' : 'Crear nueva galería' }}</h2>
 
     <!-- FORMULARIO -->
-    <form *ngIf="!registered" [formGroup]="form" (ngSubmit)="onSubmit()">
+    <form *ngIf="!registered" [formGroup]="form" (ngSubmit)="onSubmit()" class="form-grid">
 
       <!-- Usuario propietario (solo visible si eres admin) -->
-      <mat-form-field appearance="outline" *ngIf="isAdmin" class="full-width">
+      <mat-form-field appearance="outline" *ngIf="isAdmin">
         <mat-label>Propietario</mat-label>
-        <mat-select formControlName="usuarioId" required>
+        <mat-select formControlName="usuario_id" [disabled]="isEdit" required>
           <mat-option *ngFor="let user of galleryUsers" [value]="user.id_usuario">
             {{ user.nombre }} ({{ user.email }})
           </mat-option>
@@ -17,67 +17,62 @@
       </mat-form-field>
 
       <!-- Nombre -->
-      <mat-form-field appearance="outline" class="full-width">
+      <mat-form-field appearance="outline">
         <mat-label>Nombre de la galería</mat-label>
         <input matInput formControlName="nombre" required />
       </mat-form-field>
 
-      <!-- Descripción -->
-      <mat-form-field appearance="outline" class="full-width">
+      <!-- Descripción (ocupa todo el ancho) -->
+      <mat-form-field appearance="outline" class="span-2">
         <mat-label>Descripción</mat-label>
         <textarea matInput formControlName="descripcion"></textarea>
       </mat-form-field>
 
       <!-- Dirección -->
-      <mat-form-field appearance="outline" class="full-width">
+      <mat-form-field appearance="outline">
         <mat-label>Dirección</mat-label>
         <input matInput formControlName="direccion" />
       </mat-form-field>
 
       <!-- Ciudad -->
-      <mat-form-field appearance="outline" class="full-width">
+      <mat-form-field appearance="outline">
         <mat-label>Ciudad</mat-label>
         <input matInput formControlName="ciudad" />
       </mat-form-field>
 
       <!-- Web -->
-      <mat-form-field appearance="outline" class="full-width">
+      <mat-form-field appearance="outline">
         <mat-label>Web</mat-label>
         <input matInput formControlName="web" />
       </mat-form-field>
 
-      <!-- Email de contacto -->
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Email de contacto</mat-label>
-        <input matInput formControlName="email_contacto" type="email" />
-      </mat-form-field>
-
-      <!-- Email general -->
-      <mat-form-field appearance="outline" class="full-width">
+      <!-- Email -->
+      <mat-form-field appearance="outline">
         <mat-label>Email</mat-label>
         <input matInput formControlName="email" type="email" />
       </mat-form-field>
 
       <!-- Teléfono -->
-      <mat-form-field appearance="outline" class="full-width">
+      <mat-form-field appearance="outline">
         <mat-label>Teléfono</mat-label>
         <input matInput formControlName="telefono" />
       </mat-form-field>
 
       <!-- Botón -->
-      <button type="submit" [disabled]="loading" class="full-width login-btn">
-        {{ loading ? 'Registrando...' : 'Registrar' }}
+      <button type="submit" [disabled]="loading" class="general-btn add-btn span-2">
+        {{ loading ? (isEdit ? 'Actualizando...' : 'Registrando...') : (isEdit ? 'Actualizar' :
+        'Registrar') }}
       </button>
 
-      <!-- Mensaje de error -->
-      <div *ngIf="errorMessage" class="error-msg">
+      <!-- Error -->
+      <div *ngIf="errorMessage" class="error-msg span-2">
         {{ errorMessage }}
       </div>
     </form>
 
     <!-- MENSAJE DE ÉXITO -->
     <div *ngIf="registered" class="success-msg">
-      <p>Galería registrada con éxito ✅</p>
+      <p>{{ isEdit ? 'Galería actualizada con éxito ✅' : 'Galería registrada con éxito ✅' }}</p>
       <button class="general-btn" (click)="goToProfile()">
         Volver al Perfil
       </button>

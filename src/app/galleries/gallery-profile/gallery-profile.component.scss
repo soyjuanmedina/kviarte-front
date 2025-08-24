@@ -1,0 +1,35 @@
+.gallery-container {
+  max-width: 80%;
+  margin: 2rem auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.gallery-card {
+  padding: 1rem;
+}
+
+.lists-container {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.list-card {
+  flex: 1 1 45%;
+  min-width: 250px;
+}
+
+.empty-text {
+  font-style: italic;
+  color: gray;
+}
+
+.loading-container,
+.error-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2rem;
+}

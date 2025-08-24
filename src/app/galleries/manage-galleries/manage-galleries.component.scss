@@ -1,0 +1,32 @@
+.galleries-container {
+  width: 90%;
+  margin: 2rem auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  .top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .filter-wrapper {
+      width: 400px;
+    }
+
+    .add-btn {
+      height: 40px;
+    }
+  }
+
+  .galleries-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .error-msg {
+    color: red;
+    font-weight: 500;
+  }
+}

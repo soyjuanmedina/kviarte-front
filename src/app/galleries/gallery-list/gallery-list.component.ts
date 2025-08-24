@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { GalleryService, Gallery } from '../../core/services/gallery.service';
 
 @Component( {
-  selector: 'app-gallery-list',
-  templateUrl: './gallery-list.component.html',
-  styleUrls: ['./gallery-list.component.scss']
+  selector: 'app-gallery-form',
+  templateUrl: './gallery-form.component.html',
+  styleUrls: ['./gallery-form.component.scss']
 } )
 export class GalleryListComponent implements OnInit {
   galleries: Gallery[] = [];

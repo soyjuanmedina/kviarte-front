@@ -1,0 +1,23 @@
+.register-card {
+  max-width: 1000px; /* más ancho */
+  margin: auto;
+  padding: 2rem;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2 columnas */
+  gap: 1rem; /* espacio entre columnas y filas */
+}
+
+.full-width {
+  grid-column: span 2; /* ocupa las 2 columnas */
+}
+
+.span-2 {
+  grid-column: span 2; /* campos largos como nombre/descripcion */
+}
+
+.submit-btn {
+  grid-column: span 2; /* botón ocupa todo el ancho */
+}

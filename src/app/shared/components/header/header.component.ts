@@ -38,7 +38,6 @@ export class HeaderComponent {
   }
 
   login () {
-    console.log( 'this.email', this.email, this.password );
     this.apollo.mutate( {
       mutation: LOGIN_MUTATION,
       variables: { input: { email: this.email, password: this.password } }

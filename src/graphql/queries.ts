@@ -45,7 +45,30 @@ export const GET_GALLERIES = gql`
       id_galeria
       nombre
       ciudad
-      email_contacto
+      email
+    }
+  }
+`;
+
+export const GET_GALLERY = gql`
+  query GetGallery($id: Int!) {
+    galeria(id: $id) {
+      id_galeria
+      nombre
+      descripcion
+      direccion
+      ciudad
+      email
+      telefono
+      web
+      exposiciones {
+        id_exposicion
+        titulo
+      }
+      artists {
+        id_artista
+        nombre
+      }
     }
   }
 `;
@@ -62,5 +85,11 @@ export const GET_ARTISTS = gql`
         nombre
       }
     }
+  }
+`;
+
+export const DELETE_GALLERY = gql`
+  mutation DeleteGallery($id: Int!) {
+    deleteGallery(id: $id)
   }
 `;

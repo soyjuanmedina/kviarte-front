@@ -22,24 +22,22 @@ export const REGISTER_MUTATION = gql`
 
 export const CREATE_GALLERY_MUTATION = gql`
   mutation CreateGaleria(
-    $usuarioId: Float!
+    $usuario_id: Float!
     $nombre: String!
     $descripcion: String
     $direccion: String
     $ciudad: String
     $web: String
-    $email_contacto: String
     $telefono: String
     $email: String
   ) {
     createGaleria(
-      usuarioId: $usuarioId
+      usuario_id: $usuario_id
       nombre: $nombre
       descripcion: $descripcion
       direccion: $direccion
       ciudad: $ciudad
       web: $web
-      email_contacto: $email_contacto
       telefono: $telefono
       email: $email
     ) {
@@ -52,6 +50,52 @@ export const CREATE_GALLERY_MUTATION = gql`
     }
   }
 `;
+
+export const GET_GALLERY_BY_ID_QUERY = gql`
+  query GetGallery($id: Int!) {
+    galeria(id: $id) {
+      id_galeria
+      nombre
+      email
+      telefono
+      ciudad
+      direccion
+      web
+      descripcion
+      usuario_id
+    }
+  }
+`;
+
+export const UPDATE_GALLERY_MUTATION = gql`
+mutation UpdateGallery(
+  $id: Int!,
+  $usuario_id: Float!,
+  $nombre: String!,
+  $descripcion: String,
+  $direccion: String,
+  $ciudad: String,
+  $web: String,
+  $telefono: String,
+  $email: String
+) {
+  updateGaleria(
+    id: $id,
+    usuario_id: $usuario_id,
+    nombre: $nombre,
+    descripcion: $descripcion,
+    direccion: $direccion,
+    ciudad: $ciudad,
+    web: $web,
+    telefono: $telefono,
+    email: $email
+  ) {
+    id_galeria
+    nombre
+  }
+}
+`;
+
 
 export const CREATE_ARTIST_MUTATION = gql`
   mutation CreateArtist(

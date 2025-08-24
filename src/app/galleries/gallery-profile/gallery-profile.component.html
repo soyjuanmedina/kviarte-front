@@ -1,0 +1,52 @@
+<div *ngIf="gallery" class="gallery-container">
+  <!-- Card principal de la galería -->
+  <mat-card class="gallery-card">
+    <mat-card-header>
+      <div mat-card-avatar class="gallery-avatar"></div>
+      <mat-card-title>{{ gallery.nombre }}</mat-card-title>
+      <mat-card-subtitle>{{ gallery.ciudad }}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <p *ngIf="gallery.descripcion">{{ gallery.descripcion }}</p>
+      <p *ngIf="gallery.email"><strong>Email:</strong> {{ gallery.email }}</p>
+      <p *ngIf="gallery.telefono"><strong>Teléfono:</strong> {{ gallery.telefono }}</p>
+      <p *ngIf="gallery.web"><strong>Web:</strong>&nbsp;<a [href]="gallery.web" target="_blank">{{
+          gallery.web }}</a></p>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Listas de exposiciones y artistas -->
+  <div class="lists-container">
+    <mat-card class="list-card">
+      <mat-card-title>Exposiciones</mat-card-title>
+      <mat-list *ngIf="gallery.exposiciones.length > 0; else noExposiciones">
+        <mat-list-item *ngFor="let expo of gallery.exposiciones">
+          🎨 {{ expo.titulo }}
+        </mat-list-item>
+      </mat-list>
+      <ng-template #noExposiciones>
+        <p class="empty-text">No hay exposiciones registradas</p>
+      </ng-template>
+    </mat-card>
+
+    <mat-card class="list-card">
+      <mat-card-title>Artistas</mat-card-title>
+      <mat-list *ngIf="gallery.artists.length > 0; else noArtists">
+        <mat-list-item *ngFor="let artist of gallery.artists">
+          👤 {{ artist.nombre }}
+        </mat-list-item>
+      </mat-list>
+      <ng-template #noArtists>
+        <p class="empty-text">No hay artistas asociados</p>
+      </ng-template>
+    </mat-card>
+  </div>
+</div>
+
+<!-- Loading y error -->
+<div *ngIf="loading" class="loading-container">
+  <mat-spinner></mat-spinner>
+</div>
+<div *ngIf="error" class="error-container">
+  <mat-icon color="warn">error</mat-icon> {{ error }}
+</div>

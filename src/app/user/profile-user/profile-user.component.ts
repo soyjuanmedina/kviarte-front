@@ -6,13 +6,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../core/services/user.service';
 
 @Component( {
-  selector: 'app-profile',
+  selector: 'app-profile-user',
   standalone: true,
   imports: [CommonModule, MatCardModule],
-  templateUrl: './profile.component.html',
-  styleUrl: './profile.component.scss'
+  templateUrl: './profile-user.component.html',
+  styleUrl: './profile-user.component.scss'
 } )
-export class ProfileComponent implements OnInit {
+export class ProfileUserComponent implements OnInit {
   user: User | null = null;
 
   constructor ( private authService: AuthService, private router: Router,
@@ -24,8 +24,12 @@ export class ProfileComponent implements OnInit {
     return this.user?.rol === 'ADMIN';
   }
 
-  goToManageUser () {
+  goToManageUsers () {
     this.router.navigate( ['/manage/users'] );
+  }
+
+  goToManageGalleries () {
+    this.router.navigate( ['/manage/galleries'] );
   }
 
   goToProfile () {
@@ -42,9 +46,6 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit (): void {
     const idParam = this.activatedRoute.snapshot.paramMap.get( 'id' );
-
-    console.log( 'idParam', idParam );
-
     if ( idParam ) {
       // perfil de otro usuario
       const id = +idParam;
