@@ -1,5 +1,6 @@
 import { gql } from 'apollo-angular';
 
+// Users
 export const GET_USERS = gql`
   query GetUsuarios {
     usuarios {
@@ -39,6 +40,7 @@ export const DELETE_USER = gql`
   }
 `;
 
+// Galleries
 export const GET_GALLERIES = gql`
   query {
     galerias {
@@ -73,6 +75,13 @@ export const GET_GALLERY = gql`
   }
 `;
 
+export const DELETE_GALLERY = gql`
+  mutation DeleteGallery($id: Int!) {
+    deleteGallery(id: $id)
+  }
+`;
+
+// Artists
 export const GET_ARTISTS = gql`
   query {
     artistas {
@@ -88,8 +97,34 @@ export const GET_ARTISTS = gql`
   }
 `;
 
-export const DELETE_GALLERY = gql`
-  mutation DeleteGallery($id: Int!) {
+export const DELETE_ARTIST = gql`
+  mutation DeleteArtist($id: Int!) {
     deleteGallery(id: $id)
+  }
+`;
+
+export const GET_ARTIST = gql`
+  query getArtist($id: Float!) {
+    artista(id: $id) {
+      id_artista
+      nombre
+      biografia
+      estilo
+      galeria {
+        id_galeria
+        nombre
+        ciudad
+        descripcion
+        email
+        telefono
+        web
+        exposiciones {
+          titulo
+        }
+        artists {
+          nombre
+        }
+      }
+    }
   }
 `;

@@ -1,0 +1,53 @@
+<!-- src/app/artists/artist-profile/artist-profile.component.html -->
+
+<!-- Perfil del artista -->
+<ng-container *ngIf="artist; else loadingOrError">
+  <div class="artist-container">
+
+    <!-- Card del artista -->
+    <mat-card class="artist-card">
+      <mat-card-header>
+        <div mat-card-avatar class="artist-avatar"></div>
+        <mat-card-title>{{ artist.nombre }}</mat-card-title>
+        <mat-card-subtitle>{{ artist.estilo }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p *ngIf="artist.biografia">{{ artist.biografia }}</p>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Bloque de galería y listas -->
+    <ng-container *ngIf="artist.galeria as gallery">
+      <div class="lists-container">
+
+        <!-- Galería resumida -->
+        <mat-card class="artist-card">
+          <mat-card-title>Galería</mat-card-title>
+          <mat-list>
+            <mat-list-item>
+              🖼️
+              <span>Galería: </span>
+              <a class="link" [routerLink]="['/galleries', gallery.id_galeria, 'profile']">
+                {{ gallery.nombre }}
+              </a>
+              <span *ngIf="gallery.ciudad"> - {{ gallery.ciudad }}</span>
+            </mat-list-item>
+          </mat-list>
+        </mat-card>
+
+
+      </div>
+    </ng-container>
+
+  </div>
+</ng-container>
+
+<!-- Loading y error -->
+<ng-template #loadingOrError>
+  <div *ngIf="loading" class="loading-container">
+    <mat-spinner></mat-spinner>
+  </div>
+  <div *ngIf="error" class="error-container">
+    <mat-icon color="warn">error</mat-icon> {{ error }}
+  </div>
+</ng-template>

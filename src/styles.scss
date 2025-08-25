@@ -15,3 +15,49 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     background-color: #e67e22;
   }
 }
+
+.link {
+  color: #d35400;
+  text-decoration: none;
+  font-weight: 500;
+
+  &:hover {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+}
+
+.success-msg {
+  color: #000; /* texto normal */
+  background-color: #fef5e7; /* opcional, fondo */
+  padding: 1rem;
+  border-radius: 0.5rem;
+  display: inline-block;
+}
+
+.success-msg .check::before {
+  content: '✔'; /* check mark */
+  color: #d35400; /* tu color primario */
+  margin-right: 0.5rem;
+  font-weight: bold;
+}
+
+.success-msg {
+  color: #000 !important; /* texto negro */
+  background-color: #fef5e7;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  display: inline-block;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.success-msg .check {
+  color: #d35400 !important; /* tu color primario para el check */
+  margin-right: 0.5rem; /* opcional, separa un poco el emoji del texto */
+}
+
+.check {
+  color: #d35400 !important; /* tu color primario para el check */
+  margin-right: 0.5rem; /* opcional, separa un poco el emoji del texto */
+}

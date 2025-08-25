@@ -10,8 +10,10 @@
       <p *ngIf="gallery.descripcion">{{ gallery.descripcion }}</p>
       <p *ngIf="gallery.email"><strong>Email:</strong> {{ gallery.email }}</p>
       <p *ngIf="gallery.telefono"><strong>Teléfono:</strong> {{ gallery.telefono }}</p>
-      <p *ngIf="gallery.web"><strong>Web:</strong>&nbsp;<a [href]="gallery.web" target="_blank">{{
-          gallery.web }}</a></p>
+      <p *ngIf="gallery.web"><strong>Web:</strong>&nbsp;<a class="link"
+          [href]="getFullWebUrl(gallery.web)" target="_blank">
+          {{ gallery.web }}
+        </a></p>
     </mat-card-content>
   </mat-card>
 
@@ -33,7 +35,9 @@
       <mat-card-title>Artistas</mat-card-title>
       <mat-list *ngIf="gallery.artists.length > 0; else noArtists">
         <mat-list-item *ngFor="let artist of gallery.artists">
-          👤 {{ artist.nombre }}
+          👤 <a class="link" [routerLink]="['/artists', artist.id_artista, 'profile']">
+            {{ artist.nombre }}
+          </a>
         </mat-list-item>
       </mat-list>
       <ng-template #noArtists>

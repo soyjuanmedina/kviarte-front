@@ -1,0 +1,21 @@
+<div class="gallery-item">
+  <div class="gallery-info">
+    <div class="name">{{ artist.nombre }}</div>
+    <div class="details">
+      <span>ID: {{ artist.id_artista }}</span> |
+      <span>Biografia: {{ artist.biografia }}</span> |
+      <span>Estilo: {{ artist.estilo }}</span>
+    </div>
+  </div>
+  <div class="gallery-actions">
+    <button class="general-btn icon-btn" (click)="onView()">
+      <mat-icon class="icon-left">search</mat-icon>
+    </button>
+    <button class="general-btn icon-btn warning" (click)="onEdit()">
+      <mat-icon class="icon-left">edit</mat-icon>
+    </button>
+    <button class="general-btn icon-btn danger" (click)="onDelete()">
+      <mat-icon class="icon-left">delete</mat-icon>
+    </button>
+  </div>
+</div>

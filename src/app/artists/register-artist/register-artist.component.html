@@ -48,7 +48,9 @@
 
     <!-- MENSAJE DE ÉXITO -->
     <div *ngIf="registered" class="success-msg">
-      <p>Artista registrado con éxito ✅</p>
+      <p>
+        <span class="check"></span>Artista registrado con éxito
+      </p>
       <button class="general-btn" (click)="goToProfile()">
         Volver al Perfil
       </button>

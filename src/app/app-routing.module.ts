@@ -10,6 +10,8 @@ import { ManageUsersComponent } from './user/manage-users/manage-users.component
 import { ManageGalleriesComponent } from './galleries/manage-galleries/manage-galleries.component';
 import { GalleryFormComponent } from './galleries/gallery-form/gallery-form.component';
 import { GalleryProfileComponent } from './galleries/gallery-profile/gallery-profile.component';
+import { ManageArtistsComponent } from './artists/manage-artists/manage-artists.component';
+import { ArtistProfileComponent } from './artists/artist-profile/artist-profile.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' }, // '' redirige a 'home'
@@ -22,12 +24,9 @@ const routes: Routes = [
   { path: 'manage/galleries/new', component: GalleryFormComponent, canActivate: [registerGuard] },
   { path: 'manage/galleries/:id/edit', component: GalleryFormComponent, canActivate: [registerGuard] },
   { path: 'galleries/:id/profile', component: GalleryProfileComponent },
-  { path: 'register/artist', component: RegisterArtistComponent, canActivate: [registerGuard], },
-  { path: 'galleries', loadChildren: () => import( './galleries/galleries.module' ).then( m => m.GalleriesModule ) },
-  { path: 'artists', loadChildren: () => import( './artists/artists.module' ).then( m => m.ArtistsModule ) },
-  { path: 'exhibitions', component: ExhibitionsComponent },
-  { path: 'shop', loadChildren: () => import( './shop/shop.module' ).then( m => m.ShopModule ) },
-  { path: 'user', loadChildren: () => import( './user/user.module' ).then( m => m.UserModule ) },
+  { path: 'manage/artists', component: ManageArtistsComponent, canActivate: [registerGuard] },
+  { path: 'manage/artists/new', component: RegisterArtistComponent, canActivate: [registerGuard], },
+  { path: 'artists/:id/profile', component: ArtistProfileComponent },
   { path: '**', redirectTo: 'home' } // catch-all
 ];
 
