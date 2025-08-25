@@ -10,6 +10,9 @@ import { GalleryItemComponent } from './gallery-item/gallery-item.component';
 import { Gallery, GalleryService } from '../../core/services/gallery.service';
 import { AuthService } from '../../core/services/auth.service';
 import { ModalService } from '../../core/services/modal.service';
+import { ConfirmDialog } from '../../shared/components/confirm-dialog/confirm-dialog.component';
+import { SuccessDialog } from '../../shared/components/success-dialog/success-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component( {
   selector: 'app-manage-gallery',
@@ -35,7 +38,7 @@ export class ManageGalleriesComponent {
     private authService: AuthService,
     private galleryService: GalleryService,
     private router: Router,
-    private modalService: ModalService
+    private dialog: MatDialog
   ) { }
 
   get isAdmin (): boolean {
@@ -61,25 +64,29 @@ export class ManageGalleriesComponent {
   }
 
   deleteGallery ( gallery: Gallery ) {
-    this.modalService
-      .openConfirm( {
+    const dialogRef = this.dialog.open( ConfirmDialog, {
+      data: {
         title: 'Eliminar Galería',
         message: `¿Seguro que deseas eliminar a ${gallery.nombre}?`
-      } )
-      .subscribe( confirmed => {
-        if ( !confirmed ) return;
+      }
+    } );
 
-        this.galleryService.deleteGallery( gallery.id_galeria ).subscribe( {
-          next: () => {
-            this.galleries = this.galleries.filter( u => u.id_galeria !== gallery.id_galeria );
-          },
-          error: err => {
-            console.error( 'Error eliminando galeria', err );
-            this.errorMessage = 'No se pudo eliminar la galeria ❌';
-          }
-        } );
+    dialogRef.afterClosed().subscribe( confirmed => {
+      if ( !confirmed ) return;
+
+      this.galleryService.deleteGallery( gallery.id_galeria ).subscribe( {
+        next: () => {
+          this.galleries = this.galleries.filter( u => u.id_galeria !== gallery.id_galeria );
+          this.dialog.open( SuccessDialog, { data: { message: 'Galería eliminada correctamente ✅' } } );
+        },
+        error: err => {
+          console.error( 'Error eliminando galería', err );
+          this.errorMessage = 'No se pudo eliminar la galería ❌';
+        }
       } );
+    } );
   }
+
 
   ngOnInit () {
     if ( this.isAdmin ) {

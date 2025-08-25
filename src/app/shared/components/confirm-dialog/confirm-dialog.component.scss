@@ -1,0 +1,14 @@
+.button-group {
+  display: flex;
+  justify-content: flex-end; /* o space-between si quieres separados */
+  gap: 1rem; /* espacio entre botones */
+}
+
+.delete-btn {
+  background-color: #e51c0e; /* rojo */
+  color: white;
+}
+
+.delete-btn:hover {
+  background-color: #ff0000; /* rojo más oscuro al pasar el ratón */
+}
