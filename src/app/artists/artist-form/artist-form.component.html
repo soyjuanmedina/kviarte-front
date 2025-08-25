@@ -1,6 +1,7 @@
 <div class="register-container">
   <mat-card class="register-card">
-    <h2 class="title">Crear nuevo artista</h2>
+    <!-- Título dinámico -->
+    <h2 class="title">{{ isEdit ? 'Editar artista' : 'Crear nuevo artista' }}</h2>
 
     <!-- FORMULARIO -->
     <form *ngIf="!registered" [formGroup]="form" (ngSubmit)="onSubmit()">
@@ -35,9 +36,10 @@
         <mat-icon matSuffix>museum</mat-icon>
       </mat-form-field>
 
-      <!-- Botón -->
+      <!-- Botón dinámico -->
       <button type="submit" [disabled]="loading" class="full-width login-btn">
-        {{ loading ? 'Registrando...' : 'Registrar' }}
+        {{ loading ? (isEdit ? 'Actualizando...' : 'Registrando...') : (isEdit ? 'Actualizar' :
+        'Registrar') }}
       </button>
 
       <!-- Mensaje de error -->
@@ -49,7 +51,8 @@
     <!-- MENSAJE DE ÉXITO -->
     <div *ngIf="registered" class="success-msg">
       <p>
-        <span class="check"></span>Artista registrado con éxito
+        <span class="check"></span>
+        {{ isEdit ? 'Artista actualizado con éxito' : 'Artista registrado con éxito' }}
       </p>
       <button class="general-btn" (click)="goToProfile()">
         Volver al Perfil

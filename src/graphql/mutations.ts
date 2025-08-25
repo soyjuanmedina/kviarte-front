@@ -124,6 +124,48 @@ export const CREATE_ARTIST_MUTATION = gql`
 }
 `;
 
+export const GET_ARTIST_BY_ID_QUERY = gql`
+  query GetArtistById($id: Float!) {
+    artista(id: $id) {
+      id_artista
+      nombre
+      biografia
+      estilo
+      galeria {
+        id_galeria
+        nombre
+      }
+      obras {
+        id_obra
+        titulo
+      }
+      exposiciones {
+        id_exposicion
+        titulo
+      }
+    }
+  }
+`;
+
+export const UPDATE_ARTIST_MUTATION = gql`
+  mutation UpdateArtist(
+    $id: Float!,
+    $data: UpdateArtistInput!,
+    $id_galeria: Float
+  ) {
+    updateArtist(id: $id, data: $data, id_galeria: $id_galeria) {
+      id_artista
+      nombre
+      biografia
+      estilo
+      galeria {
+        id_galeria
+        nombre
+      }
+    }
+  }
+`;
+
 const DELETE_USUARIO = gql`
   mutation DeleteUsuario($id: Int!) {
     deleteUsuario(id: $id)

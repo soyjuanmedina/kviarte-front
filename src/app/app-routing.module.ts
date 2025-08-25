@@ -5,7 +5,7 @@ import { ExhibitionsComponent } from './exhibitions/exhibitions.component';
 import { ProfileUserComponent } from './user/profile-user/profile-user.component';
 import { RegisterUserComponent } from './user/register-user/register-user.component';
 import { registerGuard } from './guards/auth.guard';
-import { RegisterArtistComponent } from './artists/register-artist/register-artist.component';
+import { ArtistFormComponent } from './artists/artist-form/artist-form.component';
 import { ManageUsersComponent } from './user/manage-users/manage-users.component';
 import { ManageGalleriesComponent } from './galleries/manage-galleries/manage-galleries.component';
 import { GalleryFormComponent } from './galleries/gallery-form/gallery-form.component';
@@ -25,7 +25,8 @@ const routes: Routes = [
   { path: 'manage/galleries/:id/edit', component: GalleryFormComponent, canActivate: [registerGuard] },
   { path: 'galleries/:id/profile', component: GalleryProfileComponent },
   { path: 'manage/artists', component: ManageArtistsComponent, canActivate: [registerGuard] },
-  { path: 'manage/artists/new', component: RegisterArtistComponent, canActivate: [registerGuard], },
+  { path: 'manage/artists/new', component: ArtistFormComponent, canActivate: [registerGuard], },
+  { path: 'manage/artists/:id/edit', component: ArtistFormComponent, canActivate: [registerGuard], },
   { path: 'artists/:id/profile', component: ArtistProfileComponent },
   { path: '**', redirectTo: 'home' } // catch-all
 ];
