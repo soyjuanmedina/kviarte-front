@@ -1,4 +1,5 @@
 import { gql } from 'apollo-angular';
+import { ARTIST_FIELDS, GALLERY_FIELDS } from './fragments';
 
 // Users
 export const GET_USERS = gql`
@@ -44,35 +45,19 @@ export const DELETE_USER = gql`
 export const GET_GALLERIES = gql`
   query {
     galerias {
-      id_galeria
-      nombre
-      ciudad
-      email
+      ...GalleryFields
     }
   }
+  ${GALLERY_FIELDS}
 `;
 
 export const GET_GALLERY = gql`
   query GetGallery($id: Int!) {
     galeria(id: $id) {
-      id_galeria
-      nombre
-      descripcion
-      direccion
-      ciudad
-      email
-      telefono
-      web
-      exposiciones {
-        id_exposicion
-        titulo
-      }
-      artists {
-        id_artista
-        nombre
-      }
+      ...GalleryFields
     }
   }
+  ${GALLERY_FIELDS}
 `;
 
 export const DELETE_GALLERY = gql`
@@ -85,46 +70,77 @@ export const DELETE_GALLERY = gql`
 export const GET_ARTISTS = gql`
   query {
     artistas {
-      id_artista
-      nombre
-      biografia
-      estilo
-      galeria {
-        id_galeria
-        nombre
-      }
+      ...ArtistFields
     }
   }
-`;
-
-export const DELETE_ARTIST = gql`
-  mutation DeleteArtist($id: Int!) {
-    deleteGallery(id: $id)
-  }
+  ${ARTIST_FIELDS}
 `;
 
 export const GET_ARTIST = gql`
   query getArtist($id: Float!) {
     artista(id: $id) {
-      id_artista
-      nombre
-      biografia
-      estilo
+      ...ArtistFields
+    }
+  }
+  ${ARTIST_FIELDS}
+`;
+
+
+export const DELETE_ARTIST = gql`
+mutation DeleteArtist($id: Int!) {
+  deleteArtist(id: $id)
+}
+`;
+
+// Exposiciones
+export const GET_EXHIBITIONS = gql`
+  query {
+    exposiciones {
+      id_exposicion
+      titulo
+      descripcion
+      picture
       galeria {
         id_galeria
         nombre
-        ciudad
-        descripcion
-        email
-        telefono
-        web
-        exposiciones {
-          titulo
-        }
-        artists {
-          nombre
-        }
+      }
+      artista {
+        id_artista
+        nombre
+      }
+      obras {
+        id_obra
+        titulo
       }
     }
   }
 `;
+
+export const GET_EXHIBITION = gql`
+  query getExhibition($id: Float!) {
+    exposicion(id: $id) 
+      id_exposicion
+      titulo
+      descripcion
+      picture
+      galeria {
+        id_galeria
+        nombre
+      }
+      artista {
+        id_artista
+        nombre
+      }
+      obras {
+        id_obra
+        titulo
+      }
+  }
+`;
+
+export const DELETE_EXHIBITION = gql`
+mutation DeleteExhibition($id: Int!) {
+  deleteExhibition(id: $id)
+}
+`;
+

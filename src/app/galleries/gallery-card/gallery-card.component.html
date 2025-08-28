@@ -1,0 +1,19 @@
+<div class="card">
+  <img [src]="gallery.picture" [alt]="gallery.nombre" class="card-img" />
+  <div class="card-body">
+    <h3>
+      <a class="link" [routerLink]="['/galleries', gallery.id_galeria, 'profile']">
+        {{ gallery.nombre }}
+      </a>
+    </h3>
+    <p>{{ gallery.descripcion }}</p>
+  </div>
+  <div *ngIf="isAdmin" class="actions">
+    <button class="general-btn icon-btn warning" (click)="onEdit()">
+      <mat-icon class="icon-left">edit</mat-icon>
+    </button>
+    <button class="general-btn icon-btn danger" (click)="onDelete()">
+      <mat-icon class="icon-left">delete</mat-icon>
+    </button>
+  </div>
+</div>

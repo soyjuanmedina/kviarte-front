@@ -21,3 +21,30 @@
 .submit-btn {
   grid-column: span 2; /* botón ocupa todo el ancho */
 }
+
+.input-preview-container {
+  display: flex;
+  gap: 16px;
+  align-items: center; /* mantiene la altura natural del input */
+
+  .input-field {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* centra el contenido interno */
+  }
+
+  .image-preview {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: stretch; /* estira la imagen al alto del input */
+
+    img {
+      height: 100%; /* ocupa toda la altura del mat-form-field */
+      width: auto;
+      object-fit: cover;
+      border-radius: 4px;
+    }
+  }
+}

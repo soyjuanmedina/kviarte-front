@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common'; // <-- necesario para ngFor, ngIf
-import { GalleryCardComponent } from '../shared/components/gallery-card/gallery-card.component';
+import { GalleryCardComponent } from '../galleries/gallery-card/gallery-card.component';
 import { AuthService, User } from '../core/services/auth.service';
+import { Apollo } from 'apollo-angular';
+import { GET_GALLERIES } from '../../graphql/queries';
 
 @Component( {
   selector: 'app-home',
@@ -11,17 +13,34 @@ import { AuthService, User } from '../core/services/auth.service';
   styleUrls: ['./home.component.scss']
 } )
 export class HomeComponent {
-  galleryItems = [
-    { title: 'Card 1', description: 'Descripción 1', image: 'https://via.placeholder.com/150' },
-    { title: 'Card 2', description: 'Descripción 2', image: 'https://via.placeholder.com/150' },
-    { title: 'Card 3', description: 'Descripción 3', image: 'https://via.placeholder.com/150' },
-  ];
 
   user: User | null = null;
+  galleries: any[] = [];
+  loading = false;
+  error: string | null = null;
 
-  constructor ( private authService: AuthService ) { }
+
+  constructor ( private authService: AuthService, private apollo: Apollo ) { }
+
+  fetchGalleries () {
+    this.loading = true;
+    this.apollo.watchQuery( { query: GET_GALLERIES } )
+      .valueChanges
+      .subscribe( {
+        next: ( result: any ) => {
+          this.galleries = result?.data?.galerias ?? [];
+          this.loading = false;
+        },
+        error: ( err ) => {
+          console.error( err );
+          this.error = 'Error al cargar galerías';
+          this.loading = false;
+        }
+      } );
+  }
 
   ngOnInit (): void {
+    this.fetchGalleries();
     this.authService.currentUser$.subscribe( user => {
       this.user = user;
     } );

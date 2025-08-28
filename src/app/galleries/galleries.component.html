@@ -1,1 +1,15 @@
-<p>galleries works!</p>
+<div *ngIf="user?.rol === 'ADMIN'" class="admin-panel">
+
+  <button class="general-btn" (click)="goToManageGalleries()">
+    Administrar Galerías
+  </button>
+
+</div>
+
+<h2 class="title">Nuestras Galerías</h2>
+
+<div class="gallery-grid">
+  <app-gallery-card *ngFor="let gallery of galleries" [gallery]="gallery" [isAdmin]="isAdmin"
+    (edit)="editGallery($event)" (delete)="deleteGallery($event)">
+  </app-gallery-card>
+</div>

@@ -12,6 +12,8 @@ import { GalleryFormComponent } from './galleries/gallery-form/gallery-form.comp
 import { GalleryProfileComponent } from './galleries/gallery-profile/gallery-profile.component';
 import { ManageArtistsComponent } from './artists/manage-artists/manage-artists.component';
 import { ArtistProfileComponent } from './artists/artist-profile/artist-profile.component';
+import { GalleriesComponent } from './galleries/galleries.component';
+import { ArtistsComponent } from './artists/artists.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' }, // '' redirige a 'home'
@@ -20,14 +22,18 @@ const routes: Routes = [
   { path: 'profile/:id', component: ProfileUserComponent },
   { path: 'register/user', component: RegisterUserComponent, canActivate: [registerGuard], },
   { path: 'manage/users', component: ManageUsersComponent, canActivate: [registerGuard], },
+  { path: 'galleries', component: GalleriesComponent },
+  { path: 'galleries/:id/profile', component: GalleryProfileComponent },
   { path: 'manage/galleries', component: ManageGalleriesComponent, canActivate: [registerGuard] },
   { path: 'manage/galleries/new', component: GalleryFormComponent, canActivate: [registerGuard] },
   { path: 'manage/galleries/:id/edit', component: GalleryFormComponent, canActivate: [registerGuard] },
-  { path: 'galleries/:id/profile', component: GalleryProfileComponent },
+  { path: 'artists', component: ArtistsComponent },
+  { path: 'artists/:id/profile', component: ArtistProfileComponent },
   { path: 'manage/artists', component: ManageArtistsComponent, canActivate: [registerGuard] },
   { path: 'manage/artists/new', component: ArtistFormComponent, canActivate: [registerGuard], },
   { path: 'manage/artists/:id/edit', component: ArtistFormComponent, canActivate: [registerGuard], },
-  { path: 'artists/:id/profile', component: ArtistProfileComponent },
+  { path: 'exhibitions', component: ExhibitionsComponent },
+
   { path: '**', redirectTo: 'home' } // catch-all
 ];
 

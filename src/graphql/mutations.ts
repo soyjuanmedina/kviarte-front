@@ -30,6 +30,7 @@ export const CREATE_GALLERY_MUTATION = gql`
     $web: String
     $telefono: String
     $email: String
+    $picture: String
   ) {
     createGaleria(
       usuario_id: $usuario_id
@@ -40,6 +41,7 @@ export const CREATE_GALLERY_MUTATION = gql`
       web: $web
       telefono: $telefono
       email: $email
+            picture: $picture
     ) {
       id_galeria
       nombre
@@ -47,6 +49,7 @@ export const CREATE_GALLERY_MUTATION = gql`
       email
       telefono
       ciudad
+      picture
     }
   }
 `;
@@ -63,6 +66,7 @@ export const GET_GALLERY_BY_ID_QUERY = gql`
       web
       descripcion
       usuario_id
+      picture
     }
   }
 `;
@@ -78,6 +82,7 @@ mutation UpdateGallery(
   $web: String,
   $telefono: String,
   $email: String
+          $picture: String
 ) {
   updateGaleria(
     id: $id,
@@ -89,6 +94,7 @@ mutation UpdateGallery(
     web: $web,
     telefono: $telefono,
     email: $email
+    picture: $picture
   ) {
     id_galeria
     nombre
@@ -103,6 +109,7 @@ export const CREATE_ARTIST_MUTATION = gql`
   $biografia: String
   $estilo: String
   $id_galeria: Int
+   $picture: String   
 ) {
   createArtist(
     input: {
@@ -110,12 +117,14 @@ export const CREATE_ARTIST_MUTATION = gql`
       biografia: $biografia
       estilo: $estilo
       id_galeria: $id_galeria
+      picture: $picture
     }
   ) {
     id_artista
     nombre
     biografia
     estilo
+    picture
     galeria {
       id_galeria
       nombre
@@ -131,6 +140,7 @@ export const GET_ARTIST_BY_ID_QUERY = gql`
       nombre
       biografia
       estilo
+      picture
       galeria {
         id_galeria
         nombre
@@ -152,12 +162,14 @@ export const UPDATE_ARTIST_MUTATION = gql`
     $id: Float!,
     $data: UpdateArtistInput!,
     $id_galeria: Float
+    $picture: String
   ) {
     updateArtist(id: $id, data: $data, id_galeria: $id_galeria) {
       id_artista
       nombre
       biografia
       estilo
+      picture
       galeria {
         id_galeria
         nombre

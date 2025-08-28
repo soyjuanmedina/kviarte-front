@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import { map, Observable } from 'rxjs';
 import { DELETE_GALLERY, GET_GALLERIES, GET_GALLERY } from '../../../graphql/queries';
-import { Exhibition } from './exhibition.service';
 import { Artist } from './artist.service';
+import { Exhibition } from '../../exhibitions/exhibition-card/exhibition-card.component';
 
 export interface Gallery {
   id_galeria: number;
@@ -14,6 +14,7 @@ export interface Gallery {
   web?: string;
   telefono?: string;
   email?: string;
+  picture?: string;
   exposiciones: Exhibition[];
   artists: Artist[];
 }

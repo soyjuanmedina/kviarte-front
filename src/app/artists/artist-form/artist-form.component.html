@@ -24,6 +24,20 @@
         <input matInput formControlName="estilo" />
       </mat-form-field>
 
+      <!-- Imagen (URL) con vista previa -->
+      <div class="input-preview-container">
+        <!-- Input de URL -->
+        <mat-form-field appearance="outline" class="input-field">
+          <mat-label>Imagen del artista (URL)</mat-label>
+          <input matInput formControlName="picture" placeholder="https://..." />
+        </mat-form-field>
+
+        <!-- Vista previa -->
+        <div class="image-preview" *ngIf="form.get('picture')?.value">
+          <img [src]="form.get('picture')?.value" alt="Vista previa" />
+        </div>
+      </div>
+
       <!-- Galería (opcional) -->
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Galería (opcional)</mat-label>

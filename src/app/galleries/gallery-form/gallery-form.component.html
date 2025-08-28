@@ -28,6 +28,20 @@
         <textarea matInput formControlName="descripcion"></textarea>
       </mat-form-field>
 
+      <!-- Contenedor flex para input + preview -->
+      <div class="span-2 input-preview-container">
+        <!-- Input de URL -->
+        <mat-form-field appearance="outline" class="input-field">
+          <mat-label>Imagen (URL)</mat-label>
+          <input matInput formControlName="picture" placeholder="https://..." />
+        </mat-form-field>
+
+        <!-- Vista previa -->
+        <div class="image-preview" *ngIf="form.get('picture')?.value">
+          <img [src]="form.get('picture')?.value" alt="Vista previa" />
+        </div>
+      </div>
+
       <!-- Dirección -->
       <mat-form-field appearance="outline">
         <mat-label>Dirección</mat-label>

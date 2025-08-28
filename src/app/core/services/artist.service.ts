@@ -10,6 +10,7 @@ export interface Artist {
   biografia: string;
   estilo: string;
   id_galeria: number;
+  picture?: string;
   galeria?: Gallery;
 }
 

@@ -1,24 +1,36 @@
 <div *ngIf="gallery" class="gallery-container">
-  <!-- Card principal de la galería -->
-  <mat-card class="gallery-card">
-    <mat-card-header>
-      <div mat-card-avatar class="gallery-avatar"></div>
-      <mat-card-title>{{ gallery.nombre }}</mat-card-title>
-      <mat-card-subtitle>{{ gallery.ciudad }}</mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content>
-      <p *ngIf="gallery.descripcion">{{ gallery.descripcion }}</p>
-      <p *ngIf="gallery.email"><strong>Email:</strong> {{ gallery.email }}</p>
-      <p *ngIf="gallery.telefono"><strong>Teléfono:</strong> {{ gallery.telefono }}</p>
-      <p *ngIf="gallery.web"><strong>Web:</strong>&nbsp;<a class="link"
-          [href]="getFullWebUrl(gallery.web)" target="_blank">
-          {{ gallery.web }}
-        </a></p>
-    </mat-card-content>
-  </mat-card>
 
-  <!-- Listas de exposiciones y artistas -->
-  <div class="lists-container">
+  <div class="gallery-grid">
+
+    <!-- Card principal de la galería -->
+    <mat-card class="gallery-card">
+      <div class="gallery-content">
+        <!-- Contenido de la galería (izquierda) -->
+        <div class="gallery-info">
+          <mat-card-header>
+            <mat-card-title>{{ gallery.nombre }}</mat-card-title>
+            <mat-card-subtitle>{{ gallery.ciudad }}</mat-card-subtitle>
+          </mat-card-header>
+
+          <mat-card-content>
+            <p *ngIf="gallery.descripcion">{{ gallery.descripcion }}</p>
+            <p *ngIf="gallery.email"><strong>Email:</strong> {{ gallery.email }}</p>
+            <p *ngIf="gallery.telefono"><strong>Teléfono:</strong> {{ gallery.telefono }}</p>
+            <p *ngIf="gallery.web"><strong>Web:</strong>&nbsp;<a class="link"
+                [href]="getFullWebUrl(gallery.web)" target="_blank">
+                {{ gallery.web }}
+              </a></p>
+          </mat-card-content>
+        </div>
+
+        <!-- Imagen (derecha) -->
+        <div class="image-wrapper" *ngIf="gallery.picture">
+          <img [src]="gallery.picture" [alt]="gallery.nombre" class="gallery-image">
+        </div>
+      </div>
+    </mat-card>
+
+    <!-- Listas de exposiciones y artistas -->
     <mat-card class="list-card">
       <mat-card-title>Exposiciones</mat-card-title>
       <mat-list *ngIf="gallery.exposiciones.length > 0; else noExposiciones">
@@ -44,8 +56,11 @@
         <p class="empty-text">No hay artistas asociados</p>
       </ng-template>
     </mat-card>
+
   </div>
 </div>
+
+
 
 <!-- Loading y error -->
 <div *ngIf="loading" class="loading-container">

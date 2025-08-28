@@ -1,0 +1,19 @@
+<div class="card">
+  <img [src]="artist.picture" [alt]="artist.nombre" class="card-img" />
+  <div class="card-body">
+    <h3>
+      <a class="link" [routerLink]="['/artists', artist.id_artista, 'profile']">
+        {{ artist.nombre }}
+      </a>
+    </h3>
+    <p>{{ artist.biografia }}</p>
+  </div>
+  <div *ngIf="isAdmin" class="actions">
+    <button class="general-btn icon-btn warning" (click)="onEdit()">
+      <mat-icon class="icon-left">edit</mat-icon>
+    </button>
+    <button class="general-btn icon-btn danger" (click)="onDelete()">
+      <mat-icon class="icon-left">delete</mat-icon>
+    </button>
+  </div>
+</div>

@@ -1,7 +1,9 @@
 <h2 mat-dialog-title>
   <mat-icon class="check" color="warn">check_circle</mat-icon> Éxito
 </h2>
-<mat-dialog-content>{{ data.message }}</mat-dialog-content>
+<mat-dialog-content>
+  <div [innerHTML]="data.message"></div>
+</mat-dialog-content>
 <mat-dialog-actions align="end">
   <button mat-dialog-close class="general-btn add-btn span-2">Aceptar</button>
 </mat-dialog-actions>

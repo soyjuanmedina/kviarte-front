@@ -37,6 +37,7 @@ export class ArtistFormComponent implements OnInit {
     nombre: ['', Validators.required],
     biografia: [''],
     estilo: [''],
+    picture: [''],
     id_galeria: [null]
   } );
 
@@ -85,6 +86,7 @@ export class ArtistFormComponent implements OnInit {
             nombre: artist.nombre,
             biografia: artist.biografia,
             estilo: artist.estilo,
+            picture: artist.picture,
             id_galeria: artist.galeria?.id_galeria ?? null
           } );
         }
@@ -101,15 +103,13 @@ export class ArtistFormComponent implements OnInit {
 
     let variables;
     if ( this.isEdit ) {
-      // Para editar, separa id_galeria fuera de data
       const { nombre, biografia, estilo, id_galeria } = this.form.value;
       variables = {
-        id: this.artistId,          // Float o number
+        id: this.artistId,
         data: { nombre, biografia, estilo },
         id_galeria: id_galeria || null
       };
     } else {
-      // Para crear, pasa directamente todo el form
       variables = { ...this.form.value };
     }
 
@@ -118,12 +118,23 @@ export class ArtistFormComponent implements OnInit {
     this.apollo.mutate( { mutation, variables } ).subscribe( {
       next: () => {
         this.loading = false;
+
         if ( this.isEdit ) {
-          this.openSuccessDialog( 'Artista actualizado con éxito' );
+          this.openSuccessDialog(
+            'Artista actualizado con éxito<br><small>Volviendo al listado de artistas...</small>'
+          );
         } else {
           this.registered = true;
           this.form.reset();
+          this.openSuccessDialog(
+            'Artista creado con éxito<br><small>Volviendo al listado de artistas...</small>'
+          );
         }
+
+        setTimeout( () => {
+          this.dialog.closeAll(); // cierra el modal
+          this.router.navigate( ['/manage/artists'] ); // redirige
+        }, 2000 );
       },
       error: ( err ) => {
         this.loading = false;

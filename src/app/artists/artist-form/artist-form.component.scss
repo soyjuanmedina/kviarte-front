@@ -54,3 +54,31 @@
   text-align: center;
   margin-top: 1rem;
 }
+
+.input-preview-container {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+
+  .input-field {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .image-preview {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: stretch;
+
+    img {
+      height: 40px;   /* altura aproximada del mat-form-field */
+      width: auto;
+      object-fit: cover;
+      border-radius: 4px;
+    }
+  }
+}
+

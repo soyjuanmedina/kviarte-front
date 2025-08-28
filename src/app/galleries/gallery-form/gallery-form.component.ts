@@ -9,7 +9,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
-import { ModalService } from '../../core/services/modal.service';
 import { AuthService, User } from '../../core/services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../core/services/user.service';
@@ -53,13 +52,13 @@ export class GalleryFormComponent implements OnInit {
     ciudad: [''],
     web: [''],
     descripcion: [''],
-    telefono: ['']
+    telefono: [''],
+    picture: ['']
   } );
 
   constructor (
     private fb: FormBuilder,
     private apollo: Apollo,
-    private modalService: ModalService,
     private authService: AuthService,
     private usersService: UserService,
     private router: Router,
@@ -127,11 +126,21 @@ export class GalleryFormComponent implements OnInit {
     } ).subscribe( {
       next: () => {
         this.loading = false;
+
         if ( this.isEdit ) {
-          this.openSuccessDialog( 'Galería actualizada correctamente ✅' );
+          this.openSuccessDialog(
+            'Galería actualizada correctamente<br><small>Volviendo al listado de galerías...</small>'
+          );
         } else {
-          this.router.navigate( ['/manage/galleries'] );
+          this.openSuccessDialog(
+            'Galería creada correctamente<br><small>Volviendo al listado de galerías...</small>'
+          );
         }
+
+        setTimeout( () => {
+          this.dialog.closeAll();
+          this.router.navigate( ['/manage/galleries'] );
+        }, 3000 );
       },
       error: ( err ) => {
         this.loading = false;

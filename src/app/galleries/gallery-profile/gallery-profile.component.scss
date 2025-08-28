@@ -1,35 +1,120 @@
+/* === PERFIL DE GALERÍA (detalle) === */
 .gallery-container {
-  max-width: 80%;
-  margin: 2rem auto;
+  padding: 1rem;
+
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+
+    .gallery-card {
+      grid-column: 1 / -1;
+      width: 100%;
+
+      /* nuevo layout: texto izquierda + foto derecha */
+      .gallery-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: stretch;
+        gap: 1rem;
+      }
+
+      .gallery-info {
+        flex: 2;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+      }
+
+      .image-wrapper {
+        flex: 1;
+        max-width: 300px;
+        min-width: 200px;
+        border-radius: 4px;
+        overflow: hidden;
+        background-color: #e0e0e0;
+
+        .gallery-image {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+      }
+    }
+
+    .list-card {
+      width: 100%;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .gallery-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .gallery-card .gallery-content {
+      flex-direction: column;
+    }
+
+    .gallery-card .image-wrapper {
+      max-width: 100%;
+      min-width: auto;
+      height: 250px;
+    }
+  }
+
+  .empty-text {
+    font-style: italic;
+    color: gray;
+  }
+
+  .link {
+    text-decoration: none;
+    color: #3f51b5;
+  }
+
+  .loading-container,
+  .error-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2rem;
+  }
+}
+
+/* === LISTADO DE GALERÍAS === */
+.card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #fff;
+  transition: transform 0.2s ease;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
-}
 
-.gallery-card {
-  padding: 1rem;
-}
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
 
-.lists-container {
-  display: flex;
-  gap: 2rem;
-  flex-wrap: wrap;
-}
+  .card-img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+  }
 
-.list-card {
-  flex: 1 1 45%;
-  min-width: 250px;
-}
+  .card-body {
+    padding: 0.75rem 1rem;
 
-.empty-text {
-  font-style: italic;
-  color: gray;
-}
+    h3 {
+      margin: 0 0 0.5rem;
+      font-size: 1.1rem;
+    }
 
-.loading-container,
-.error-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 2rem;
+    p {
+      margin: 0;
+      color: #555;
+      font-size: 0.9rem;
+    }
+  }
 }
