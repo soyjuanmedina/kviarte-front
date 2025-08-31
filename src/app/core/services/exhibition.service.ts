@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import { map, Observable } from 'rxjs';
-import { DELETE_EXHIBITION, GET_EXHIBITION, GET_EXHIBITIONS } from '../../../graphql/queries';
+import { GET_EXHIBITION, GET_EXHIBITIONS, DELETE_EXHIBITION } from '../../../graphql/exhibitions';
 import { Exhibition } from '../../exhibitions/exhibition-card/exhibition-card.component';
 
 

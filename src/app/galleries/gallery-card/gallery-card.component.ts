@@ -18,8 +18,13 @@ import { MatIconModule } from '@angular/material/icon';
 export class GalleryCardComponent {
   @Input() gallery!: Gallery;
   @Input() isAdmin: boolean = false;
+  @Output() view = new EventEmitter<Gallery>();
   @Output() edit = new EventEmitter<Gallery>();
   @Output() delete = new EventEmitter<Gallery>();
+
+  onView () {
+    this.view.emit( this.gallery );
+  }
 
   onEdit () {
     this.edit.emit( this.gallery );

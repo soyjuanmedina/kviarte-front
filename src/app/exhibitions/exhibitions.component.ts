@@ -6,7 +6,7 @@ import { AuthService, User } from '../core/services/auth.service';
 import { Router } from '@angular/router';
 import { ArtistService } from '../core/services/artist.service';
 import { MatDialog } from '@angular/material/dialog';
-import { GET_EXHIBITIONS } from '../../graphql/queries';
+import { GET_EXHIBITIONS } from '../../graphql/exhibitions';
 import { ConfirmDialog } from '../shared/components/confirm-dialog/confirm-dialog.component';
 import { ExhibitionService } from '../core/services/exhibition.service';
 import { SuccessDialog } from '../shared/components/success-dialog/success-dialog.component';
@@ -56,8 +56,13 @@ export class ExhibitionsComponent {
   }
 
   editExhibition ( exhibition: Exhibition ) {
-    this.router.navigate( ['/manage/exhibition/edit', exhibition.id_exposicion] );
+    this.router.navigate( ['manage/exhibitions', exhibition.id_exposicion, 'edit'] );
   }
+
+  viewExhibitionProfile ( exhibition: Exhibition ) {
+    this.router.navigate( ['exhibitions', exhibition.id_exposicion, 'profile'] );
+  }
+
 
   deleteExhibition ( exhibition: Exhibition ) {
     const dialogRef = this.dialog.open( ConfirmDialog, {

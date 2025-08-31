@@ -1,6 +1,15 @@
-<div class="gallery-container">
-  <app-exhibition-card *ngFor="let exhibition of exhibitions" [exhibition]="exhibition">
-  </app-exhibition-card>
+<div *ngIf="user?.rol === 'ADMIN'" class="admin-panel">
+
+  <button class="general-btn" (click)="goToManageExhibitions()">
+    Administrar Exposiciones
+  </button>
+
 </div>
 
-Aver
+<h2 class="title">Exposiciones activas</h2>
+
+<div class="exhibition-grid">
+  <app-exhibition-card *ngFor="let exhibition of exhibitions" [exhibition]="exhibition"
+    (view)="viewExhibitionProfile($event)" [isAdmin]="isAdmin" (edit)="editExhibition($event)"
+    (delete)="deleteExhibition($event)">
+  </app-exhibition-card>

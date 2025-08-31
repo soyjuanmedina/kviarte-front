@@ -9,7 +9,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
-import { CREATE_ARTIST_MUTATION, UPDATE_ARTIST_MUTATION, GET_ARTIST_BY_ID_QUERY } from '../../../graphql/mutations';
+import { CREATE_ARTIST, UPDATE_ARTIST, GET_ARTIST } from '../../../graphql/artists';
 import { ModalService } from '../../core/services/modal.service';
 import { AuthService } from '../../core/services/auth.service';
 import { Gallery, GalleryService } from '../../core/services/gallery.service';
@@ -76,7 +76,7 @@ export class ArtistFormComponent implements OnInit {
 
   private loadArtist ( id: number ) {
     this.apollo.watchQuery( {
-      query: GET_ARTIST_BY_ID_QUERY,
+      query: GET_ARTIST,
       variables: { id }
     } ).valueChanges.subscribe( {
       next: ( result: any ) => {
@@ -101,43 +101,50 @@ export class ArtistFormComponent implements OnInit {
     this.loading = true;
     this.errorMessage = '';
 
-    let variables;
+    let variables: any;
+
     if ( this.isEdit ) {
-      const { nombre, biografia, estilo, id_galeria } = this.form.value;
+      // Actualizar artista
+      const { nombre, biografia, estilo, id_galeria, picture } = this.form.value;
       variables = {
         id: this.artistId,
-        data: { nombre, biografia, estilo },
+        data: { nombre, biografia, estilo, picture: picture ?? null },
         id_galeria: id_galeria || null
       };
     } else {
-      variables = { ...this.form.value };
+      // Crear artista
+      const input = {
+        nombre: this.form.value.nombre,
+        biografia: this.form.value.biografia ?? null,
+        estilo: this.form.value.estilo ?? null,
+        picture: this.form.value.picture ?? null,
+        ...( this.isAdmin ? { id_galeria: this.form.value.id_galeria ?? null } : {} )
+      };
+      variables = { input };
     }
 
-    const mutation = this.isEdit ? UPDATE_ARTIST_MUTATION : CREATE_ARTIST_MUTATION;
+    const mutation = this.isEdit ? UPDATE_ARTIST : CREATE_ARTIST;
 
     this.apollo.mutate( { mutation, variables } ).subscribe( {
       next: () => {
         this.loading = false;
 
-        if ( this.isEdit ) {
-          this.openSuccessDialog(
-            'Artista actualizado con éxito<br><small>Volviendo al listado de artistas...</small>'
-          );
-        } else {
-          this.registered = true;
-          this.form.reset();
-          this.openSuccessDialog(
-            'Artista creado con éxito<br><small>Volviendo al listado de artistas...</small>'
-          );
-        }
+        const message = this.isEdit
+          ? 'Artista actualizado con éxito<br><small>Volviendo al listado de artistas...</small>'
+          : 'Artista creado con éxito<br><small>Volviendo al listado de artistas...</small>';
+
+        this.openSuccessDialog( message );
+
+        if ( !this.isEdit ) this.form.reset();
 
         setTimeout( () => {
-          this.dialog.closeAll(); // cierra el modal
-          this.router.navigate( ['/manage/artists'] ); // redirige
+          this.dialog.closeAll();
+          this.router.navigate( ['/manage/artists'] );
         }, 2000 );
       },
       error: ( err ) => {
         this.loading = false;
+        console.error( 'Error en mutation:', err );
         this.errorMessage = err.message || 'Error al guardar el artista ❌';
       }
     } );

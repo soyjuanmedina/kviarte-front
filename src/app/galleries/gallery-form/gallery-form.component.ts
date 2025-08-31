@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
-import { CREATE_GALLERY_MUTATION, GET_GALLERY_BY_ID_QUERY, UPDATE_GALLERY_MUTATION } from '../../../graphql/mutations';
+import { CREATE_GALLERY, GET_GALLERY, UPDATE_GALLERY } from '../../../graphql/galleries';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { Apollo } from 'apollo-angular';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -73,13 +73,24 @@ export class GalleryFormComponent implements OnInit {
 
   loadGallery ( id: number ) {
     this.apollo.watchQuery( {
-      query: GET_GALLERY_BY_ID_QUERY,
+      query: GET_GALLERY,
       variables: { id }
     } ).valueChanges.subscribe( {
       next: ( result: any ) => {
         if ( result?.data?.galeria ) {
-          this.form.patchValue( result.data.galeria );
-          this.originalUsuarioId = result.data.galeria.usuario_id;
+          const galeria = result.data.galeria;
+          this.form.patchValue( {
+            nombre: galeria.nombre,
+            descripcion: galeria.descripcion,
+            direccion: galeria.direccion,
+            ciudad: galeria.ciudad,
+            web: galeria.web,
+            email: galeria.email,
+            telefono: galeria.telefono,
+            picture: galeria.picture,
+            usuario_id: galeria.propietario?.id_usuario // <--- aquí
+          } );
+          this.originalUsuarioId = galeria.propietario?.id_usuario;
         }
         if ( this.isEdit ) {
           this.form.get( 'usuario_id' )?.disable();
@@ -98,10 +109,7 @@ export class GalleryFormComponent implements OnInit {
     this.loading = true;
     this.errorMessage = '';
 
-    const variables: any = {
-      usuario_id: this.isEdit
-        ? this.originalUsuarioId
-        : +( this.form.value.usuario_id ?? 0 ),
+    const payload = {
       nombre: this.form.value.nombre,
       descripcion: this.form.value.descripcion ?? null,
       direccion: this.form.value.direccion ?? null,
@@ -109,33 +117,40 @@ export class GalleryFormComponent implements OnInit {
       web: this.form.value.web ?? null,
       telefono: this.form.value.telefono ?? null,
       email: this.form.value.email ?? null,
+      picture: this.form.value.picture ?? null,
+      ...( this.isAdmin && !this.isEdit ? { usuario_id: +( this.form.value.usuario_id ?? 0 ) } : {} )
     };
 
-    if ( this.isEdit && this.galleryId ) {
-      variables.id = this.galleryId;
-    }
+    let variables: any;
+    let mutation;
 
-    const mutation = this.isEdit ? UPDATE_GALLERY_MUTATION : CREATE_GALLERY_MUTATION;
+    if ( this.isEdit && this.galleryId ) {
+      // UPDATE
+      variables = {
+        id: this.galleryId,
+        data: payload
+      };
+      mutation = UPDATE_GALLERY;
+    } else {
+      // CREATE
+      variables = { input: payload };
+      mutation = CREATE_GALLERY;
+    }
 
     this.apollo.mutate( {
       mutation,
       variables,
       refetchQueries: this.isEdit && this.galleryId
-        ? [{ query: GET_GALLERY_BY_ID_QUERY, variables: { id: this.galleryId } }]
+        ? [{ query: GET_GALLERY, variables: { id: this.galleryId } }]
         : []
     } ).subscribe( {
       next: () => {
         this.loading = false;
-
-        if ( this.isEdit ) {
-          this.openSuccessDialog(
-            'Galería actualizada correctamente<br><small>Volviendo al listado de galerías...</small>'
-          );
-        } else {
-          this.openSuccessDialog(
-            'Galería creada correctamente<br><small>Volviendo al listado de galerías...</small>'
-          );
-        }
+        this.openSuccessDialog(
+          this.isEdit
+            ? 'Galería actualizada correctamente<br><small>Volviendo al listado de galerías...</small>'
+            : 'Galería creada correctamente<br><small>Volviendo al listado de galerías...</small>'
+        );
 
         setTimeout( () => {
           this.dialog.closeAll();
@@ -149,6 +164,7 @@ export class GalleryFormComponent implements OnInit {
       }
     } );
   }
+
 
   cancel () {
     this.router.navigate( ['/manage/galleries'] );

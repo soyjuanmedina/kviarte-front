@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common'; // <-- necesario para ngFor, ngI
 import { GalleryCardComponent } from '../galleries/gallery-card/gallery-card.component';
 import { AuthService, User } from '../core/services/auth.service';
 import { Apollo } from 'apollo-angular';
-import { GET_GALLERIES } from '../../graphql/queries';
+import { GET_GALLERIES } from '../../graphql/galleries';
 
 @Component( {
   selector: 'app-home',

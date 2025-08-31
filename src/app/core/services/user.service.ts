@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Apollo, gql } from 'apollo-angular';
+import { Apollo } from 'apollo-angular';
 import { map, Observable } from 'rxjs';
-import { GET_USER_BY_ID, GET_USERS, GET_USERS_BY_ROLE, DELETE_USER } from '../../../graphql/queries';
+import { GET_USER, GET_USERS, GET_USERS_BY_ROLE, DELETE_USER } from '../../../graphql/users';
 import { User } from './auth.service';
 
 export interface Usuario {
@@ -38,7 +38,7 @@ export class UserService {
   getUsuarioById ( id: number ): Observable<User> {
     return this.apollo
       .watchQuery<{ usuario: User }>( {
-        query: GET_USER_BY_ID,
+        query: GET_USER,
         variables: { id }
       } )
       .valueChanges.pipe( map( result => result.data.usuario ) );

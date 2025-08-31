@@ -1,0 +1,16 @@
+<div *ngIf="user?.rol === 'ADMIN'" class="admin-panel">
+
+  <button class="general-btn" (click)="goToManageArtworks()">
+    Administrar Obras
+  </button>
+
+</div>
+
+<h2 class="title">Obras</h2>
+
+<div class="artwork-grid">
+  <app-artwork-card *ngFor="let artwork of artworks" [artwork]="artwork" [isAdmin]="isAdmin"
+    (edit)="editArtwork($event)" (delete)="deleteArtwork($event)"
+    (view)="viewArtworkProfile($event)">
+  </app-artwork-card>
+</div>

@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { REGISTER_MUTATION } from '../../../graphql/mutations';
+import { REGISTER_USER } from '../../../graphql/users';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { Apollo, gql } from 'apollo-angular';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -55,7 +55,7 @@ export class RegisterUserComponent {
     this.errorMessage = '';
 
     this.apollo.mutate( {
-      mutation: REGISTER_MUTATION,
+      mutation: REGISTER_USER,
       variables: { input: this.form.value }
     } ).subscribe( {
       next: () => {

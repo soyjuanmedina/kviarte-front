@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import { map, Observable } from 'rxjs';
-import { DELETE_GALLERY, GET_GALLERIES, GET_GALLERY } from '../../../graphql/queries';
+import { GET_GALLERIES, GET_GALLERY, DELETE_GALLERY } from '../../../graphql/galleries';
 import { Artist } from './artist.service';
 import { Exhibition } from '../../exhibitions/exhibition-card/exhibition-card.component';
+import { Usuario } from './user.service';
 
 export interface Gallery {
   id_galeria: number;
@@ -15,6 +16,7 @@ export interface Gallery {
   telefono?: string;
   email?: string;
   picture?: string;
+  propietario?: Usuario
   exposiciones: Exhibition[];
   artists: Artist[];
 }

@@ -10,6 +10,6 @@
 
 <div class="artist-grid">
   <app-artist-card *ngFor="let artist of artists" [artist]="artist" [isAdmin]="isAdmin"
-    (edit)="editArtist($event)" (delete)="deleteArtist($event)">
+    (edit)="editArtist($event)" (delete)="deleteArtist($event)" (view)="viewArtistProfile($event)">
   </app-artist-card>
 </div>

@@ -1,0 +1,67 @@
+<!-- Perfil de exposición -->
+<ng-container *ngIf="exhibition; else loadingOrError">
+  <div class="exhibition-container">
+
+    <!-- Card principal de la exposición -->
+    <mat-card class="exhibition-card">
+      <mat-card-header>
+        <div mat-card-avatar class="exhibition-avatar"
+          [style.background-image]="'url(' + exhibition.picture + ')'">
+        </div>
+        <mat-card-title>{{ exhibition.titulo }}</mat-card-title>
+        <mat-card-subtitle>
+          {{ exhibition.artist?.nombre }}
+        </mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <p *ngIf="exhibition.descripcion">{{ exhibition.descripcion }}</p>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Bloque de galería -->
+    <ng-container *ngIf="exhibition.galeria as gallery">
+      <mat-card class="exhibition-card">
+        <mat-card-title>Galería</mat-card-title>
+        <mat-list>
+          <mat-list-item>
+            🖼️
+            <a class="link" [routerLink]="['/galleries', gallery.id_galeria, 'profile']"> {{
+              gallery.nombre }}</a>
+          </mat-list-item>
+        </mat-list>
+      </mat-card>
+    </ng-container>
+
+    <!-- Bloque de obras -->
+    <ng-container *ngIf="exhibition.obras.length > 0; else noObras">
+      <mat-card class="exhibition-card">
+        <mat-card-title>Obras</mat-card-title>
+        <mat-list>
+          <mat-list-item *ngFor="let obra of exhibition.obras">
+            🎨 {{ obra.titulo }}
+          </mat-list-item>
+        </mat-list>
+      </mat-card>
+    </ng-container>
+    <ng-template #noObras>
+      <mat-card class="exhibition-card">
+        <mat-card-title>Obras</mat-card-title>
+        <mat-card-content>
+          <p>No hay obras registradas en esta exposición.</p>
+        </mat-card-content>
+      </mat-card>
+    </ng-template>
+
+  </div>
+</ng-container>
+
+<!-- Loading y error -->
+<ng-template #loadingOrError>
+  <div *ngIf="loading" class="loading-container">
+    <mat-spinner></mat-spinner>
+  </div>
+  <div *ngIf="error" class="error-container">
+    <mat-icon color="warn">error</mat-icon> {{ error }}
+  </div>
+</ng-template>

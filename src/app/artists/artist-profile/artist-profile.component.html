@@ -26,11 +26,9 @@
           <mat-list>
             <mat-list-item>
               🖼️
-              <span>Galería: </span>
               <a class="link" [routerLink]="['/galleries', gallery.id_galeria, 'profile']">
                 {{ gallery.nombre }}
               </a>
-              <span *ngIf="gallery.ciudad"> - {{ gallery.ciudad }}</span>
             </mat-list-item>
           </mat-list>
         </mat-card>

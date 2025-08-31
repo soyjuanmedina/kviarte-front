@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Apollo } from 'apollo-angular';
-import { GET_ARTISTS } from '../../graphql/queries';
+import { GET_ARTISTS } from '../../graphql/artists';
 import { Router } from '@angular/router';
 import { AuthService, User } from '../core/services/auth.service';
 import { Artist, ArtistService } from '../core/services/artist.service';
@@ -31,6 +31,10 @@ export class ArtistsComponent implements OnInit {
   get isAdmin (): boolean {
     const user = this.authService.getUser();
     return user?.rol === 'ADMIN';
+  }
+
+  viewArtistProfile ( artist: Artist ) {
+    this.router.navigate( ['artists', artist.id_artista, 'profile'] );
   }
 
   goToManageArtists () {

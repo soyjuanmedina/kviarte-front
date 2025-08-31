@@ -1,0 +1,19 @@
+<div class="artwork-item">
+  <div class="artwork-info">
+    <div class="name">{{ artwork.titulo }}</div>
+    <div class="details">
+      <span>ID: {{ artwork.id_obra }}</span>
+    </div>
+  </div>
+  <div class="artwork-actions">
+    <button class="general-btn icon-btn" (click)="onView()">
+      <mat-icon class="icon-left">search</mat-icon>
+    </button>
+    <button class="general-btn icon-btn warning" (click)="onEdit()">
+      <mat-icon class="icon-left">edit</mat-icon>
+    </button>
+    <button class="general-btn icon-btn danger" (click)="onDelete()">
+      <mat-icon class="icon-left">delete</mat-icon>
+    </button>
+  </div>
+</div>

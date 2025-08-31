@@ -44,3 +44,11 @@
     }
   }
 }
+
+.actions {
+  display: flex;
+  justify-content: flex-end; /* botones a la derecha */
+  gap: 0.5rem;               /* separación entre botones */
+  margin-top: 1rem;          /* espacio sobre los botones */
+  margin-bottom: 0.3rem;       /* espacio debajo de los botones */
+}

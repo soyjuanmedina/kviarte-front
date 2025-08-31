@@ -1,0 +1,17 @@
+.title {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.artwork-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  padding: 0 1rem;
+}
+
+.admin-panel {
+  display: flex;
+  justify-content: flex-end; /* manda el botón a la derecha */
+  padding: 1rem 1rem 0 0;    /* espacio: arriba y derecha */
+}

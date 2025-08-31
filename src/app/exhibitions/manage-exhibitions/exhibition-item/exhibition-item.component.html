@@ -1,0 +1,19 @@
+<div class="exhibition-item">
+  <div class="exhibition-info">
+    <div class="name">{{ exhibition.titulo }}</div>
+    <div class="details">
+      <span>ID: {{ exhibition.id_exposicion }}</span>
+    </div>
+  </div>
+  <div class="exhibition-actions">
+    <button class="general-btn icon-btn" (click)="onView()">
+      <mat-icon class="icon-left">search</mat-icon>
+    </button>
+    <button class="general-btn icon-btn warning" (click)="onEdit()">
+      <mat-icon class="icon-left">edit</mat-icon>
+    </button>
+    <button class="general-btn icon-btn danger" (click)="onDelete()">
+      <mat-icon class="icon-left">delete</mat-icon>
+    </button>
+  </div>
+</div>

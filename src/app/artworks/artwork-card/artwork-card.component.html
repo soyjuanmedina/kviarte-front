@@ -1,0 +1,21 @@
+<div class="card">
+  <img [src]="artwork.picture" [alt]="artwork.titulo" class="card-img" />
+  <div class="card-body">
+    <h3>
+      <a class="link" [routerLink]="['/artworks', artwork.id_obra, 'profile']">
+        {{ artwork.titulo }}
+      </a>
+    </h3>
+  </div>
+  <div *ngIf="isAdmin" class="actions">
+    <button class="general-btn icon-btn" (click)="onView()">
+      <mat-icon class="icon-left">search</mat-icon>
+    </button>
+    <button class="general-btn icon-btn warning" (click)="onEdit()">
+      <mat-icon class="icon-left">edit</mat-icon>
+    </button>
+    <button class="general-btn icon-btn danger" (click)="onDelete()">
+      <mat-icon class="icon-left">delete</mat-icon>
+    </button>
+  </div>
+</div>

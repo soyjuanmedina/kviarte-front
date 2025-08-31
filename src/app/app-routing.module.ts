@@ -14,6 +14,13 @@ import { ManageArtistsComponent } from './artists/manage-artists/manage-artists.
 import { ArtistProfileComponent } from './artists/artist-profile/artist-profile.component';
 import { GalleriesComponent } from './galleries/galleries.component';
 import { ArtistsComponent } from './artists/artists.component';
+import { ExhibitionProfileComponent } from './exhibitions/exhibition-profile/exhibition-profile.component';
+import { ManageExhibitionsComponent } from './exhibitions/manage-exhibitions/manage-exhibitions.component';
+import { ExhibitionFormComponent } from './exhibitions/exhibition-form/exhibition-form.component';
+import { ArtworksComponent } from './artworks/artworks.component';
+import { ManageArtworksComponent } from './artworks/manage-artworks/manage-artworks.component';
+import { ArtworkFormComponent } from './artworks/artwork-form/artwork-form.component';
+import { ArtworkProfileComponent } from './artworks/artwork-profile/artwork-profile.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' }, // '' redirige a 'home'
@@ -33,7 +40,15 @@ const routes: Routes = [
   { path: 'manage/artists/new', component: ArtistFormComponent, canActivate: [registerGuard], },
   { path: 'manage/artists/:id/edit', component: ArtistFormComponent, canActivate: [registerGuard], },
   { path: 'exhibitions', component: ExhibitionsComponent },
-
+  { path: 'exhibitions/:id/profile', component: ExhibitionProfileComponent },
+  { path: 'manage/exhibitions', component: ManageExhibitionsComponent, canActivate: [registerGuard] },
+  { path: 'manage/exhibitions/new', component: ExhibitionFormComponent, canActivate: [registerGuard], },
+  { path: 'manage/exhibitions/:id/edit', component: ExhibitionFormComponent, canActivate: [registerGuard], },
+  { path: 'artworks', component: ArtworksComponent },
+  { path: 'artworks/:id/profile', component: ArtworkProfileComponent },
+  { path: 'manage/artworks', component: ManageArtworksComponent, canActivate: [registerGuard] },
+  { path: 'manage/artworks/new', component: ArtworkFormComponent, canActivate: [registerGuard], },
+  { path: 'manage/artworks/:id/edit', component: ArtworkFormComponent, canActivate: [registerGuard], },
   { path: '**', redirectTo: 'home' } // catch-all
 ];
 

@@ -1,0 +1,164 @@
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
+import { Apollo } from 'apollo-angular';
+import { CommonModule } from '@angular/common';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { ActivatedRoute, Router } from '@angular/router';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { SuccessDialog } from '../../shared/components/success-dialog/success-dialog.component'
+import { Gallery, GalleryService } from '../../core/services/gallery.service';
+import { Artist, ArtistService } from '../../core/services/artist.service';
+import { CREATE_ARTWORK, GET_ARTWORK, UPDATE_ARTWORK } from '../../../graphql/artworks';
+import { Exhibition } from '../../exhibitions/exhibition-card/exhibition-card.component';
+import { ExhibitionService } from '../../core/services/exhibition.service';
+
+@Component( {
+  selector: 'app-artwork-form',
+  standalone: true,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatButtonModule,
+    MatCardModule,
+    MatDialogModule
+  ],
+  templateUrl: './artwork-form.component.html',
+  styleUrls: ['./artwork-form.component.scss']
+} )
+export class ArtworkFormComponent implements OnInit {
+
+  registered = false;
+  loading = false;
+  errorMessage = '';
+  isEdit = false;
+  artworkId?: number;
+  exhibitions: Exhibition[] = [];
+  artists: Artist[] = [];
+
+  form = this.fb.group( {
+    titulo: ['', Validators.required],
+    descripcion: [''],
+    estilo: [''], // 🔹 agregado
+    picture: [''],
+    galeria_id: ['', Validators.required],
+    artist_id: ['', Validators.required],
+    exposicion_id: [''], // 🔹 agregado
+  } );
+
+  constructor (
+    private fb: FormBuilder,
+    private apollo: Apollo,
+    private exhibitionService: ExhibitionService,
+    private artistService: ArtistService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private dialog: MatDialog
+  ) { }
+
+  ngOnInit () {
+    const id = this.route.snapshot.paramMap.get( 'id' );
+    if ( id ) {
+      this.isEdit = true;
+      this.artworkId = +id;
+      this.loadArtwork( this.artworkId );
+    }
+
+    this.exhibitionService.getExhibitions().subscribe( g => ( this.exhibitions = g ) );
+    this.artistService.getArtists().subscribe( a => ( this.artists = a ) );
+  }
+
+  loadArtwork ( id: number ) {
+    this.apollo.watchQuery( {
+      query: GET_ARTWORK,
+      variables: { id }
+    } ).valueChanges.subscribe( {
+      next: ( result: any ) => {
+        const artwork = result?.data?.obra;
+        if ( artwork ) {
+          this.form.patchValue( {
+            titulo: artwork.titulo,
+            descripcion: artwork.descripcion,
+            picture: artwork.picture,
+            artist_id: artwork.artist?.id_artista ?? null,
+            exposicion_id: artwork.exposicion?.id_exposicion ?? null
+          } );
+        }
+      },
+      error: ( err ) => {
+        console.error( 'Error cargando obra', err );
+        this.errorMessage = 'No se pudo cargar la obra ❌';
+      }
+    } );
+  }
+
+
+  onSubmit () {
+    if ( this.form.invalid ) return;
+
+    this.loading = true;
+    this.errorMessage = '';
+
+    // Construimos el input que espera la mutation
+    const input = {
+      titulo: this.form.value.titulo,
+      descripcion: this.form.value.descripcion ?? null,
+      estilo: this.form.value.estilo ?? null,          // ahora existe
+      picture: this.form.value.picture ?? null,
+      id_artista: +this.form.value.artist_id!,
+      id_exposicion: +this.form.value.exposicion_id!, // ahora existe
+    };
+
+    // Elegimos la mutation correcta
+    const mutation = this.isEdit ? UPDATE_ARTWORK : CREATE_ARTWORK;
+
+    // Variables para la mutation
+    const variables: any = this.isEdit
+      ? { id: this.artworkId, input }  // UPDATE_ARTWORK necesita id e input
+      : { input };                     // CREATE_ARTWORK solo necesita input
+
+    this.apollo.mutate( {
+      mutation,
+      variables,
+      refetchQueries: this.isEdit && this.artworkId
+        ? [{ query: GET_ARTWORK, variables: { id: this.artworkId } }]
+        : []
+    } ).subscribe( {
+      next: () => {
+        this.loading = false;
+        this.openSuccessDialog(
+          this.isEdit
+            ? 'Obra actualizada correctamente<br><small>Volviendo al listado...</small>'
+            : 'Obra creada correctamente<br><small>Volviendo al listado...</small>'
+        );
+        setTimeout( () => {
+          this.dialog.closeAll();
+          this.router.navigate( ['/manage/artworks'] );
+        }, 3000 );
+      },
+      error: ( err ) => {
+        this.loading = false;
+        console.error( 'Error en mutation:', err );
+        this.errorMessage = err.message || 'Error al guardar la obra ❌';
+      }
+    } );
+  }
+
+
+
+  goToList () {
+    this.router.navigate( ['/manage/artworks'] );
+  }
+
+  private openSuccessDialog ( message: string ) {
+    this.dialog.open( SuccessDialog, { data: { message } } );
+  }
+}

@@ -9,6 +9,9 @@
     <p>{{ gallery.descripcion }}</p>
   </div>
   <div *ngIf="isAdmin" class="actions">
+    <button class="general-btn icon-btn" (click)="onView()">
+      <mat-icon class="icon-left">search</mat-icon>
+    </button>
     <button class="general-btn icon-btn warning" (click)="onEdit()">
       <mat-icon class="icon-left">edit</mat-icon>
     </button>

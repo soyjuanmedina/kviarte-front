@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { LOGIN_MUTATION } from '../../../../graphql/mutations';
+import { LOGIN_USER } from '../../../../graphql/users';
 import { Apollo } from 'apollo-angular';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
@@ -39,7 +39,7 @@ export class HeaderComponent {
 
   login () {
     this.apollo.mutate( {
-      mutation: LOGIN_MUTATION,
+      mutation: LOGIN_USER,
       variables: { input: { email: this.email, password: this.password } }
     } ).subscribe( {
       next: ( res: any ) => {

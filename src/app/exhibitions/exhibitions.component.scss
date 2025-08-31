@@ -1,17 +1,17 @@
-.gallery-container {
+.title {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.exhibition-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  padding: 0 1rem;
+}
+
+.admin-panel {
   display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-}
-
-.card {
-  border: 1px solid #ccc;
-  padding: 1rem;
-  width: 200px;
-}
-
-.card-img {
-  width: 100%;
-  height: auto;
-  display: block;
+  justify-content: flex-end; /* manda el botón a la derecha */
+  padding: 1rem 1rem 0 0;    /* espacio: arriba y derecha */
 }

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import { map, Observable } from 'rxjs';
-import { DELETE_ARTIST, GET_ARTIST, GET_ARTISTS } from '../../../graphql/queries';
 import { Gallery } from './gallery.service';
+import { DELETE_ARTIST, GET_ARTIST, GET_ARTISTS } from '../../../graphql/artists';
 
 export interface Artist {
   id_artista: number;

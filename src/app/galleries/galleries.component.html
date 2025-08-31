@@ -10,6 +10,7 @@
 
 <div class="gallery-grid">
   <app-gallery-card *ngFor="let gallery of galleries" [gallery]="gallery" [isAdmin]="isAdmin"
-    (edit)="editGallery($event)" (delete)="deleteGallery($event)">
+    (edit)="editGallery($event)" (delete)="deleteGallery($event)"
+    (view)="viewGalleryProfile($event)">
   </app-gallery-card>
 </div>

@@ -6,7 +6,8 @@ import { onError } from '@apollo/client/link/error';
 import { Router } from '@angular/router';
 
 export function createApollo (): ApolloClientOptions<any> {
-  const uri = 'https://kviarte-backend-production.up.railway.app/graphql';
+  const uri = 'https://junior-muriel-kviarte-1f4b5cb5.koyeb.app/graphql';
+  // const uri = 'https://kviarte-backend-production.up.railway.app/graphql';
   const httpLink = inject( HttpLink );
   const router = inject( Router );
 

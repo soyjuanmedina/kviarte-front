@@ -1,0 +1,70 @@
+<div class="register-container">
+  <mat-card class="register-card">
+    <h2 class="title">{{ isEdit ? 'Editar Obra' : 'Crear nueva Obra' }}</h2>
+
+    <form *ngIf="!registered" [formGroup]="form" (ngSubmit)="onSubmit()" class="form-grid">
+
+      <!-- Título -->
+      <mat-form-field appearance="outline" class="span-2">
+        <mat-label>Título de la Obra</mat-label>
+        <input matInput formControlName="titulo" required />
+      </mat-form-field>
+
+      <!-- Descripción -->
+      <mat-form-field appearance="outline" class="span-2">
+        <mat-label>Descripción</mat-label>
+        <textarea matInput formControlName="descripcion"></textarea>
+      </mat-form-field>
+
+      <!-- Imagen -->
+      <div class="span-2 input-preview-container">
+        <mat-form-field appearance="outline" class="input-field">
+          <mat-label>Imagen (URL o Base64)</mat-label>
+          <input matInput formControlName="picture" placeholder="https://... o base64" />
+        </mat-form-field>
+        <div class="image-preview" *ngIf="form.get('picture')?.value">
+          <img [src]="form.get('picture')?.value" alt="Vista previa" />
+        </div>
+      </div>
+
+      <!-- Exposición -->
+      <mat-form-field appearance="outline">
+        <mat-label>Exposición</mat-label>
+        <mat-select formControlName="exposicion_id">
+          <mat-option *ngFor="let exhibition of exhibitions" [value]="exhibition.id_exposicion">
+            {{ exhibition.titulo }} ({{ exhibition.galeria?.nombre }})
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Artista -->
+      <mat-form-field appearance="outline">
+        <mat-label>Artista</mat-label>
+        <mat-select formControlName="artist_id">
+          <mat-option *ngFor="let artist of artists" [value]="artist.id_artista">
+            {{ artist.nombre }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Botón -->
+      <button type="submit" [disabled]="loading" class="general-btn add-btn span-2">
+        {{ loading ? (isEdit ? 'Actualizando...' : 'Registrando...') : (isEdit ? 'Actualizar' :
+        'Registrar') }}
+      </button>
+
+      <!-- Error -->
+      <div *ngIf="errorMessage" class="error-msg span-2">
+        {{ errorMessage }}
+      </div>
+    </form>
+
+    <!-- Éxito -->
+    <div *ngIf="registered" class="success-msg">
+      <p>{{ isEdit ? 'Obra actualizada con éxito' : 'Obra registrada con éxito' }}</p>
+      <button class="general-btn" (click)="goToList()">
+        Volver al listado
+      </button>
+    </div>
+  </mat-card>
+</div>

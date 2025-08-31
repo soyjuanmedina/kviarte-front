@@ -1,9 +1,20 @@
 <div class="card">
   <img [src]="exhibition.picture" alt="{{ exhibition.titulo }}" class="card-img" />
   <div class="card-content">
-    <h3>{{ exhibition.titulo }}</h3>
-    <p class="date">{{ exhibition.date }}</p>
-    <p class="location">{{ exhibition.location }}</p>
-    <p class="description">{{ exhibition.description }}</p>
+    <a class="link" [routerLink]="['/exhibitions', exhibition.id_exposicion, 'profile']">
+      {{ exhibition.titulo }}
+    </a>
+    <p class="description">{{ exhibition.descripcion }}</p>
+  </div>
+  <div *ngIf="isAdmin" class="actions">
+    <button class="general-btn icon-btn" (click)="onView()">
+      <mat-icon class="icon-left">search</mat-icon>
+    </button>
+    <button class="general-btn icon-btn warning" (click)="onEdit()">
+      <mat-icon class="icon-left">edit</mat-icon>
+    </button>
+    <button class="general-btn icon-btn danger" (click)="onDelete()">
+      <mat-icon class="icon-left">delete</mat-icon>
+    </button>
   </div>
 </div>

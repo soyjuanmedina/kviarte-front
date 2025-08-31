@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { GalleryCardComponent } from './gallery-card/gallery-card.component';
 import { Apollo } from 'apollo-angular';
-import { GET_GALLERIES } from '../../graphql/queries';
+import { GET_GALLERIES } from '../../graphql/galleries';
 import { Router } from '@angular/router';
 import { AuthService, User } from '../core/services/auth.service';
 import { Gallery, GalleryService } from '../core/services/gallery.service';
@@ -31,6 +31,10 @@ export class GalleriesComponent implements OnInit {
 
   goToManageGalleries () {
     this.router.navigate( ['/manage/galleries'] );
+  }
+
+  viewGalleryProfile ( gallery: Gallery ) {
+    this.router.navigate( ['galleries', gallery.id_galeria, 'profile'] );
   }
 
   fetchGalleries () {
