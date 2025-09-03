@@ -45,4 +45,40 @@
   }
 }
 
+/* Nuevo bloque para icono + texto */
+.icon-text {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
 
+.icon-text .icon {
+  font-size: 20px;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+}
+
+
+.exhibition-card {
+  padding: 1rem;
+}
+
+.exhibition-content {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.exhibition-info {
+  flex: 1; /* ocupa todo el espacio disponible */
+}
+
+.image-wrapper {
+  flex-shrink: 0; /* la imagen no se encoge */
+}
+
+.exhibition-image {
+  max-width: 200px; /* ajusta según necesites */
+  border-radius: 4px;
+}

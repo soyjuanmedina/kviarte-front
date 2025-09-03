@@ -63,6 +63,9 @@ export class ExhibitionsComponent {
     this.router.navigate( ['exhibitions', exhibition.id_exposicion, 'profile'] );
   }
 
+  addExhibition () {
+    this.router.navigate( ['manage/exhibitions/new'] );
+  }
 
   deleteExhibition ( exhibition: Exhibition ) {
     const dialogRef = this.dialog.open( ConfirmDialog, {

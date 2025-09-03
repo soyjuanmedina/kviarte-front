@@ -11,15 +11,21 @@ import { Apollo } from 'apollo-angular';
 import { GET_ARTWORK } from '../../../graphql/artworks';
 import { Exhibition } from '../../exhibitions/exhibition-card/exhibition-card.component';
 import { Artist } from '../../core/services/artist.service';
+import { Gallery } from '../../core/services/gallery.service';
 
 
 export interface Artwork {
   id_obra: number;
   titulo: string;
+  id_artista: number;
+  id_galeria: number;
+  id_exposicion?: number | null;
   descripcion?: string | null;
   estilo?: string | null;
   picture?: string | null;
+  disponible?: boolean;
   artist?: Artist | null;
+  galeria?: Gallery | null;
   exposicion?: Exhibition | null;
 }
 
@@ -66,6 +72,7 @@ export class ArtworkProfileComponent implements OnInit {
       next: ( result: any ) => {
         this.artwork = result?.data?.obra;
         this.loading = false;
+        console.log( this.artwork );
       },
       error: ( err ) => {
         console.error( err );
@@ -73,5 +80,6 @@ export class ArtworkProfileComponent implements OnInit {
         this.loading = false;
       }
     } );
+
   }
 }

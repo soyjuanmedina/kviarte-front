@@ -6,14 +6,25 @@
 
     <!-- Card del artista -->
     <mat-card class="artist-card">
-      <mat-card-header>
-        <div mat-card-avatar class="artist-avatar"></div>
-        <mat-card-title>{{ artist.nombre }}</mat-card-title>
-        <mat-card-subtitle>{{ artist.estilo }}</mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content>
-        <p *ngIf="artist.biografia">{{ artist.biografia }}</p>
-      </mat-card-content>
+      <div class="artist-content">
+        <!-- Contenido del artista (izquierda) -->
+        <div class="artist-info">
+          <mat-card-header>
+            <div mat-card-avatar class="artist-avatar"></div>
+            <mat-card-title>{{ artist.nombre }}</mat-card-title>
+            <mat-card-subtitle>{{ artist.estilo }}</mat-card-subtitle>
+          </mat-card-header>
+
+          <mat-card-content>
+            <p *ngIf="artist.biografia">{{ artist.biografia }}</p>
+          </mat-card-content>
+        </div>
+
+        <!-- Imagen del artista (derecha) -->
+        <div class="image-wrapper" *ngIf="artist.picture">
+          <img [src]="artist.picture" [alt]="artist.nombre" class="artist-image">
+        </div>
+      </div>
     </mat-card>
 
     <!-- Bloque de galería y listas -->

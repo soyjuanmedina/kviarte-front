@@ -1,65 +1,59 @@
-<!-- src/app/artworks/artwork-profile/artwork-profile.component.html -->
-
 <ng-container *ngIf="artwork; else loadingOrError">
   <div class="artwork-container">
 
-    <!-- Card de la obra -->
+    <!-- Card principal de la obra -->
     <mat-card class="artwork-card">
-      <img *ngIf="artwork.picture" mat-card-image [src]="artwork.picture"
-        alt="{{ artwork.titulo }}">
       <mat-card-header>
         <mat-card-title>{{ artwork.titulo }}</mat-card-title>
         <mat-card-subtitle *ngIf="artwork.estilo">{{ artwork.estilo }}</mat-card-subtitle>
       </mat-card-header>
+
+      <!-- Bloque de Galería, Artista y Exposición -->
+      <div class="lists-container">
+        <!-- Galería -->
+        <ng-container *ngIf="artwork.galeria as gal">
+          <mat-card class="list-card">
+            <mat-card-title>Galería</mat-card-title>
+            <a class="link" [routerLink]="['/galleries', gal.id_galeria, 'profile']">
+              🖼️ {{ gal.nombre }}
+            </a>
+          </mat-card>
+        </ng-container>
+
+        <!-- Artista -->
+        <ng-container *ngIf="artwork.artist as artist">
+          <mat-card class="list-card">
+            <mat-card-title>Artista</mat-card-title>
+            <a class="link" [routerLink]="['/artists', artist.id_artista, 'profile']">
+              👤 {{ artist.nombre }}
+            </a>
+          </mat-card>
+        </ng-container>
+
+        <!-- Exposición -->
+        <ng-container *ngIf="artwork.exposicion as expo">
+          <mat-card class="list-card">
+            <mat-card-title>Exposición</mat-card-title>
+            <a class="link" [routerLink]="['/exhibitions', expo.id_exposicion, 'profile']">
+              🎨 {{ expo.titulo }}
+            </a>
+          </mat-card>
+        </ng-container>
+      </div>
+
+      <!-- Imagen de la obra -->
+      <img *ngIf="artwork.picture" mat-card-image [src]="artwork.picture"
+        alt="{{ artwork.titulo }}">
+
+      <!-- Descripción -->
       <mat-card-content>
         <p *ngIf="artwork.descripcion">{{ artwork.descripcion }}</p>
       </mat-card-content>
     </mat-card>
 
-    <!-- Bloque de artista y exposición -->
-    <div class="lists-container">
-
-      <!-- Artista -->
-      <ng-container *ngIf="artwork.artist as artist">
-        <mat-card class="artwork-card">
-          <mat-card-title>Artista</mat-card-title>
-          <mat-list>
-            <mat-list-item>
-              👤
-              <a class="link" [routerLink]="['/artists', artist.id_artista, 'profile']">
-                {{ artist.nombre }}
-              </a>
-            </mat-list-item>
-          </mat-list>
-        </mat-card>
-      </ng-container>
-
-      <!-- Exposición y galería -->
-      <ng-container *ngIf="artwork.exposicion as expo">
-        <mat-card class="artwork-card">
-          <mat-card-title>Exposición</mat-card-title>
-          <mat-list>
-            <mat-list-item>
-              🎨
-              <a class="link" [routerLink]="['/exhibitions', expo.id_exposicion, 'profile']">
-                {{ expo.titulo }}
-              </a>
-            </mat-list-item>
-            <mat-list-item *ngIf="expo.galeria">
-              🖼️
-              <a class="link" [routerLink]="['/galleries', expo.galeria.id_galeria, 'profile']">
-                {{ expo.galeria.nombre }}
-              </a>
-            </mat-list-item>
-          </mat-list>
-        </mat-card>
-      </ng-container>
-
-    </div>
   </div>
 </ng-container>
 
-<!-- Loading y error -->
 <ng-template #loadingOrError>
   <div *ngIf="loading" class="loading-container">
     <mat-spinner></mat-spinner>

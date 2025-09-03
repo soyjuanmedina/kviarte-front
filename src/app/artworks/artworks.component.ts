@@ -34,12 +34,15 @@ export class ArtworksComponent implements OnInit {
   }
 
   viewArtworkProfile ( artwork: Artwork ) {
-    console.log( 'asdf', );
     this.router.navigate( ['artworks', artwork.id_obra, 'profile'] );
   }
 
   goToManageArtworks () {
     this.router.navigate( ['/manage/artworks'] );
+  }
+
+  addArtwork () {
+    this.router.navigate( ['manage/artworks/new'] );
   }
 
   fetchArtworks () {
@@ -48,7 +51,9 @@ export class ArtworksComponent implements OnInit {
       .valueChanges
       .subscribe( {
         next: ( result: any ) => {
+          console.log( 'this.artworks', this.artworks );
           this.artworks = result?.data?.obras ?? [];
+          console.log( 'this.artworks2', this.artworks );
           this.loading = false;
         },
         error: ( err ) => {
@@ -59,8 +64,11 @@ export class ArtworksComponent implements OnInit {
       } );
   }
 
+
   editArtwork ( artwork: Artwork ) {
-    this.router.navigate( ['/manage/artworks/edit', artwork.id_obra] );
+
+    console.log( 'artwork.id_obra', artwork.id_obra );
+    this.router.navigate( ['manage/artworks', artwork.id_obra, 'edit'] );
   }
 
   deleteArtwork ( artwork: Artwork ) {

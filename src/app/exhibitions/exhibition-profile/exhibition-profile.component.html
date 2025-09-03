@@ -4,19 +4,26 @@
 
     <!-- Card principal de la exposición -->
     <mat-card class="exhibition-card">
-      <mat-card-header>
-        <div mat-card-avatar class="exhibition-avatar"
-          [style.background-image]="'url(' + exhibition.picture + ')'">
-        </div>
-        <mat-card-title>{{ exhibition.titulo }}</mat-card-title>
-        <mat-card-subtitle>
-          {{ exhibition.artist?.nombre }}
-        </mat-card-subtitle>
-      </mat-card-header>
+      <div class="exhibition-content">
+        <!-- Contenido de la exposición (izquierda) -->
+        <div class="exhibition-info">
+          <mat-card-header>
+            <mat-card-title>{{ exhibition.titulo }}</mat-card-title>
+            <mat-card-subtitle>
+              {{ exhibition.artist?.nombre }}
+            </mat-card-subtitle>
+          </mat-card-header>
 
-      <mat-card-content>
-        <p *ngIf="exhibition.descripcion">{{ exhibition.descripcion }}</p>
-      </mat-card-content>
+          <mat-card-content>
+            <p *ngIf="exhibition.descripcion">{{ exhibition.descripcion }}</p>
+          </mat-card-content>
+        </div>
+
+        <!-- Imagen de la exposición (derecha) -->
+        <div class="image-wrapper" *ngIf="exhibition.picture">
+          <img [src]="exhibition.picture" [alt]="exhibition.titulo" class="exhibition-image">
+        </div>
+      </div>
     </mat-card>
 
     <!-- Bloque de artista -->

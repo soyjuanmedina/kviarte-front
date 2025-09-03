@@ -62,16 +62,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   margin-right: 0.5rem; /* opcional, separa un poco el emoji del texto */
 }
 
-/* Nuevo bloque para icono + texto */
-.icon-text {
+.admin-panel {
   display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.icon-text .icon {
-  font-size: 20px;
-  line-height: 1;
-  display: inline-flex;
-  align-items: center;
+  justify-content: space-between; /* primer botón izquierda, segundo derecha */
+  padding: 1rem;
+  width: 100%; /* necesario para que space-between funcione */
+  box-sizing: border-box;
 }

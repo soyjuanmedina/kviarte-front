@@ -53,6 +53,7 @@ export class ManageExhibitionsComponent {
       u.titulo.toLowerCase().includes( this.filterText.toLowerCase() )
     );
   }
+
   addExhibition () {
     this.router.navigate( ['manage/exhibitions/new'] );
   }

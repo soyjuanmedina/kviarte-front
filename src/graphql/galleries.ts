@@ -12,7 +12,7 @@ export const GALLERY_FIELDS = gql`
     telefono
     web
     picture
-    propietario {        # 👈 Añadido
+    propietario {
       id_usuario
       nombre
       email
@@ -24,6 +24,11 @@ export const GALLERY_FIELDS = gql`
     artists {
       id_artista
       nombre
+    }
+    obras {                # 👈 Añadido
+      id_obra
+      titulo
+      picture
     }
   }
 `;

@@ -52,6 +52,7 @@ export class ManageArtworksComponent {
       u.titulo.toLowerCase().includes( this.filterText.toLowerCase() )
     );
   }
+
   addArtwork () {
     this.router.navigate( ['manage/artworks/new'] );
   }

@@ -44,3 +44,26 @@
     cursor: pointer;
   }
 }
+
+.artist-card {
+  padding: 1rem;
+}
+
+.artist-content {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.artist-info {
+  flex: 1; /* ocupa todo el espacio disponible */
+}
+
+.image-wrapper {
+  flex-shrink: 0;
+}
+
+.artist-image {
+  max-width: 200px; /* ajusta según necesites */
+  border-radius: 4px;
+}

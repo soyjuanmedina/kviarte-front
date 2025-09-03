@@ -8,6 +8,9 @@
       <mat-form-field appearance="outline" class="span-2">
         <mat-label>Título de la Obra</mat-label>
         <input matInput formControlName="titulo" required />
+        <mat-error *ngIf="form.get('titulo')?.hasError('required')">
+          El título es obligatorio
+        </mat-error>
       </mat-form-field>
 
       <!-- Descripción -->
@@ -27,28 +30,49 @@
         </div>
       </div>
 
-      <!-- Exposición -->
+      <!-- Galería (obligatoria) -->
+      <mat-form-field appearance="outline">
+        <mat-label>Galería</mat-label>
+        <mat-select formControlName="galeria_id" required>
+          <mat-option *ngFor="let gallery of galleries" [value]="gallery.id_galeria">
+            {{ gallery.nombre }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="form.get('galeria_id')?.hasError('required')">
+          Debes seleccionar una galería
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Exposición (opcional, filtrada por galería) -->
       <mat-form-field appearance="outline">
         <mat-label>Exposición</mat-label>
         <mat-select formControlName="exposicion_id">
-          <mat-option *ngFor="let exhibition of exhibitions" [value]="exhibition.id_exposicion">
-            {{ exhibition.titulo }} ({{ exhibition.galeria?.nombre }})
+          <mat-option [value]="null">Ninguna</mat-option>
+          <mat-option *ngFor="let exhibition of filteredExhibitions"
+            [value]="exhibition.id_exposicion">
+            {{ exhibition.titulo }}
           </mat-option>
         </mat-select>
+        <mat-hint *ngIf="!form.get('exposicion_id')?.value">
+          Esta obra no pertenece a ninguna exposición
+        </mat-hint>
       </mat-form-field>
 
-      <!-- Artista -->
+      <!-- Artista (obligatorio) -->
       <mat-form-field appearance="outline">
         <mat-label>Artista</mat-label>
-        <mat-select formControlName="artist_id">
+        <mat-select formControlName="artist_id" required>
           <mat-option *ngFor="let artist of artists" [value]="artist.id_artista">
             {{ artist.nombre }}
           </mat-option>
         </mat-select>
+        <mat-error *ngIf="form.get('artist_id')?.hasError('required')">
+          Debes seleccionar un artista
+        </mat-error>
       </mat-form-field>
 
       <!-- Botón -->
-      <button type="submit" [disabled]="loading" class="general-btn add-btn span-2">
+      <button type="submit" [disabled]="form.invalid || loading" class="general-btn add-btn span-2">
         {{ loading ? (isEdit ? 'Actualizando...' : 'Registrando...') : (isEdit ? 'Actualizar' :
         'Registrar') }}
       </button>

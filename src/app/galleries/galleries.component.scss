@@ -10,10 +10,3 @@
   padding: 0 1rem;
 }
 
-.admin-panel {
-  display: flex;
-  justify-content: space-between; /* primer botón izquierda, segundo derecha */
-  padding: 1rem;
-  width: 100%; /* necesario para que space-between funcione */
-  box-sizing: border-box;
-}
