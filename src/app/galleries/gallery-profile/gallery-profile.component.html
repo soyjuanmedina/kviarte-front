@@ -35,7 +35,9 @@
       <mat-card-title>Exposiciones</mat-card-title>
       <mat-list *ngIf="gallery.exposiciones.length > 0; else noExposiciones">
         <mat-list-item *ngFor="let expo of gallery.exposiciones">
-          🎨 {{ expo.titulo }}
+          🎨 <a class="link" [routerLink]="['/exhibitions', expo.id_exposicion, 'profile']">
+            {{ expo.titulo }}
+          </a>
         </mat-list-item>
       </mat-list>
       <ng-template #noExposiciones>

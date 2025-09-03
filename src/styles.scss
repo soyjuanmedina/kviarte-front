@@ -61,3 +61,17 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   color: #d35400 !important; /* tu color primario para el check */
   margin-right: 0.5rem; /* opcional, separa un poco el emoji del texto */
 }
+
+/* Nuevo bloque para icono + texto */
+.icon-text {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.icon-text .icon {
+  font-size: 20px;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+}

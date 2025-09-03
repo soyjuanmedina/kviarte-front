@@ -34,17 +34,20 @@
     justify-content: center; /* centra el contenido interno */
   }
 
-  .image-preview {
+   .image-preview {
     flex: 1;
     display: flex;
     justify-content: flex-end;
-    align-items: stretch; /* estira la imagen al alto del input */
+    align-items: center; /* centra verticalmente la imagen */
 
     img {
-      height: 100%; /* ocupa toda la altura del mat-form-field */
+      max-height: 100px; /* limita el alto al del input */
+      max-width: 150px;  /* evita que sea demasiado ancha */
       width: auto;
-      object-fit: cover;
+      height: auto;
+      object-fit: contain; /* mantiene proporciones */
       border-radius: 4px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15); /* opcional: un poco de sombra */
     }
   }
 }

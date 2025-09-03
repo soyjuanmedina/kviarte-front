@@ -105,11 +105,17 @@ export class ArtistFormComponent implements OnInit {
 
     if ( this.isEdit ) {
       // Actualizar artista
-      const { nombre, biografia, estilo, id_galeria, picture } = this.form.value;
+      const { nombre, biografia, estilo, picture, id_galeria } = this.form.value;
+
       variables = {
         id: this.artistId,
-        data: { nombre, biografia, estilo, picture: picture ?? null },
-        id_galeria: id_galeria || null
+        data: {
+          nombre,
+          biografia,
+          estilo,
+          picture: picture ?? null
+        },
+        id_galeria: id_galeria || null // ✅ Aquí fuera de data
       };
     } else {
       // Crear artista
@@ -149,6 +155,7 @@ export class ArtistFormComponent implements OnInit {
       }
     } );
   }
+
 
   private openSuccessDialog ( message: string ) {
     const dialogRef = this.dialog.open( SuccessDialog, {

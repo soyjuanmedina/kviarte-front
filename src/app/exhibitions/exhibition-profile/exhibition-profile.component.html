@@ -19,15 +19,35 @@
       </mat-card-content>
     </mat-card>
 
+    <!-- Bloque de artista -->
+    <ng-container *ngIf="exhibition.artist as artist">
+      <mat-card class="exhibition-card">
+        <mat-card-title>Artista</mat-card-title>
+        <mat-list>
+          <mat-list-item>
+            <div class="icon-text">
+              <mat-icon color="accent">person</mat-icon>
+              <a class="link" [routerLink]="['/artists', artist.id_artista, 'profile']">
+                {{ artist.nombre }}
+              </a>
+            </div>
+          </mat-list-item>
+        </mat-list>
+      </mat-card>
+    </ng-container>
+
     <!-- Bloque de galería -->
     <ng-container *ngIf="exhibition.galeria as gallery">
       <mat-card class="exhibition-card">
         <mat-card-title>Galería</mat-card-title>
         <mat-list>
           <mat-list-item>
-            🖼️
-            <a class="link" [routerLink]="['/galleries', gallery.id_galeria, 'profile']"> {{
-              gallery.nombre }}</a>
+            <div class="icon-text">
+              <mat-icon color="accent">collections</mat-icon>
+              <a class="link" [routerLink]="['/galleries', gallery.id_galeria, 'profile']">
+                {{ gallery.nombre }}
+              </a>
+            </div>
           </mat-list-item>
         </mat-list>
       </mat-card>
@@ -44,6 +64,7 @@
         </mat-list>
       </mat-card>
     </ng-container>
+
     <ng-template #noObras>
       <mat-card class="exhibition-card">
         <mat-card-title>Obras</mat-card-title>

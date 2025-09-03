@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { CREATE_GALLERY, GET_GALLERY, UPDATE_GALLERY } from '../../../graphql/galleries';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { Apollo } from 'apollo-angular';
@@ -42,10 +42,9 @@ export class GalleryFormComponent implements OnInit {
   galleryUsers: User[] = [];
   isEdit = false;
   galleryId?: number;
-  originalUsuarioId?: number;
 
   form = this.fb.group( {
-    usuario_id: ['', Validators.required],
+    usuario_id: [null as number | null, Validators.required], // siempre el ID
     nombre: ['', Validators.required],
     email: ['', [Validators.email]],
     direccion: [''],
@@ -71,6 +70,30 @@ export class GalleryFormComponent implements OnInit {
     return user?.rol === 'ADMIN';
   }
 
+  ngOnInit () {
+    const id = this.route.snapshot.paramMap.get( 'id' );
+    if ( id ) {
+      this.isEdit = true;
+      this.galleryId = +id;
+      this.loadGallery( this.galleryId );
+    }
+
+    if ( this.isAdmin ) {
+      this.usersService.getUsuariosPorRol( 'GALLERY' ).subscribe( {
+        next: users => ( this.galleryUsers = users ),
+        error: err => {
+          console.error( 'Error cargando usuarios GALLERY', err );
+          this.errorMessage = 'No se pudieron cargar los usuarios de galería ❌';
+        }
+      } );
+    } else {
+      const user = this.authService.getUser();
+      if ( user ) {
+        this.form.patchValue( { usuario_id: user.id_usuario } ); // solo el ID
+      }
+    }
+  }
+
   loadGallery ( id: number ) {
     this.apollo.watchQuery( {
       query: GET_GALLERY,
@@ -88,15 +111,14 @@ export class GalleryFormComponent implements OnInit {
             email: galeria.email,
             telefono: galeria.telefono,
             picture: galeria.picture,
-            usuario_id: galeria.propietario?.id_usuario // <--- aquí
+            usuario_id: galeria.propietario?.id_usuario // solo el ID
           } );
-          this.originalUsuarioId = galeria.propietario?.id_usuario;
         }
         if ( this.isEdit ) {
           this.form.get( 'usuario_id' )?.disable();
         }
       },
-      error: ( err ) => {
+      error: err => {
         console.error( 'Error cargando galería', err );
         this.errorMessage = 'No se pudo cargar la galería ❌';
       }
@@ -118,7 +140,7 @@ export class GalleryFormComponent implements OnInit {
       telefono: this.form.value.telefono ?? null,
       email: this.form.value.email ?? null,
       picture: this.form.value.picture ?? null,
-      ...( this.isAdmin && !this.isEdit ? { usuario_id: +( this.form.value.usuario_id ?? 0 ) } : {} )
+      usuario_id: this.form.value.usuario_id // solo el ID, obligatorio
     };
 
     let variables: any;
@@ -126,10 +148,7 @@ export class GalleryFormComponent implements OnInit {
 
     if ( this.isEdit && this.galleryId ) {
       // UPDATE
-      variables = {
-        id: this.galleryId,
-        data: payload
-      };
+      variables = { id: this.galleryId, data: payload };
       mutation = UPDATE_GALLERY;
     } else {
       // CREATE
@@ -157,7 +176,7 @@ export class GalleryFormComponent implements OnInit {
           this.router.navigate( ['/manage/galleries'] );
         }, 3000 );
       },
-      error: ( err ) => {
+      error: err => {
         this.loading = false;
         console.error( 'Error en mutation:', err );
         this.errorMessage = err.message || 'Error al guardar la galería ❌';
@@ -165,32 +184,12 @@ export class GalleryFormComponent implements OnInit {
     } );
   }
 
-
   cancel () {
     this.router.navigate( ['/manage/galleries'] );
   }
 
   goToProfile () {
     this.router.navigate( ['/profile'] );
-  }
-
-  ngOnInit () {
-    const id = this.route.snapshot.paramMap.get( 'id' );
-    if ( id ) {
-      this.isEdit = true;
-      this.galleryId = +id;
-      this.loadGallery( this.galleryId );
-    }
-
-    if ( this.isAdmin ) {
-      this.usersService.getUsuariosPorRol( 'GALLERY' ).subscribe( {
-        next: ( users ) => ( this.galleryUsers = users ),
-        error: ( err ) => {
-          console.error( 'Error cargando usuarios GALLERY', err );
-          this.errorMessage = 'No se pudieron cargar los usuarios de galería ❌';
-        }
-      } );
-    }
   }
 
   private openSuccessDialog ( message: string ) {
@@ -202,5 +201,4 @@ export class GalleryFormComponent implements OnInit {
       console.log( 'Modal cerrado' );
     } );
   }
-
 }

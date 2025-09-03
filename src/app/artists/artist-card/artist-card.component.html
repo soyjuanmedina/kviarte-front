@@ -6,7 +6,8 @@
         {{ artist.nombre }}
       </a>
     </h3>
-    <p>{{ artist.biografia }}</p>
+    <p>{{ artist.biografia.length > 100 ? (artist.biografia | slice:0:100) + '...' :
+      artist.biografia }}</p>
   </div>
   <div *ngIf="isAdmin" class="actions">
     <button class="general-btn icon-btn" (click)="onView()">

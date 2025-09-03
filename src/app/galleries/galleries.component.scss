@@ -12,6 +12,8 @@
 
 .admin-panel {
   display: flex;
-  justify-content: flex-end; /* manda el botón a la derecha */
-  padding: 1rem 1rem 0 0;    /* espacio: arriba y derecha */
+  justify-content: space-between; /* primer botón izquierda, segundo derecha */
+  padding: 1rem;
+  width: 100%; /* necesario para que space-between funcione */
+  box-sizing: border-box;
 }

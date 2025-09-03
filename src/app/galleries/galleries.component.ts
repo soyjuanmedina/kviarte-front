@@ -82,6 +82,10 @@ export class GalleriesComponent implements OnInit {
     this.router.navigate( ['manage/galleries', gallery.id_galeria, 'edit'] );
   }
 
+  addGallery () {
+    this.router.navigate( ['manage/galleries/new'] );
+  }
+
   get isAdmin (): boolean {
     return this.authService.getUser()?.rol === 'ADMIN';
   }

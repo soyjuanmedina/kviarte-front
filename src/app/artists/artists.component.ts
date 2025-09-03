@@ -43,7 +43,7 @@ export class ArtistsComponent implements OnInit {
 
   fetchArtists () {
     this.loading = true;
-    this.apollo.watchQuery( { query: GET_ARTISTS } )
+    this.apollo.watchQuery( { query: GET_ARTISTS, fetchPolicy: 'network-only' } )
       .valueChanges
       .subscribe( {
         next: ( result: any ) => {
@@ -59,7 +59,11 @@ export class ArtistsComponent implements OnInit {
   }
 
   editArtist ( artist: Artist ) {
-    this.router.navigate( ['/manage/artists/edit', artist.id_artista] );
+    this.router.navigate( ['manage/artists', artist.id_artista, 'edit'] );
+  }
+
+  addArtist () {
+    this.router.navigate( ['manage/artists/new'] );
   }
 
   deleteArtist ( artist: Artist ) {
