@@ -34,7 +34,7 @@ export class GalleriesComponent implements OnInit {
   }
 
   viewGalleryProfile ( gallery: Gallery ) {
-    this.router.navigate( ['galleries', gallery.id_galeria, 'profile'] );
+    this.router.navigate( ['galleries', gallery.id, 'profile'] );
   }
 
   fetchGalleries () {
@@ -43,7 +43,7 @@ export class GalleriesComponent implements OnInit {
       .valueChanges
       .subscribe( {
         next: ( result: any ) => {
-          this.galleries = result?.data?.galerias ?? [];
+          this.galleries = result?.data?.galleries ?? [];
           this.loading = false;
         },
         error: ( err ) => {
@@ -58,16 +58,16 @@ export class GalleriesComponent implements OnInit {
     const dialogRef = this.dialog.open( ConfirmDialog, {
       data: {
         title: 'Eliminar Galería',
-        message: `¿Seguro que deseas eliminar a ${gallery.nombre}?`
+        message: `¿Seguro que deseas eliminar a ${gallery.name}?`
       }
     } );
 
     dialogRef.afterClosed().subscribe( confirmed => {
       if ( !confirmed ) return;
 
-      this.galleryService.deleteGallery( gallery.id_galeria ).subscribe( {
+      this.galleryService.deleteGallery( gallery.id ).subscribe( {
         next: () => {
-          this.galleries = this.galleries.filter( u => u.id_galeria !== gallery.id_galeria );
+          this.galleries = this.galleries.filter( u => u.id !== gallery.id );
           this.dialog.open( SuccessDialog, { data: { message: 'Galería eliminada correctamente ✅' } } );
         },
         error: err => {
@@ -79,7 +79,7 @@ export class GalleriesComponent implements OnInit {
   }
 
   editGallery ( gallery: Gallery ) {
-    this.router.navigate( ['manage/galleries', gallery.id_galeria, 'edit'] );
+    this.router.navigate( ['manage/galleries', gallery.id, 'edit'] );
   }
 
   addGallery () {
@@ -87,11 +87,12 @@ export class GalleriesComponent implements OnInit {
   }
 
   get isAdmin (): boolean {
-    return this.authService.getUser()?.rol === 'ADMIN';
+    return this.authService.getUser()?.role === 'ADMIN';
   }
 
   ngOnInit () {
     this.fetchGalleries();
     this.user = this.authService.getUser();
+
   }
 }

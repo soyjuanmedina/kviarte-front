@@ -1,15 +1,14 @@
 import { Component } from '@angular/core';
 import { Apollo } from 'apollo-angular';
-import { Exhibition, ExhibitionCardComponent } from './exhibition-card/exhibition-card.component';
 import { CommonModule } from '@angular/common';
 import { AuthService, User } from '../core/services/auth.service';
 import { Router } from '@angular/router';
-import { ArtistService } from '../core/services/artist.service';
 import { MatDialog } from '@angular/material/dialog';
 import { GET_EXHIBITIONS } from '../../graphql/exhibitions';
 import { ConfirmDialog } from '../shared/components/confirm-dialog/confirm-dialog.component';
-import { ExhibitionService } from '../core/services/exhibition.service';
+import { Exhibition, ExhibitionService } from '../core/services/exhibition.service';
 import { SuccessDialog } from '../shared/components/success-dialog/success-dialog.component';
+import { ExhibitionCardComponent } from './exhibition-card/exhibition-card.component';
 
 @Component( {
   selector: 'app-exhibitions',
@@ -31,7 +30,7 @@ export class ExhibitionsComponent {
 
   get isAdmin (): boolean {
     const user = this.authService.getUser();
-    return user?.rol === 'ADMIN';
+    return user?.role === 'ADMIN';
   }
 
   goToManageExhibitions () {
@@ -44,7 +43,7 @@ export class ExhibitionsComponent {
       .valueChanges
       .subscribe( {
         next: ( result: any ) => {
-          this.exhibitions = result?.data?.exposiciones ?? [];
+          this.exhibitions = result?.data?.exhibitions ?? [];
           this.loading = false;
         },
         error: ( err ) => {
@@ -56,11 +55,11 @@ export class ExhibitionsComponent {
   }
 
   editExhibition ( exhibition: Exhibition ) {
-    this.router.navigate( ['manage/exhibitions', exhibition.id_exposicion, 'edit'] );
+    this.router.navigate( ['manage/exhibitions', exhibition.id, 'edit'] );
   }
 
   viewExhibitionProfile ( exhibition: Exhibition ) {
-    this.router.navigate( ['exhibitions', exhibition.id_exposicion, 'profile'] );
+    this.router.navigate( ['exhibitions', exhibition.id, 'profile'] );
   }
 
   addExhibition () {
@@ -71,16 +70,16 @@ export class ExhibitionsComponent {
     const dialogRef = this.dialog.open( ConfirmDialog, {
       data: {
         title: 'Eliminar Exposición',
-        message: `¿Seguro que deseas eliminar a ${exhibition.titulo}?`
+        message: `¿Seguro que deseas eliminar a ${exhibition.title}?`
       }
     } );
 
     dialogRef.afterClosed().subscribe( confirmed => {
       if ( !confirmed ) return;
 
-      this.exhibitionService.deleteExhibition( exhibition.id_exposicion ).subscribe( {
+      this.exhibitionService.deleteExhibition( exhibition.id ).subscribe( {
         next: () => {
-          this.exhibitions = this.exhibitions.filter( u => u.id_exposicion !== exhibition.id_exposicion );
+          this.exhibitions = this.exhibitions.filter( u => u.id !== exhibition.id );
           this.dialog.open( SuccessDialog, { data: { message: 'Exposición eliminada correctamente' } } );
         },
         error: err => {

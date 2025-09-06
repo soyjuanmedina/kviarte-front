@@ -1,62 +1,77 @@
 import { gql } from 'apollo-angular';
 
-// Users
+// Obtener todos los usuarios
 export const GET_USERS = gql`
-  query GetUsuarios {
-    usuarios {
-      id_usuario
-      nombre
+  query GetUsers {
+    users {
+      id
+      name
       email
-      rol
+      role
+      registrationDate
+      galleries {
+        id
+        name
+        description
+        city
+        website
+        phone
+        email
+        picture
+      }
     }
   }
 `;
 
+// Obtener un usuario por id
 export const GET_USER = gql`
-  query GetUsuario($id: Int!) {
-    usuario(id: $id) {
-      id_usuario
-      nombre
+  query GetUser($id: Int!) {
+    user(id: $id) {
+      id
+      name
       email
-      rol
+      role
+      registrationDate
+      galleries {
+        id
+        name
+        description
+        city
+        website
+        phone
+        email
+        picture
+      }
     }
   }
 `;
 
+// Obtener usuarios por rol
 export const GET_USERS_BY_ROLE = gql`
-  query GetUsuariosPorRol($rol: String!) {
-    usuariosPorRol(rol: $rol) {
-      id_usuario
-      nombre
+  query GetUsersByRole($role: String!) {
+    usersPorRol(role: $role) {
+      id
+      name
       email
-      rol
+      role
+      registrationDate
+      galleries {
+        id
+        name
+        description
+        city
+        website
+        phone
+        email
+        picture
+      }
     }
   }
 `;
 
-export const LOGIN_USER = gql`
-mutation Login($input: LoginInput!) {
-  login(input: $input) {
-    token
-    user {
-      id_usuario
-      nombre
-      email
-      rol
-    }
-  }
-}
-`;
-
-export const REGISTER_USER = gql`
-  mutation Register($input: RegisterInput!) {
-    register(input: $input)
-  }
-`;
-
+// Borrar usuario
 export const DELETE_USER = gql`
-  mutation DeleteUsuario($id: Int!) {
+  mutation DeleteUser($id: Int!) {
     deleteUsuario(id: $id)
   }
 `;
-

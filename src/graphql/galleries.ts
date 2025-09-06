@@ -1,80 +1,94 @@
 import { gql } from "apollo-angular";
 
-
+// Fragmento común de Gallery
 export const GALLERY_FIELDS = gql`
-  fragment GalleryFields on Galeria {
-    id_galeria
-    nombre
-    descripcion
-    direccion
-    ciudad
+  fragment GalleryFields on Gallery {
+    id
+    name
+    description
+    address
+    city
     email
-    telefono
-    web
+    phone
+    website
     picture
-    propietario {
-      id_usuario
-      nombre
+    owner {
+      id
+      name
       email
+      role
     }
-    exposiciones {
-      id_exposicion
-      titulo
+    exhibitions {
+      id
+      title
     }
     artists {
-      id_artista
-      nombre
-    }
-    obras {                # 👈 Añadido
-      id_obra
-      titulo
+      id
+      name
+      style
       picture
     }
+    artworks {
+      id
+      title
+      picture
+      artist {
+        id
+        name
+      }
+    }
+    promotions {
+      id
+      code
+      discount
+      active
+    }
   }
 `;
 
-
-
+// Obtener todas las galerías
 export const GET_GALLERIES = gql`
   query {
-    galerias {
+    galleries {
       ...GalleryFields
     }
   }
   ${GALLERY_FIELDS}
 `;
 
+// Obtener una galería concreta
 export const GET_GALLERY = gql`
   query GetGallery($id: Int!) {
-    galeria(id: $id) {
+    gallery(id: $id) {
       ...GalleryFields
     }
   }
   ${GALLERY_FIELDS}
 `;
 
+// Crear galería
+export const CREATE_GALLERY = gql`
+  mutation CreateGallery($input: CreateGalleryInput!) {
+    createGallery(input: $input) {
+      ...GalleryFields
+    }
+  }
+  ${GALLERY_FIELDS}
+`;
+
+// Actualizar galería
+export const UPDATE_GALLERY = gql`
+  mutation UpdateGallery($id: Int!, $data: UpdateGalleryInput!) {
+    updateGallery(id: $id, data: $data) {
+      ...GalleryFields
+    }
+  }
+  ${GALLERY_FIELDS}
+`;
+
+// Eliminar galería
 export const DELETE_GALLERY = gql`
   mutation DeleteGallery($id: Int!) {
     deleteGallery(id: $id)
   }
 `;
-
-
-export const CREATE_GALLERY = gql`
-mutation CreateGallery($input: CreateGalleryInput!) {
-  createGaleria(input: $input) {
-    ...GalleryFields
-  }
-}
-${GALLERY_FIELDS}
-`;
-
-export const UPDATE_GALLERY = gql`
-  mutation UpdateGaleria($id: Int!, $data: UpdateGalleryInput!) {
-    updateGaleria(id: $id, data: $data) {
-      ...GalleryFields
-    }
-  }
-  ${GALLERY_FIELDS}
-`;
-

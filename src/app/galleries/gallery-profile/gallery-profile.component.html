@@ -8,24 +8,24 @@
         <!-- Contenido de la galería (izquierda) -->
         <div class="gallery-info">
           <mat-card-header>
-            <mat-card-title>{{ gallery.nombre }}</mat-card-title>
-            <mat-card-subtitle>{{ gallery.ciudad }}</mat-card-subtitle>
+            <mat-card-title>{{ gallery.name }}</mat-card-title>
+            <mat-card-subtitle>{{ gallery.city }}</mat-card-subtitle>
           </mat-card-header>
 
           <mat-card-content>
-            <p *ngIf="gallery.descripcion">{{ gallery.descripcion }}</p>
+            <p *ngIf="gallery.description">{{ gallery.description }}</p>
             <p *ngIf="gallery.email"><strong>Email:</strong> {{ gallery.email }}</p>
-            <p *ngIf="gallery.telefono"><strong>Teléfono:</strong> {{ gallery.telefono }}</p>
-            <p *ngIf="gallery.web"><strong>Web:</strong>&nbsp;<a class="link"
-                [href]="getFullWebUrl(gallery.web)" target="_blank">
-                {{ gallery.web }}
+            <p *ngIf="gallery.phone"><strong>Teléfono:</strong> {{ gallery.phone }}</p>
+            <p *ngIf="gallery.website"><strong>Web:</strong>&nbsp;<a class="link"
+                [href]="getFullWebUrl(gallery.website)" target="_blank">
+                {{ gallery.website }}
               </a></p>
           </mat-card-content>
         </div>
 
         <!-- Imagen (derecha) -->
         <div class="image-wrapper" *ngIf="gallery.picture">
-          <img [src]="gallery.picture" [alt]="gallery.nombre" class="gallery-image">
+          <img [src]="gallery.picture" [alt]="gallery.name" class="gallery-image">
         </div>
       </div>
     </mat-card>
@@ -33,10 +33,11 @@
     <!-- Listas de exposiciones y artistas -->
     <mat-card class="list-card">
       <mat-card-title>Exposiciones</mat-card-title>
-      <mat-list *ngIf="gallery.exposiciones.length > 0; else noExposiciones">
-        <mat-list-item *ngFor="let expo of gallery.exposiciones">
-          🎨 <a class="link" [routerLink]="['/exhibitions', expo.id_exposicion, 'profile']">
-            {{ expo.titulo }}
+
+      <mat-list *ngIf="(gallery.exhibitions ?? []).length > 0; else noExposiciones">
+        <mat-list-item *ngFor="let exhibition of gallery.exhibitions">
+          🎨 <a class="link" [routerLink]="['/exhibitions', exhibition.id, 'profile']">
+            {{ exhibition.title }}
           </a>
         </mat-list-item>
       </mat-list>
@@ -47,10 +48,10 @@
 
     <mat-card class="list-card">
       <mat-card-title>Artistas</mat-card-title>
-      <mat-list *ngIf="gallery.artists.length > 0; else noArtists">
+      <mat-list *ngIf="(gallery.artists ?? []).length > 0; else noArtists">
         <mat-list-item *ngFor="let artist of gallery.artists">
-          👤 <a class="link" [routerLink]="['/artists', artist.id_artista, 'profile']">
-            {{ artist.nombre }}
+          👤 <a class="link" [routerLink]="['/artists', artist.id, 'profile']">
+            {{ artist.name }}
           </a>
         </mat-list-item>
       </mat-list>

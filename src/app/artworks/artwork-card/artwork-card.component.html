@@ -1,9 +1,9 @@
 <div class="card">
-  <img [src]="artwork.picture" [alt]="artwork.titulo" class="card-img" />
+  <img [src]="artwork.picture" [alt]="artwork.title" class="card-img" />
   <div class="card-body">
     <h3>
-      <a class="link" [routerLink]="['/artworks', artwork.id_obra, 'profile']">
-        {{ artwork.titulo }}
+      <a class="link" [routerLink]="['/artworks', artwork.id, 'profile']">
+        {{ artwork.title }}
       </a>
     </h3>
   </div>

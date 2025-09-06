@@ -3,7 +3,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { Exhibition } from '../../exhibition-card/exhibition-card.component';
+import { Exhibition } from '../../../core/services/exhibition.service';
 
 @Component( {
   selector: 'app-exhibition-item',

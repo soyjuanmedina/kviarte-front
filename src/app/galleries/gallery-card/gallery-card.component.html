@@ -1,12 +1,12 @@
 <div class="card">
-  <img [src]="gallery.picture" [alt]="gallery.nombre" class="card-img" />
+  <img [src]="gallery.picture" [alt]="gallery.name" class="card-img" />
   <div class="card-body">
     <h3>
-      <a class="link" [routerLink]="['/galleries', gallery.id_galeria, 'profile']">
-        {{ gallery.nombre }}
+      <a class="link" [routerLink]="['/galleries', gallery.id, 'profile']">
+        {{ gallery.name }}
       </a>
     </h3>
-    <p>{{ gallery.descripcion }}</p>
+    <p>{{ gallery.description }}</p>
   </div>
   <div *ngIf="isAdmin" class="actions">
     <button class="general-btn icon-btn" (click)="onView()">

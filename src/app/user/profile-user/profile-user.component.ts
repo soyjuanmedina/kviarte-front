@@ -21,7 +21,7 @@ export class ProfileUserComponent implements OnInit {
   ) { }
 
   get isAdmin (): boolean {
-    return this.user?.rol === 'ADMIN';
+    return this.user?.role === 'ADMIN';
   }
 
   goToManageUsers () {

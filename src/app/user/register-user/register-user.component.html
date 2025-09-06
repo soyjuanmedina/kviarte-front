@@ -7,9 +7,9 @@
       <!-- Nombre -->
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Nombre completo</mat-label>
-        <input matInput formControlName="nombre" placeholder="Ej. Juan Pérez" />
+        <input matInput formControlName="name" placeholder="Ej. Juan Pérez" />
         <mat-icon matSuffix>person</mat-icon>
-        <mat-error *ngIf="form.get('nombre')?.hasError('required')">
+        <mat-error *ngIf="form.get('name')?.hasError('required')">
           El nombre es obligatorio
         </mat-error>
       </mat-form-field>
@@ -44,7 +44,7 @@
       <!-- Rol -->
       <mat-form-field appearance="outline" *ngIf="isAdmin" class="full-width">
         <mat-label>Rol</mat-label>
-        <mat-select formControlName="rol">
+        <mat-select formControlName="role">
           <mat-option value="USER">Usuario</mat-option>
           <mat-option value="ADMIN">Administrador</mat-option>
           <mat-option value="GALLERY">Galería</mat-option>
@@ -68,7 +68,7 @@
     <div *ngIf="registered" class="success-msg">
       <p>¡Usuario registrado con éxito ✅</p>
       <p *ngIf="!isAdmin">Abriendo login...</p>
-      <button class="general-btn" (click)="goToProfile()">
+      <button *ngIf="isAdmin" class="general-btn" (click)="goToProfile()">
         Volver al Perfil
       </button>
     </div>

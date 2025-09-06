@@ -9,16 +9,22 @@ import {
   DELETE_ARTWORK
 } from '../../../graphql/artworks';
 import { Artist } from './artist.service';
-import { Exhibition } from '../../exhibitions/exhibition-card/exhibition-card.component';
+import { Exhibition } from './exhibition.service';
+import { Gallery } from './gallery.service';
+import { Promotion } from './promotion.service';
 
 export interface Artwork {
-  id_obra: number;
-  titulo: string;
-  descripcion?: string | null;
-  estilo?: string | null;
+  id: number;
+  title: string;
+  description?: string | null;
+  price?: number | null;
+  style?: string | null;
+  available: boolean;            // obligatorio porque no es nullable en la BBDD
   picture?: string | null;
-  artist?: Artist | null;
-  exposicion?: Exhibition | null;
+  artist: Artist;                // obligatorio porque en la entidad no es nullable
+  exhibition?: Exhibition | null; // nullable en BBDD y entidad
+  gallery: Gallery;              // obligatorio porque en la entidad no es nullable
+  promotions?: Promotion[] | null; // opcional según ManyToMany
 }
 
 @Injectable( {
@@ -56,7 +62,7 @@ export class ArtworkService {
       map( result => {
         const obra = result.data?.createObra;
         if ( !obra ) throw new Error( 'No se pudo crear la obra' );
-        return { ...obra, exhibition: obra.exposicion };
+        return { ...obra, exhibition: obra.exhibition };
       } )
     );
   }
@@ -70,7 +76,7 @@ export class ArtworkService {
       map( result => {
         const obra = result.data?.updateObra;
         if ( !obra ) throw new Error( 'No se pudo actualizar la obra' );
-        return { ...obra, exhibition: obra.exposicion };
+        return { ...obra, exhibition: obra.exhibition };
       } )
     );
   }

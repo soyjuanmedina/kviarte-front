@@ -10,7 +10,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { CREATE_ARTIST, UPDATE_ARTIST, GET_ARTIST } from '../../../graphql/artists';
-import { ModalService } from '../../core/services/modal.service';
 import { AuthService } from '../../core/services/auth.service';
 import { Gallery, GalleryService } from '../../core/services/gallery.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -29,16 +28,16 @@ export class ArtistFormComponent implements OnInit {
   registered = false;
   loading = false;
   errorMessage = '';
-  galeries: Gallery[] = [];
+  galleries: Gallery[] = [];
   isEdit = false;
   artistId?: number;
 
   form = this.fb.group( {
-    nombre: ['', Validators.required],
-    biografia: [''],
-    estilo: [''],
+    name: ['', Validators.required],
+    biography: [''],
+    style: [''],
     picture: [''],
-    id_galeria: [null]
+    gallery_id: [null]
   } );
 
   constructor (
@@ -53,14 +52,14 @@ export class ArtistFormComponent implements OnInit {
 
   get isAdmin (): boolean {
     const user = this.authService.getUser();
-    return user?.rol === 'ADMIN';
+    return user?.role === 'ADMIN';
   }
 
   ngOnInit () {
     // Cargar galerías si es admin
     if ( this.isAdmin ) {
       this.galleryService.getGalleries().subscribe( {
-        next: ( galeries ) => this.galeries = galeries,
+        next: ( galleries ) => this.galleries = galleries,
         error: ( err ) => this.errorMessage = 'No se pudieron cargar las galerías ❌'
       } );
     }
@@ -83,11 +82,11 @@ export class ArtistFormComponent implements OnInit {
         const artist = result?.data?.artista;
         if ( artist ) {
           this.form.patchValue( {
-            nombre: artist.nombre,
-            biografia: artist.biografia,
-            estilo: artist.estilo,
+            name: artist.name,
+            biography: artist.biography,
+            style: artist.style,
             picture: artist.picture,
-            id_galeria: artist.galeria?.id_galeria ?? null
+            gallery_id: artist.gallery?.id ?? null
           } );
         }
       },
@@ -105,26 +104,26 @@ export class ArtistFormComponent implements OnInit {
 
     if ( this.isEdit ) {
       // Actualizar artista
-      const { nombre, biografia, estilo, picture, id_galeria } = this.form.value;
+      const { name, biography, style, picture, gallery_id } = this.form.value;
 
       variables = {
         id: this.artistId,
         data: {
-          nombre,
-          biografia,
-          estilo,
+          name,
+          biography,
+          style,
           picture: picture ?? null
         },
-        id_galeria: id_galeria || null // ✅ Aquí fuera de data
+        gallery_id: gallery_id || null // ✅ Aquí fuera de data
       };
     } else {
       // Crear artista
       const input = {
-        nombre: this.form.value.nombre,
-        biografia: this.form.value.biografia ?? null,
-        estilo: this.form.value.estilo ?? null,
+        name: this.form.value.name,
+        biography: this.form.value.biography ?? null,
+        style: this.form.value.style ?? null,
         picture: this.form.value.picture ?? null,
-        ...( this.isAdmin ? { id_galeria: this.form.value.id_galeria ?? null } : {} )
+        ...( this.isAdmin ? { gallery_id: this.form.value.gallery_id ?? null } : {} )
       };
       variables = { input };
     }

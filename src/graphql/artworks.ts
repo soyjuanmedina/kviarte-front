@@ -2,111 +2,106 @@ import { gql } from 'apollo-angular';
 
 export const GET_ARTWORKS = gql`
   query GetArtworks {
-    obras {
-      id_obra
-      titulo
-      descripcion
-      estilo
+    artworks {
+      id
+      title
+      description
+      style
       picture
       artist {
-        id_artista
-        nombre
+        id
+        name
       }
-      galeria {
-        id_galeria
-        nombre
+      gallery {
+        id
+        name
       }
-      exposicion {
-        id_exposicion
-        titulo
+      exhibition {
+        id
+        title
       }
     }
   }
 `;
 
-
 export const GET_ARTWORK = gql`
   query GetArtwork($id: Int!) {
-    obra(id: $id) {
-      id_obra
-      titulo
-      descripcion
-      estilo
+    artwork(id: $id) {
+      id
+      title
+      description
+      style
       picture
       artist {
-        id_artista
-        nombre
+        id
+        name
       }
-      galeria {
-        id_galeria
-        nombre
+      gallery {
+        id
+        name
       }
-      exposicion {
-        id_exposicion
-        titulo
-        galeria {
-          id_galeria
-          nombre
+      exhibition {
+        id
+        title
+        gallery {
+          id
+          name
         }
       }
     }
   }
 `;
 
-
-
 export const CREATE_ARTWORK = gql`
-  mutation CreateArtwork($input: CreateObraInput!) {
-    createObra(input: $input) {
-      id_obra
-      titulo
-      descripcion
-      estilo
+  mutation CreateArtwork($input: CreateArtworkInput!) {
+    createArtwork(input: $input) {
+      id
+      title
+      description
+      style
       picture
       artist {
-        id_artista
-        nombre
+        id
+        name
       }
-      galeria {
-        id_galeria
-        nombre
+      gallery {
+        id
+        name
       }
-      exposicion {
-        id_exposicion
-        titulo
+      exhibition {
+        id
+        title
       }
     }
   }
 `;
-
 
 export const UPDATE_ARTWORK = gql`
-  mutation UpdateArtwork($id: Int!, $input: UpdateObraInput!) {
-    updateObra(id: $id, input: $input) {
-      id_obra
-      titulo
-      descripcion
-      estilo
+  mutation UpdateArtwork($id: Int!, $input: UpdateArtworkInput!) {
+    updateArtwork(id: $id, input: $input) {
+      id
+      title
+      description
+      style
       picture
       artist {
-        id_artista
-        nombre
+        id
+        name
       }
-      galeria {
-        id_galeria
-        nombre
+      gallery {
+        id
+        name
       }
-      exposicion {
-        id_exposicion
-        titulo
+      exhibition {
+        id
+        title
       }
     }
   }
 `;
-
 
 export const DELETE_ARTWORK = gql`
   mutation DeleteArtwork($id: Int!) {
-    deleteObra(id: $id)
+    deleteArtwork(id: $id)
   }
 `;

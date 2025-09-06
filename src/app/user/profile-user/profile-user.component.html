@@ -1,10 +1,10 @@
 <mat-card *ngIf="user; else notLoggedIn" class="profile-card">
   <mat-card-title>Perfil de Usuario</mat-card-title>
   <mat-card-content>
-    <p><strong>ID:</strong> {{ user.id_usuario }}</p>
-    <p><strong>Nombre:</strong> {{ user.nombre }}</p>
+    <p><strong>ID:</strong> {{ user.id }}</p>
+    <p><strong>Nombre:</strong> {{ user.name }}</p>
     <p><strong>Email:</strong> {{ user.email }}</p>
-    <p><strong>Rol:</strong> {{ user.rol }}</p>
+    <p><strong>Rol:</strong> {{ user.role }}</p>
   </mat-card-content>
 </mat-card>
 
@@ -13,7 +13,7 @@
 </ng-template>
 
 <!-- Opciones de administrador fuera del mat-card -->
-<div *ngIf="user?.rol === 'ADMIN'" class="admin-panel">
+<div *ngIf="user?.role === 'ADMIN'" class="admin-panel">
   <h2 class="panel-title">Opciones de Administrador</h2>
 
   <div class="admin-buttons">

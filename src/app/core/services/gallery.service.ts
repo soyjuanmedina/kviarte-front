@@ -3,22 +3,26 @@ import { Apollo } from 'apollo-angular';
 import { map, Observable } from 'rxjs';
 import { GET_GALLERIES, GET_GALLERY, DELETE_GALLERY } from '../../../graphql/galleries';
 import { Artist } from './artist.service';
-import { Exhibition } from '../../exhibitions/exhibition-card/exhibition-card.component';
-import { Usuario } from './user.service';
+import { Promotion } from './promotion.service';
+import { Artwork } from './artwork.service';
+import { Exhibition } from './exhibition.service';
+import { User } from './auth.service';
 
 export interface Gallery {
-  id_galeria: number;
-  nombre: string;
-  descripcion?: string;
-  ciudad?: string;
-  direccion?: string;
-  web?: string;
-  telefono?: string;
+  id: number;
+  name: string;
+  description?: string;
+  city?: string;
+  address?: string;
+  website?: string;
+  phone?: string;
   email?: string;
   picture?: string;
-  propietario?: Usuario
-  exposiciones: Exhibition[];
-  artists: Artist[];
+  owner?: User | null; // puede no venir del backend
+  exhibitions?: Exhibition[] | null; // opcional y puede ser null
+  artists?: Artist[] | null;         // opcional y puede ser null
+  promotions?: Promotion[] | null;   // opcional y puede ser null
+  artworks?: Artwork[] | null;       // opcional y puede ser null
 }
 
 @Injectable( {
@@ -29,12 +33,12 @@ export class GalleryService {
 
   getGalleries (): Observable<Gallery[]> {
     return this.apollo
-      .watchQuery<{ galerias: Gallery[] }>( {
+      .watchQuery<{ galleries: Gallery[] }>( {
         query: GET_GALLERIES,
         fetchPolicy: 'network-only'
       } )
       .valueChanges.pipe(
-        map( result => result.data.galerias )
+        map( result => result.data.galleries )
       );
   }
 

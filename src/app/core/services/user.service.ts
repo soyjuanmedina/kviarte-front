@@ -4,12 +4,7 @@ import { map, Observable } from 'rxjs';
 import { GET_USER, GET_USERS, GET_USERS_BY_ROLE, DELETE_USER } from '../../../graphql/users';
 import { User } from './auth.service';
 
-export interface Usuario {
-  id_usuario: number;
-  nombre: string;
-  email: string;
-  rol: string;
-}
+
 
 @Injectable( {
   providedIn: 'root',
@@ -17,22 +12,25 @@ export interface Usuario {
 export class UserService {
   constructor ( private apollo: Apollo ) { }
 
-  getUsuariosPorRol ( rol: string ): Observable<Usuario[]> {
+  getUsuariosPorRol ( role: string ): Observable<User[]> {
     return this.apollo
-      .watchQuery<{ usuariosPorRol: Usuario[] }>( {
+      .watchQuery<{ usuariosPorRol: User[] }>( {
         query: GET_USERS_BY_ROLE,
-        variables: { rol },
+        variables: { role },
       } )
       .valueChanges.pipe( map( result => result.data.usuariosPorRol ) );
   }
 
-  getUsuarios (): Observable<Usuario[]> {
+  getUsers (): Observable<User[]> {
     return this.apollo
-      .watchQuery<{ usuarios: Usuario[] }>( {
+      .watchQuery<{ users: User[] }>( {
         query: GET_USERS,
-        fetchPolicy: 'network-only'
+        fetchPolicy: 'network-only',
       } )
-      .valueChanges.pipe( map( result => result.data.usuarios ) );
+      .valueChanges
+      .pipe(
+        map( result => result.data.users ) // extrae directamente el array
+      );
   }
 
   getUsuarioById ( id: number ): Observable<User> {

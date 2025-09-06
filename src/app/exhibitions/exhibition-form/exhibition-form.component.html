@@ -31,8 +31,8 @@
       <mat-form-field appearance="outline">
         <mat-label>Galería</mat-label>
         <mat-select formControlName="galeria_id">
-          <mat-option *ngFor="let gallery of galleries" [value]="gallery.id_galeria">
-            {{ gallery.nombre }}
+          <mat-option *ngFor="let gallery of galleries" [value]="gallery.id">
+            {{ gallery.name }}
           </mat-option>
         </mat-select>
       </mat-form-field>
@@ -40,9 +40,9 @@
       <!-- Artista -->
       <mat-form-field appearance="outline">
         <mat-label>Artista</mat-label>
-        <mat-select formControlName="artist_id">
-          <mat-option *ngFor="let artist of artists" [value]="artist.id_artista">
-            {{ artist.nombre }}
+        <mat-select formControlName="id">
+          <mat-option *ngFor="let artist of artists" [value]="artist.id">
+            {{ artist.name }}
           </mat-option>
         </mat-select>
       </mat-form-field>

@@ -4,18 +4,18 @@
     <!-- Card principal de la obra -->
     <mat-card class="artwork-card">
       <mat-card-header>
-        <mat-card-title>{{ artwork.titulo }}</mat-card-title>
-        <mat-card-subtitle *ngIf="artwork.estilo">{{ artwork.estilo }}</mat-card-subtitle>
+        <mat-card-title>{{ artwork.title }}</mat-card-title>
+        <mat-card-subtitle *ngIf="artwork.style">{{ artwork.style }}</mat-card-subtitle>
       </mat-card-header>
 
       <!-- Bloque de Galería, Artista y Exposición -->
       <div class="lists-container">
         <!-- Galería -->
-        <ng-container *ngIf="artwork.galeria as gal">
+        <ng-container *ngIf="artwork.gallery as gallery">
           <mat-card class="list-card">
             <mat-card-title>Galería</mat-card-title>
-            <a class="link" [routerLink]="['/galleries', gal.id_galeria, 'profile']">
-              🖼️ {{ gal.nombre }}
+            <a class="link" [routerLink]="['/galleries', gallery.id, 'profile']">
+              🖼️ {{ gallery.name }}
             </a>
           </mat-card>
         </ng-container>
@@ -24,14 +24,14 @@
         <ng-container *ngIf="artwork.artist as artist">
           <mat-card class="list-card">
             <mat-card-title>Artista</mat-card-title>
-            <a class="link" [routerLink]="['/artists', artist.id_artista, 'profile']">
-              👤 {{ artist.nombre }}
+            <a class="link" [routerLink]="['/artists', artist.id, 'profile']">
+              👤 {{ artist.name }}
             </a>
           </mat-card>
         </ng-container>
 
         <!-- Exposición -->
-        <ng-container *ngIf="artwork.exposicion as expo">
+        <ng-container *ngIf="artwork.exhibition as expo">
           <mat-card class="list-card">
             <mat-card-title>Exposición</mat-card-title>
             <a class="link" [routerLink]="['/exhibitions', expo.id_exposicion, 'profile']">
@@ -42,12 +42,11 @@
       </div>
 
       <!-- Imagen de la obra -->
-      <img *ngIf="artwork.picture" mat-card-image [src]="artwork.picture"
-        alt="{{ artwork.titulo }}">
+      <img *ngIf="artwork.picture" mat-card-image [src]="artwork.picture" alt="{{ artwork.title }}">
 
       <!-- Descripción -->
       <mat-card-content>
-        <p *ngIf="artwork.descripcion">{{ artwork.descripcion }}</p>
+        <p *ngIf="artwork.description">{{ artwork.description }}</p>
       </mat-card-content>
     </mat-card>
 

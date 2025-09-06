@@ -41,13 +41,13 @@ export class ManageArtistsComponent {
   ) { }
 
   get isAdmin (): boolean {
-    return this.authService.getUser()?.rol === 'ADMIN';
+    return this.authService.getUser()?.role === 'ADMIN';
   }
 
   filteredArtists () {
     if ( !this.filterText.trim() ) return this.artists;
     return this.artists.filter( u =>
-      u.nombre.toLowerCase().includes( this.filterText.toLowerCase() )
+      u.name.toLowerCase().includes( this.filterText.toLowerCase() )
     );
   }
   addArtist () {
@@ -55,28 +55,28 @@ export class ManageArtistsComponent {
   }
 
   editArtist ( artist: Artist ) {
-    this.router.navigate( ['manage/artists', artist.id_artista, 'edit'] );
+    this.router.navigate( ['manage/artists', artist.id, 'edit'] );
   }
 
   viewArtistProfile ( artist: Artist ) {
-    console.log( 'artist.id_artist', artist.id_artista, typeof artist.id_artista );
-    this.router.navigate( ['artists', artist.id_artista, 'profile'] );
+    console.log( 'artist.id_artist', artist.id, typeof artist.id );
+    this.router.navigate( ['artists', artist.id, 'profile'] );
   }
 
   deleteArtist ( artist: Artist ) {
     const dialogRef = this.dialog.open( ConfirmDialog, {
       data: {
         title: 'Eliminar artista',
-        message: `¿Seguro que deseas eliminar a ${artist.nombre}?`
+        message: `¿Seguro que deseas eliminar a ${artist.name}?`
       }
     } );
 
     dialogRef.afterClosed().subscribe( confirmed => {
       if ( !confirmed ) return;
 
-      this.artistService.deleteArtist( artist.id_artista ).subscribe( {
+      this.artistService.deleteArtist( artist.id ).subscribe( {
         next: () => {
-          this.artists = this.artists.filter( u => u.id_artista !== artist.id_artista );
+          this.artists = this.artists.filter( u => u.id !== artist.id );
           this.dialog.open( SuccessDialog, { data: { message: 'Artista eliminado correctamente' } } );
         },
         error: err => {

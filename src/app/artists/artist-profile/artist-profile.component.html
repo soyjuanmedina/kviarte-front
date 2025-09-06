@@ -11,24 +11,24 @@
         <div class="artist-info">
           <mat-card-header>
             <div mat-card-avatar class="artist-avatar"></div>
-            <mat-card-title>{{ artist.nombre }}</mat-card-title>
-            <mat-card-subtitle>{{ artist.estilo }}</mat-card-subtitle>
+            <mat-card-title>{{ artist.name }}</mat-card-title>
+            <mat-card-subtitle>{{ artist.style }}</mat-card-subtitle>
           </mat-card-header>
 
           <mat-card-content>
-            <p *ngIf="artist.biografia">{{ artist.biografia }}</p>
+            <p *ngIf="artist.biography">{{ artist.biography }}</p>
           </mat-card-content>
         </div>
 
         <!-- Imagen del artista (derecha) -->
         <div class="image-wrapper" *ngIf="artist.picture">
-          <img [src]="artist.picture" [alt]="artist.nombre" class="artist-image">
+          <img [src]="artist.picture" [alt]="artist.name" class="artist-image">
         </div>
       </div>
     </mat-card>
 
     <!-- Bloque de galería y listas -->
-    <ng-container *ngIf="artist.galeria as gallery">
+    <ng-container *ngIf="artist.gallery as gallery">
       <div class="lists-container">
 
         <!-- Galería resumida -->
@@ -37,8 +37,8 @@
           <mat-list>
             <mat-list-item>
               🖼️
-              <a class="link" [routerLink]="['/galleries', gallery.id_galeria, 'profile']">
-                {{ gallery.nombre }}
+              <a class="link" [routerLink]="['/galleries', gallery.id, 'profile']">
+                {{ gallery.name }}
               </a>
             </mat-list-item>
           </mat-list>

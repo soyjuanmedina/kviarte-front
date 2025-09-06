@@ -9,19 +9,19 @@
       <!-- Nombre -->
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Nombre del artista</mat-label>
-        <input matInput formControlName="nombre" required />
+        <input matInput formControlName="name" required />
       </mat-form-field>
 
       <!-- Biografía -->
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Biografía</mat-label>
-        <textarea matInput formControlName="biografia"></textarea>
+        <textarea matInput formControlName="biography"></textarea>
       </mat-form-field>
 
       <!-- Estilo -->
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Estilo artístico</mat-label>
-        <input matInput formControlName="estilo" />
+        <input matInput formControlName="style" />
       </mat-form-field>
 
       <!-- Imagen (URL) con vista previa -->
@@ -41,10 +41,10 @@
       <!-- Galería (opcional) -->
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Galería (opcional)</mat-label>
-        <mat-select formControlName="id_galeria">
+        <mat-select formControlName="gallery_id">
           <mat-option [value]="null">Sin galería</mat-option>
-          <mat-option *ngFor="let galery of galeries" [value]="galery.id_galeria">
-            {{ galery.nombre }}
+          <mat-option *ngFor="let gallery of galleries" [value]="gallery.id">
+            {{ gallery.id }}
           </mat-option>
         </mat-select>
         <mat-icon matSuffix>museum</mat-icon>

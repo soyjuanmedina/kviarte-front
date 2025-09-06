@@ -1,0 +1,64 @@
+.register-card {
+  max-width: 1000px; /* más ancho */
+  margin: auto;
+  padding: 2rem;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2 columnas */
+  gap: 1rem; /* espacio entre columnas y filas */
+}
+
+.full-width {
+  grid-column: span 2; /* ocupa las 2 columnas */
+}
+
+.span-2 {
+  grid-column: span 2; /* campos largos como nombre/descripcion */
+}
+
+.submit-btn {
+  grid-column: span 2; /* botón ocupa todo el ancho */
+}
+
+.input-preview-container {
+  display: flex;
+  gap: 16px;
+  align-items: center; /* mantiene la altura natural del input */
+
+  .input-field {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* centra el contenido interno */
+  }
+
+  .image-preview {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: stretch; /* estira la imagen al alto del input */
+
+    img {
+      height: 100%; /* ocupa toda la altura del mat-form-field */
+      width: auto;
+      object-fit: cover;
+      border-radius: 4px;
+    }
+  }
+
+    .image-preview {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: stretch;
+
+    img {
+      height: 40px;   /* altura aproximada del mat-form-field */
+      width: auto;
+      object-fit: cover;
+      border-radius: 4px;
+    }
+  }
+}

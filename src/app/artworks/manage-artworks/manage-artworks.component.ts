@@ -43,13 +43,13 @@ export class ManageArtworksComponent {
   ) { }
 
   get isAdmin (): boolean {
-    return this.authService.getUser()?.rol === 'ADMIN';
+    return this.authService.getUser()?.role === 'ADMIN';
   }
 
   filteredArtworks () {
     if ( !this.filterText.trim() ) return this.artworks;
     return this.artworks.filter( u =>
-      u.titulo.toLowerCase().includes( this.filterText.toLowerCase() )
+      u.title.toLowerCase().includes( this.filterText.toLowerCase() )
     );
   }
 
@@ -58,27 +58,27 @@ export class ManageArtworksComponent {
   }
 
   editArtwork ( artwork: Artwork ) {
-    this.router.navigate( ['manage/artworks', artwork.id_obra, 'edit'] );
+    this.router.navigate( ['manage/artworks', artwork.id, 'edit'] );
   }
 
   viewArtworkProfile ( artwork: Artwork ) {
-    this.router.navigate( ['artworks', artwork.id_obra, 'profile'] );
+    this.router.navigate( ['artworks', artwork.id, 'profile'] );
   }
 
   deleteArtwork ( artwork: Artwork ) {
     const dialogRef = this.dialog.open( ConfirmDialog, {
       data: {
         title: 'Eliminar Obra',
-        message: `¿Seguro que deseas eliminar a ${artwork.titulo}?`
+        message: `¿Seguro que deseas eliminar a ${artwork.title}?`
       }
     } );
 
     dialogRef.afterClosed().subscribe( confirmed => {
       if ( !confirmed ) return;
 
-      this.artworkService.deleteArtwork( artwork.id_obra ).subscribe( {
+      this.artworkService.deleteArtwork( artwork.id ).subscribe( {
         next: () => {
-          this.artworks = this.artworks.filter( u => u.id_obra !== artwork.id_obra );
+          this.artworks = this.artworks.filter( u => u.id !== artwork.id );
           this.dialog.open( SuccessDialog, { data: { message: 'Obra eliminada correctamente ✅' } } );
         },
         error: err => {

@@ -21,13 +21,14 @@ import { ArtworksComponent } from './artworks/artworks.component';
 import { ManageArtworksComponent } from './artworks/manage-artworks/manage-artworks.component';
 import { ArtworkFormComponent } from './artworks/artwork-form/artwork-form.component';
 import { ArtworkProfileComponent } from './artworks/artwork-profile/artwork-profile.component';
+import { PromotionsComponent } from './promotions/promotions.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' }, // '' redirige a 'home'
   { path: 'home', component: HomeComponent },         // ruta real para HomeComponent
   { path: 'profile', component: ProfileUserComponent },
   { path: 'profile/:id', component: ProfileUserComponent },
-  { path: 'register/user', component: RegisterUserComponent, canActivate: [registerGuard], },
+  { path: 'register/user', component: RegisterUserComponent },
   { path: 'manage/users', component: ManageUsersComponent, canActivate: [registerGuard], },
   { path: 'galleries', component: GalleriesComponent },
   { path: 'galleries/:id/profile', component: GalleryProfileComponent },
@@ -49,6 +50,7 @@ const routes: Routes = [
   { path: 'manage/artworks', component: ManageArtworksComponent, canActivate: [registerGuard] },
   { path: 'manage/artworks/new', component: ArtworkFormComponent, canActivate: [registerGuard], },
   { path: 'manage/artworks/:id/edit', component: ArtworkFormComponent, canActivate: [registerGuard], },
+  { path: 'promotions', component: PromotionsComponent },
   { path: '**', redirectTo: 'home' } // catch-all
 ];
 

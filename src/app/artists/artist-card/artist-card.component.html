@@ -1,14 +1,21 @@
-<div class="card">
-  <img [src]="artist.picture" [alt]="artist.nombre" class="card-img" />
+<div *ngIf="artist" class="card">
+  <img [src]="artist.picture" [alt]="artist.name" class="card-img" />
   <div class="card-body">
     <h3>
-      <a class="link" [routerLink]="['/artists', artist.id_artista, 'profile']">
-        {{ artist.nombre }}
+      <a class="link" [routerLink]="['/artists', artist.id, 'profile']">
+        {{ artist.name }}
       </a>
     </h3>
-    <p>{{ artist.biografia.length > 100 ? (artist.biografia | slice:0:100) + '...' :
-      artist.biografia }}</p>
+    <p>
+      {{ artist.biography && artist.biography.length > 100 ? (artist.biography | slice:0:100) +
+      '...' : artist.biography }}
+    </p>
+
+    <!-- Galería opcional -->
+    <p *ngIf="artist.gallery">Galería: {{ artist.gallery.name }}</p>
+    <p *ngIf="!artist.gallery">Galería: Sin galería</p>
   </div>
+
   <div *ngIf="isAdmin" class="actions">
     <button class="general-btn icon-btn" (click)="onView()">
       <mat-icon class="icon-left">search</mat-icon>

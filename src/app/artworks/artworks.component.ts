@@ -30,11 +30,11 @@ export class ArtworksComponent implements OnInit {
 
   get isAdmin (): boolean {
     const user = this.authService.getUser();
-    return user?.rol === 'ADMIN';
+    return user?.role === 'ADMIN';
   }
 
   viewArtworkProfile ( artwork: Artwork ) {
-    this.router.navigate( ['artworks', artwork.id_obra, 'profile'] );
+    this.router.navigate( ['artworks', artwork.id, 'profile'] );
   }
 
   goToManageArtworks () {
@@ -52,7 +52,7 @@ export class ArtworksComponent implements OnInit {
       .subscribe( {
         next: ( result: any ) => {
           console.log( 'this.artworks', this.artworks );
-          this.artworks = result?.data?.obras ?? [];
+          this.artworks = result?.data?.artworks ?? [];
           console.log( 'this.artworks2', this.artworks );
           this.loading = false;
         },
@@ -67,24 +67,24 @@ export class ArtworksComponent implements OnInit {
 
   editArtwork ( artwork: Artwork ) {
 
-    console.log( 'artwork.id_obra', artwork.id_obra );
-    this.router.navigate( ['manage/artworks', artwork.id_obra, 'edit'] );
+    console.log( 'artwork.id', artwork.id );
+    this.router.navigate( ['manage/artworks', artwork.id, 'edit'] );
   }
 
   deleteArtwork ( artwork: Artwork ) {
     const dialogRef = this.dialog.open( ConfirmDialog, {
       data: {
         title: 'Eliminar obra',
-        message: `¿Seguro que deseas eliminar a ${artwork.titulo}?`
+        message: `¿Seguro que deseas eliminar a ${artwork.title}?`
       }
     } );
 
     dialogRef.afterClosed().subscribe( confirmed => {
       if ( !confirmed ) return;
 
-      this.artworkService.deleteArtwork( artwork.id_obra ).subscribe( {
+      this.artworkService.deleteArtwork( artwork.id ).subscribe( {
         next: () => {
-          this.artworks = this.artworks.filter( u => u.id_obra !== artwork.id_obra );
+          this.artworks = this.artworks.filter( u => u.id !== artwork.id );
           this.dialog.open( SuccessDialog, { data: { message: 'Obra eliminada correctamente' } } );
         },
         error: err => {

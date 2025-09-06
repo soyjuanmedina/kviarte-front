@@ -44,15 +44,16 @@ export class GalleryFormComponent implements OnInit {
   galleryId?: number;
 
   form = this.fb.group( {
-    usuario_id: [null as number | null, Validators.required], // siempre el ID
-    nombre: ['', Validators.required],
+    id: [null as number | null, Validators.required], // siempre el ID
+    name: ['', Validators.required],
     email: ['', [Validators.email]],
-    direccion: [''],
-    ciudad: [''],
-    web: [''],
-    descripcion: [''],
-    telefono: [''],
-    picture: ['']
+    address: [''],
+    city: [''],
+    website: [''],
+    description: [''],
+    phone: [''],
+    picture: [''],
+    owner: ['']
   } );
 
   constructor (
@@ -67,7 +68,7 @@ export class GalleryFormComponent implements OnInit {
 
   get isAdmin (): boolean {
     const user = this.authService.getUser();
-    return user?.rol === 'ADMIN';
+    return user?.role === 'ADMIN';
   }
 
   ngOnInit () {
@@ -89,7 +90,7 @@ export class GalleryFormComponent implements OnInit {
     } else {
       const user = this.authService.getUser();
       if ( user ) {
-        this.form.patchValue( { usuario_id: user.id_usuario } ); // solo el ID
+        this.form.patchValue( { id: user.id } ); // solo el ID
       }
     }
   }
@@ -100,18 +101,18 @@ export class GalleryFormComponent implements OnInit {
       variables: { id }
     } ).valueChanges.subscribe( {
       next: ( result: any ) => {
-        if ( result?.data?.galeria ) {
-          const galeria = result.data.galeria;
+        if ( result?.data?.gallery ) {
+          const gallery = result.data.gallery;
           this.form.patchValue( {
-            nombre: galeria.nombre,
-            descripcion: galeria.descripcion,
-            direccion: galeria.direccion,
-            ciudad: galeria.ciudad,
-            web: galeria.web,
-            email: galeria.email,
-            telefono: galeria.telefono,
-            picture: galeria.picture,
-            usuario_id: galeria.propietario?.id_usuario // solo el ID
+            name: gallery.name,
+            description: gallery.description,
+            address: gallery.address,
+            city: gallery.city,
+            website: gallery.website,
+            email: gallery.email,
+            phone: gallery.phone,
+            picture: gallery.picture,
+            owner: gallery.owner?.id // solo el ID
           } );
         }
         if ( this.isEdit ) {
@@ -132,15 +133,15 @@ export class GalleryFormComponent implements OnInit {
     this.errorMessage = '';
 
     const payload = {
-      nombre: this.form.value.nombre,
-      descripcion: this.form.value.descripcion ?? null,
-      direccion: this.form.value.direccion ?? null,
-      ciudad: this.form.value.ciudad ?? null,
-      web: this.form.value.web ?? null,
-      telefono: this.form.value.telefono ?? null,
+      name: this.form.value.name,
+      description: this.form.value.description ?? null,
+      address: this.form.value.address ?? null,
+      city: this.form.value.city ?? null,
+      website: this.form.value.website ?? null,
+      phone: this.form.value.phone ?? null,
       email: this.form.value.email ?? null,
       picture: this.form.value.picture ?? null,
-      usuario_id: this.form.value.usuario_id // solo el ID, obligatorio
+      id: this.form.value.id // solo el ID, obligatorio
     };
 
     let variables: any;

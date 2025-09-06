@@ -9,25 +9,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Router, ActivatedRoute, RouterModule } from '@angular/router';
 import { Apollo } from 'apollo-angular';
 import { GET_ARTWORK } from '../../../graphql/artworks';
-import { Exhibition } from '../../exhibitions/exhibition-card/exhibition-card.component';
-import { Artist } from '../../core/services/artist.service';
-import { Gallery } from '../../core/services/gallery.service';
-
-
-export interface Artwork {
-  id_obra: number;
-  titulo: string;
-  id_artista: number;
-  id_galeria: number;
-  id_exposicion?: number | null;
-  descripcion?: string | null;
-  estilo?: string | null;
-  picture?: string | null;
-  disponible?: boolean;
-  artist?: Artist | null;
-  galeria?: Gallery | null;
-  exposicion?: Exhibition | null;
-}
+import { Artwork } from '../../core/services/artwork.service';
 
 @Component( {
   selector: 'app-artwork-profile',
@@ -70,7 +52,7 @@ export class ArtworkProfileComponent implements OnInit {
       variables: { id }
     } ).valueChanges.subscribe( {
       next: ( result: any ) => {
-        this.artwork = result?.data?.obra;
+        this.artwork = result?.data?.artwork;
         this.loading = false;
         console.log( this.artwork );
       },

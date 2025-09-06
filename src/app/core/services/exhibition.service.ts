@@ -2,9 +2,19 @@ import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import { map, Observable } from 'rxjs';
 import { GET_EXHIBITION, GET_EXHIBITIONS, DELETE_EXHIBITION } from '../../../graphql/exhibitions';
-import { Exhibition } from '../../exhibitions/exhibition-card/exhibition-card.component';
+import { Gallery } from './gallery.service';
+import { Artist } from './artist.service';
+import { Artwork } from './artwork.service';
 
-
+export interface Exhibition {
+  id: number;
+  title: string;
+  description?: string | null;
+  picture?: string | null;
+  gallery?: Gallery | null;
+  artist?: Artist | null;
+  artworks?: Artwork[] | null;
+}
 
 @Injectable( {
   providedIn: 'root'

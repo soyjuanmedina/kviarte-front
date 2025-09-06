@@ -5,13 +5,13 @@ import { Gallery } from './gallery.service';
 import { DELETE_ARTIST, GET_ARTIST, GET_ARTISTS } from '../../../graphql/artists';
 
 export interface Artist {
-  id_artista: number;
-  nombre: string;
-  biografia: string;
-  estilo: string;
-  id_galeria: number;
-  picture?: string;
-  galeria?: Gallery;
+  id: number;
+  name: string;
+  biography?: string; // opcional, puede ser null
+  style?: string;     // opcional
+  picture?: string;   // opcional
+  gallery_id?: number; // opcional, puede ser null si no tiene galería
+  gallery?: Gallery | null; // opcional y puede ser null
 }
 
 @Injectable( {

@@ -16,7 +16,7 @@ export const registerGuard: CanActivateFn = () => {
   }
 
   // Si el usuario no es ADMIN, redirigir a home
-  if ( user.rol !== 'ADMIN' ) {
+  if ( user.role !== 'ADMIN' ) {
     router.navigate( ['/home'] );
     return false;
   }

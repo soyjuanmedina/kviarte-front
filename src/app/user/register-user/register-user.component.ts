@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { REGISTER_USER } from '../../../graphql/users';
+import { REGISTER_USER } from '../../../graphql/auth';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { Apollo, gql } from 'apollo-angular';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -29,10 +29,10 @@ export class RegisterUserComponent {
   errorMessage = '';
 
   form = this.fb.group( {
-    nombre: ['', Validators.required],
+    name: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength( 6 )]],
-    rol: ['USER', Validators.required], // valor por defecto
+    role: ['USER', Validators.required], // valor por defecto
   } );
 
   constructor ( private fb: FormBuilder, private apollo: Apollo, private modalService: ModalService,
@@ -41,7 +41,7 @@ export class RegisterUserComponent {
 
   get isAdmin (): boolean {
     const user = this.authService.getUser();
-    return user?.rol === 'ADMIN';
+    return user?.role === 'ADMIN';
   }
 
   goToProfile () {
@@ -61,7 +61,7 @@ export class RegisterUserComponent {
       next: () => {
         this.loading = false;
         this.registered = true;
-        this.form.reset( { rol: 'USER' } );
+        this.form.reset( { role: 'USER' } );
 
         // Abrir modal después de 3 segundos
         if ( !this.isAdmin ) {

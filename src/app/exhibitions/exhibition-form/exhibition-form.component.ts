@@ -12,8 +12,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { SuccessDialog } from '../../shared/components/success-dialog/success-dialog.component'
 import { Gallery, GalleryService } from '../../core/services/gallery.service';
-import { Artist, ArtistService } from '../../core/services/artist.service';
 import { CREATE_EXHIBITION, GET_EXHIBITION, UPDATE_EXHIBITION } from '../../../graphql/exhibitions';
+import { Artist, ArtistService } from '../../core/services/artist.service';
 
 @Component( {
   selector: 'app-exhibition-form',
@@ -81,11 +81,11 @@ export class ExhibitionFormComponent implements OnInit {
         const exhibition = result?.data?.exposicion;
         if ( exhibition ) {
           this.form.patchValue( {
-            titulo: exhibition.titulo,
-            descripcion: exhibition.descripcion,
+            titulo: exhibition.title,
+            descripcion: exhibition.description,
             picture: exhibition.picture,
             galeria_id: exhibition.galeria?.id_galeria ?? null, // asigna el ID correcto
-            artist_id: exhibition.artist?.id_artista ?? null     // asigna el ID correcto
+            artist_id: exhibition.artist?.id ?? null     // asigna el ID correcto
           } );
         }
       },
@@ -109,7 +109,7 @@ export class ExhibitionFormComponent implements OnInit {
       descripcion: this.form.value.descripcion ?? null,
       picture: this.form.value.picture ?? null,
       id_galeria: +this.form.value.galeria_id!,
-      id_artista: +this.form.value.artist_id!,
+      id: +this.form.value.artist_id!,
     };
 
     // Variables para la mutation

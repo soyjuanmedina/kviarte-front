@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { LOGIN_USER } from '../../../../graphql/users';
+import { LOGIN_USER } from '../../../../graphql/auth';
 import { Apollo } from 'apollo-angular';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
@@ -38,12 +38,17 @@ export class HeaderComponent {
   }
 
   login () {
+    console.log( 'Login vars:', {
+      input: {
+        email: this.email,
+        password: this.password
+      }
+    } );
     this.apollo.mutate( {
       mutation: LOGIN_USER,
       variables: { input: { email: this.email, password: this.password } }
     } ).subscribe( {
       next: ( res: any ) => {
-
         localStorage.setItem( 'token', res.data.login.token );
         localStorage.setItem( 'login', JSON.stringify( res.data.login ) );
         this.token = res.data.login.token;

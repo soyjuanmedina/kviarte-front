@@ -28,7 +28,7 @@ export class HomeComponent {
       .valueChanges
       .subscribe( {
         next: ( result: any ) => {
-          this.galleries = result?.data?.galerias ?? [];
+          this.galleries = result?.data?.galleries ?? [];
           this.loading = false;
         },
         error: ( err ) => {

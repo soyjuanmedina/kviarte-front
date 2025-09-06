@@ -16,21 +16,21 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrls: ['./artist-card.component.scss']
 } )
 export class ArtistCardComponent {
-  @Input() artist!: Artist;
+  @Input() artist?: Artist; // ✅ Puede ser undefined
   @Input() isAdmin: boolean = false;
   @Output() view = new EventEmitter<Artist>();
   @Output() edit = new EventEmitter<Artist>();
   @Output() delete = new EventEmitter<Artist>();
 
   onView () {
-    this.view.emit( this.artist );
+    if ( this.artist ) this.view.emit( this.artist );
   }
 
   onEdit () {
-    this.edit.emit( this.artist );
+    if ( this.artist ) this.edit.emit( this.artist );
   }
 
   onDelete () {
-    this.delete.emit( this.artist );
+    if ( this.artist ) this.delete.emit( this.artist );
   }
 }

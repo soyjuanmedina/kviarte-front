@@ -16,10 +16,10 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   styleUrl: './gallery-profile.component.scss'
 } )
 export class GalleryProfileComponent implements OnInit {
-  gallery?: Gallery = {
-    id_galeria: 0,
-    nombre: '',
-    exposiciones: [],
+  gallery: Gallery = {
+    id: 0,
+    name: '',
+    exhibitions: [],
     artists: [],
   };
   loading = true;

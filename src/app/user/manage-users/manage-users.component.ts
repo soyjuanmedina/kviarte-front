@@ -40,12 +40,12 @@ export class ManageUsersComponent {
   ) { }
 
   get isAdmin (): boolean {
-    return this.authService.getUser()?.rol === 'ADMIN';
+    return this.authService.getUser()?.role === 'ADMIN';
   }
 
   ngOnInit () {
     if ( this.isAdmin ) {
-      this.usersService.getUsuarios().subscribe( {
+      this.usersService.getUsers().subscribe( {
         next: users => ( this.users = users ),
         error: err => {
           console.error( 'Error cargando usuarios', err );
@@ -58,26 +58,26 @@ export class ManageUsersComponent {
   filteredUsers () {
     if ( !this.filterText.trim() ) return this.users;
     return this.users.filter( u =>
-      u.nombre.toLowerCase().includes( this.filterText.toLowerCase() )
+      u.name.toLowerCase().includes( this.filterText.toLowerCase() )
     );
   }
 
   viewProfile ( user: User ) {
-    this.router.navigate( ['/profile', user.id_usuario] );
+    this.router.navigate( ['/profile', user.id] );
   }
 
   deleteUser ( user: User ) {
     this.modalService
       .openConfirm( {
         title: 'Eliminar Usuario',
-        message: `¿Seguro que deseas eliminar a ${user.nombre}?`
+        message: `¿Seguro que deseas eliminar a ${user.name}?`
       } )
       .subscribe( confirmed => {
         if ( !confirmed ) return;
 
-        this.usersService.deleteUser( user.id_usuario ).subscribe( {
+        this.usersService.deleteUser( user.id ).subscribe( {
           next: () => {
-            this.users = this.users.filter( u => u.id_usuario !== user.id_usuario );
+            this.users = this.users.filter( u => u.id !== user.id );
           },
           error: err => {
             console.error( 'Error eliminando usuario', err );

@@ -1,0 +1,20 @@
+<div *ngIf="user?.role === 'ADMIN'" class="admin-panel">
+
+  <button class="general-btn" (click)="goToManagePromotions()">
+    Administrar Promociones
+  </button>
+
+  <button class="general-btn add-btn" (click)="addPromotion()">
+    Añadir Promociones
+  </button>
+
+</div>
+
+<h2 class="title">Promociones</h2>
+
+<div class="promotion-grid">
+  <app-promotion-card *ngFor="let promotion of promotions" [promotion]="promotion"
+    [isAdmin]="isAdmin" (edit)="editPromotion($event)" (delete)="deletePromotion($event)"
+    (view)="viewPromotionProfile($event)">
+  </app-promotion-card>
+</div>

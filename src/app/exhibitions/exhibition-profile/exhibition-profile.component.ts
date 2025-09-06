@@ -6,8 +6,7 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { Exhibition } from '../exhibition-card/exhibition-card.component';
-import { ExhibitionService } from '../../core/services/exhibition.service';
+import { Exhibition, ExhibitionService } from '../../core/services/exhibition.service';
 
 @Component( {
   selector: 'app-exhibition-profile',
@@ -18,9 +17,9 @@ import { ExhibitionService } from '../../core/services/exhibition.service';
 } )
 export class ExhibitionProfileComponent implements OnInit {
   exhibition: Exhibition = {
-    id_exposicion: 0,
-    titulo: '',
-    obras: []
+    id: 0,
+    title: '',
+    artworks: []
   };
   loading = true;
   error?: string;

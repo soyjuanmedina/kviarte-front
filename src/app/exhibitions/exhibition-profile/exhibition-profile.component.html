@@ -8,20 +8,20 @@
         <!-- Contenido de la exposición (izquierda) -->
         <div class="exhibition-info">
           <mat-card-header>
-            <mat-card-title>{{ exhibition.titulo }}</mat-card-title>
+            <mat-card-title>{{ exhibition.title }}</mat-card-title>
             <mat-card-subtitle>
-              {{ exhibition.artist?.nombre }}
+              {{ exhibition.artist?.name }}
             </mat-card-subtitle>
           </mat-card-header>
 
           <mat-card-content>
-            <p *ngIf="exhibition.descripcion">{{ exhibition.descripcion }}</p>
+            <p *ngIf="exhibition.description">{{ exhibition.description }}</p>
           </mat-card-content>
         </div>
 
         <!-- Imagen de la exposición (derecha) -->
         <div class="image-wrapper" *ngIf="exhibition.picture">
-          <img [src]="exhibition.picture" [alt]="exhibition.titulo" class="exhibition-image">
+          <img [src]="exhibition.picture" [alt]="exhibition.title" class="exhibition-image">
         </div>
       </div>
     </mat-card>
@@ -34,8 +34,8 @@
           <mat-list-item>
             <div class="icon-text">
               <mat-icon color="accent">person</mat-icon>
-              <a class="link" [routerLink]="['/artists', artist.id_artista, 'profile']">
-                {{ artist.nombre }}
+              <a class="link" [routerLink]="['/artists', artist.id, 'profile']">
+                {{ artist.name }}
               </a>
             </div>
           </mat-list-item>
@@ -44,15 +44,15 @@
     </ng-container>
 
     <!-- Bloque de galería -->
-    <ng-container *ngIf="exhibition.galeria as gallery">
+    <ng-container *ngIf="exhibition.gallery as gallery">
       <mat-card class="exhibition-card">
         <mat-card-title>Galería</mat-card-title>
         <mat-list>
           <mat-list-item>
             <div class="icon-text">
               <mat-icon color="accent">collections</mat-icon>
-              <a class="link" [routerLink]="['/galleries', gallery.id_galeria, 'profile']">
-                {{ gallery.nombre }}
+              <a class="link" [routerLink]="['/galleries', gallery.id, 'profile']">
+                {{ gallery.name }}
               </a>
             </div>
           </mat-list-item>
@@ -61,12 +61,12 @@
     </ng-container>
 
     <!-- Bloque de obras -->
-    <ng-container *ngIf="exhibition.obras.length > 0; else noObras">
+    <ng-container *ngIf="(exhibition?.artworks?.length ?? 0) > 0; else noObras">
       <mat-card class="exhibition-card">
         <mat-card-title>Obras</mat-card-title>
         <mat-list>
-          <mat-list-item *ngFor="let obra of exhibition.obras">
-            🎨 {{ obra.titulo }}
+          <mat-list-item *ngFor="let artwork of exhibition?.artworks">
+            🎨 {{ artwork.title }}
           </mat-list-item>
         </mat-list>
       </mat-card>

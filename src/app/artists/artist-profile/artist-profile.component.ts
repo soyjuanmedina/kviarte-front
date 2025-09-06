@@ -18,12 +18,12 @@ import { GalleryService } from '../../core/services/gallery.service';
 } )
 export class ArtistProfileComponent implements OnInit {
   artist?: Artist = {
-    id_artista: 0,
-    nombre: '',
-    biografia: '',
-    estilo: '',
-    id_galeria: 0,
-    galeria: undefined
+    id: 0,
+    name: '',
+    biography: '',
+    style: '',
+    gallery_id: 0,
+    gallery: undefined
   };
   loading = true;
   error?: string;

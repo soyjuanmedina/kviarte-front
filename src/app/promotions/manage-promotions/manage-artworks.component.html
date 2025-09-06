@@ -1,0 +1,33 @@
+<div class="artworks-container" *ngIf="isAdmin; else notAllowed">
+
+  <!-- Barra superior -->
+  <div class="top-bar">
+    <div class="filter-wrapper">
+      <mat-form-field appearance="outline" class="filter-input">
+        <mat-label>Buscar Obra</mat-label>
+        <input matInput type="text" [(ngModel)]="filterText" placeholder="Escribe un nombre..." />
+      </mat-form-field>
+    </div>
+    <button class="general-btn add-btn" (click)="addArtwork()">
+      Añadir Obra
+    </button>
+  </div>
+
+  <!-- Error -->
+  <div *ngIf="errorMessage" class="error-msg">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Listado de obras -->
+  <div class="artworks-list">
+    <app-artwork-item *ngFor="let artwork of filteredArtworks()" [artwork]="artwork"
+      (view)="viewArtworkProfile($event)" (edit)="editArtwork($event)"
+      (delete)="deleteArtwork($event)">
+    </app-artwork-item>
+  </div>
+
+</div>
+
+<ng-template #notAllowed>
+  <p>No tienes permisos para gestionar usuarios 🚫</p>
+</ng-template>

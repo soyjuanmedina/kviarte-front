@@ -9,8 +9,8 @@
       <mat-form-field appearance="outline" *ngIf="isAdmin">
         <mat-label>Propietario</mat-label>
         <mat-select formControlName="usuario_id" [disabled]="isEdit" required>
-          <mat-option *ngFor="let user of galleryUsers" [value]="user.id_usuario">
-            {{ user.nombre }} ({{ user.email }})
+          <mat-option *ngFor="let user of galleryUsers" [value]="user.id">
+            {{ user.name }} ({{ user.email }})
           </mat-option>
         </mat-select>
       </mat-form-field>
@@ -18,13 +18,13 @@
       <!-- Nombre -->
       <mat-form-field appearance="outline">
         <mat-label>Nombre de la galería</mat-label>
-        <input matInput formControlName="nombre" required />
+        <input matInput formControlName="name" required />
       </mat-form-field>
 
       <!-- Descripción (ocupa todo el ancho) -->
       <mat-form-field appearance="outline" class="span-2">
         <mat-label>Descripción</mat-label>
-        <textarea matInput formControlName="descripcion"></textarea>
+        <textarea matInput formControlName="description"></textarea>
       </mat-form-field>
 
       <!-- Contenedor flex para input + preview -->
@@ -44,19 +44,19 @@
       <!-- Dirección -->
       <mat-form-field appearance="outline">
         <mat-label>Dirección</mat-label>
-        <input matInput formControlName="direccion" />
+        <input matInput formControlName="address" />
       </mat-form-field>
 
       <!-- Ciudad -->
       <mat-form-field appearance="outline">
         <mat-label>Ciudad</mat-label>
-        <input matInput formControlName="ciudad" />
+        <input matInput formControlName="city" />
       </mat-form-field>
 
       <!-- Web -->
       <mat-form-field appearance="outline">
         <mat-label>Web</mat-label>
-        <input matInput formControlName="web" />
+        <input matInput formControlName="website" />
       </mat-form-field>
 
       <!-- Email -->
@@ -68,7 +68,7 @@
       <!-- Teléfono -->
       <mat-form-field appearance="outline">
         <mat-label>Teléfono</mat-label>
-        <input matInput formControlName="telefono" />
+        <input matInput formControlName="phone" />
       </mat-form-field>
 
       <!-- Botón -->

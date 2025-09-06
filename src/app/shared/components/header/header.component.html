@@ -6,7 +6,7 @@
   <div class="header-right">
     <!-- Botones desktop -->
     <div class="actions desktop-only">
-      <button *ngIf="!token" class="login-btn" routerLink="/register">Registro</button>
+      <button *ngIf="!token" class="login-btn" routerLink="/register/user">Registro</button>
       <button *ngIf="!token" class="login-btn" (click)="openLoginModal()">Login</button>
       <button *ngIf="token" class="login-btn" routerLink="/profile">Perfil</button>
       <button *ngIf="token" class="login-btn" (click)="logout()">Logout</button>
@@ -28,6 +28,8 @@
         <a routerLink="/exhibitions" routerLinkActive="active"
           (click)="menuOpen=false">Exposiciones</a>
         <a routerLink="/artworks" routerLinkActive="active" (click)="menuOpen=false">Obras</a>
+        <a routerLink="/promotions" routerLinkActive="active"
+          (click)="menuOpen=false">Promociones</a>
 
         <!-- Botones mobile dentro del menú -->
         <div class="actions mobile-only">

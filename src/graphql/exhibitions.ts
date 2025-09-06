@@ -3,29 +3,29 @@ import { gql } from 'apollo-angular';
 // Obtener todas las exposiciones
 export const GET_EXHIBITIONS = gql`
   query GetExhibitions {
-    exposiciones {
-      id_exposicion
-      titulo
-      descripcion
+    exhibitions {
+      id
+      title
+      description
       picture
-      galeria {
-        id_galeria
-        nombre
-        ciudad
+      gallery {
+        id
+        name
+        city
       }
       artist {
-        id_artista
-        nombre
+        id
+        name
       }
-      obras {
-        id_obra
-        titulo
-        descripcion
-        estilo
+      artworks {
+        id
+        title
+        description
+        style
         picture
         artist {
-          id_artista
-          nombre
+          id
+          name
         }
       }
     }
@@ -35,29 +35,29 @@ export const GET_EXHIBITIONS = gql`
 // Obtener una exposición concreta
 export const GET_EXHIBITION = gql`
   query GetExhibition($id: Int!) {
-    exposicion(id: $id) {
-      id_exposicion
-      titulo
-      descripcion
+    exhibition(id: $id) {
+      id
+      title
+      description
       picture
-      galeria {
-        id_galeria
-        nombre
-        ciudad
+      gallery {
+        id
+        name
+        city
       }
       artist {
-        id_artista
-        nombre
+        id
+        name
       }
-      obras {
-        id_obra
-        titulo
-        descripcion
-        estilo
+      artworks {
+        id
+        title
+        description
+        style
         picture
         artist {
-          id_artista
-          nombre
+          id
+          name
         }
       }
     }
@@ -66,19 +66,19 @@ export const GET_EXHIBITION = gql`
 
 // Crear exposición
 export const CREATE_EXHIBITION = gql`
-  mutation CreateExhibition($data: CreateExposicionInput!) {
-    createExposicion(data: $data) {
-      id_exposicion
-      titulo
-      descripcion
+  mutation CreateExhibition($data: CreateExhibitionInput!) {
+    createExhibition(data: $data) {
+      id
+      title
+      description
       picture
-      galeria {
-        id_galeria
-        nombre
+      gallery {
+        id
+        name
       }
       artist {
-        id_artista
-        nombre
+        id
+        name
       }
     }
   }
@@ -86,19 +86,19 @@ export const CREATE_EXHIBITION = gql`
 
 // Actualizar exposición
 export const UPDATE_EXHIBITION = gql`
-  mutation UpdateExhibition($id: Int!, $data: CreateExposicionInput!) {
-    updateExposicion(id: $id, data: $data) {
-      id_exposicion
-      titulo
-      descripcion
+  mutation UpdateExhibition($id: Int!, $data: UpdateExhibitionInput!) {
+    updateExhibition(id: $id, data: $data) {
+      id
+      title
+      description
       picture
-      galeria {
-        id_galeria
-        nombre
+      gallery {
+        id
+        name
       }
       artist {
-        id_artista
-        nombre
+        id
+        name
       }
     }
   }

@@ -13,8 +13,7 @@ import { ConfirmDialog } from '../../shared/components/confirm-dialog/confirm-di
 import { SuccessDialog } from '../../shared/components/success-dialog/success-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ExhibitionItemComponent } from './exhibition-item/exhibition-item.component';
-import { Exhibition } from '../exhibition-card/exhibition-card.component';
-import { ExhibitionService } from '../../core/services/exhibition.service';
+import { Exhibition, ExhibitionService } from '../../core/services/exhibition.service';
 
 @Component( {
   selector: 'app-manage-exhibition',
@@ -44,13 +43,13 @@ export class ManageExhibitionsComponent {
   ) { }
 
   get isAdmin (): boolean {
-    return this.authService.getUser()?.rol === 'ADMIN';
+    return this.authService.getUser()?.role === 'ADMIN';
   }
 
   filteredExhibitions () {
     if ( !this.filterText.trim() ) return this.exhibitions;
     return this.exhibitions.filter( u =>
-      u.titulo.toLowerCase().includes( this.filterText.toLowerCase() )
+      u.title.toLowerCase().includes( this.filterText.toLowerCase() )
     );
   }
 
@@ -59,27 +58,27 @@ export class ManageExhibitionsComponent {
   }
 
   editExhibition ( exhibition: Exhibition ) {
-    this.router.navigate( ['manage/exhibitions', exhibition.id_exposicion, 'edit'] );
+    this.router.navigate( ['manage/exhibitions', exhibition.id, 'edit'] );
   }
 
   viewExhibitionProfile ( exhibition: Exhibition ) {
-    this.router.navigate( ['exhibitions', exhibition.id_exposicion, 'profile'] );
+    this.router.navigate( ['exhibitions', exhibition.id, 'profile'] );
   }
 
   deleteExhibition ( exhibition: Exhibition ) {
     const dialogRef = this.dialog.open( ConfirmDialog, {
       data: {
         title: 'Eliminar Exposición',
-        message: `¿Seguro que deseas eliminar a ${exhibition.titulo}?`
+        message: `¿Seguro que deseas eliminar a ${exhibition.title}?`
       }
     } );
 
     dialogRef.afterClosed().subscribe( confirmed => {
       if ( !confirmed ) return;
 
-      this.exhibitionService.deleteExhibition( exhibition.id_exposicion ).subscribe( {
+      this.exhibitionService.deleteExhibition( exhibition.id ).subscribe( {
         next: () => {
-          this.exhibitions = this.exhibitions.filter( u => u.id_exposicion !== exhibition.id_exposicion );
+          this.exhibitions = this.exhibitions.filter( u => u.id !== exhibition.id );
           this.dialog.open( SuccessDialog, { data: { message: 'Exposición eliminada correctamente ✅' } } );
         },
         error: err => {

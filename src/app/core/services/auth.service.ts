@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 export interface User {
-  id_usuario: number;
-  nombre: string;
+  id: number;
+  name: string;
   email: string;
-  rol: string;
+  role: string;
 }
 
 @Injectable( {
