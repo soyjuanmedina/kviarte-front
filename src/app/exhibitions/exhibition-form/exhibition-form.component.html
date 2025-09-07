@@ -7,13 +7,13 @@
       <!-- Título -->
       <mat-form-field appearance="outline" class="span-2">
         <mat-label>Título de la exposición</mat-label>
-        <input matInput formControlName="titulo" required />
+        <input matInput formControlName="title" required />
       </mat-form-field>
 
       <!-- Descripción -->
       <mat-form-field appearance="outline" class="span-2">
         <mat-label>Descripción</mat-label>
-        <textarea matInput formControlName="descripcion"></textarea>
+        <textarea matInput formControlName="description"></textarea>
       </mat-form-field>
 
       <!-- Imagen -->
@@ -30,7 +30,7 @@
       <!-- Galería -->
       <mat-form-field appearance="outline">
         <mat-label>Galería</mat-label>
-        <mat-select formControlName="galeria_id">
+        <mat-select formControlName="gallery_id">
           <mat-option *ngFor="let gallery of galleries" [value]="gallery.id">
             {{ gallery.name }}
           </mat-option>
@@ -40,7 +40,7 @@
       <!-- Artista -->
       <mat-form-field appearance="outline">
         <mat-label>Artista</mat-label>
-        <mat-select formControlName="id">
+        <mat-select formControlName="artist_id">
           <mat-option *ngFor="let artist of artists" [value]="artist.id">
             {{ artist.name }}
           </mat-option>

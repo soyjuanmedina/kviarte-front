@@ -7,11 +7,11 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { ArtistItemComponent } from './artist-item/artist-item.component';
-import { Artist, ArtistService } from '../../core/services/artist.service';
 import { AuthService } from '../../core/services/auth.service';
 import { ConfirmDialog } from '../../shared/components/confirm-dialog/confirm-dialog.component';
 import { SuccessDialog } from '../../shared/components/success-dialog/success-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { Artist, ArtistService } from '../../core/services/artist.service';
 
 @Component( {
   selector: 'app-manage-artist',
@@ -59,7 +59,6 @@ export class ManageArtistsComponent {
   }
 
   viewArtistProfile ( artist: Artist ) {
-    console.log( 'artist.id_artist', artist.id, typeof artist.id );
     this.router.navigate( ['artists', artist.id, 'profile'] );
   }
 
@@ -90,7 +89,7 @@ export class ManageArtistsComponent {
   ngOnInit () {
     if ( this.isAdmin ) {
       this.artistService.getArtists().subscribe( {
-        next: artistas => ( this.artists = artistas ),
+        next: artists => ( this.artists = artists ),
         error: err => {
           console.error( 'Error cargando artistas', err );
           this.errorMessage = 'No se pudieron cargar los artistas ❌';

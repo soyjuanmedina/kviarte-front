@@ -4,7 +4,7 @@ import { HomeComponent } from './home/home.component';
 import { ExhibitionsComponent } from './exhibitions/exhibitions.component';
 import { ProfileUserComponent } from './user/profile-user/profile-user.component';
 import { RegisterUserComponent } from './user/register-user/register-user.component';
-import { registerGuard } from './guards/auth.guard';
+import { profileGuard, registerGuard } from './guards/auth.guard';
 import { ArtistFormComponent } from './artists/artist-form/artist-form.component';
 import { ManageUsersComponent } from './user/manage-users/manage-users.component';
 import { ManageGalleriesComponent } from './galleries/manage-galleries/manage-galleries.component';
@@ -22,12 +22,15 @@ import { ManageArtworksComponent } from './artworks/manage-artworks/manage-artwo
 import { ArtworkFormComponent } from './artworks/artwork-form/artwork-form.component';
 import { ArtworkProfileComponent } from './artworks/artwork-profile/artwork-profile.component';
 import { PromotionsComponent } from './promotions/promotions.component';
+import { PromotionProfileComponent } from './promotions/promotion-profile/promotion-profile.component';
+import { ManagePromotionsComponent } from './promotions/manage-promotions/manage-promotions.component';
+import { PromotionFormComponent } from './promotions/promotion-form/promotion-form.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' }, // '' redirige a 'home'
   { path: 'home', component: HomeComponent },         // ruta real para HomeComponent
-  { path: 'profile', component: ProfileUserComponent },
-  { path: 'profile/:id', component: ProfileUserComponent },
+  { path: 'profile', component: ProfileUserComponent, canActivate: [profileGuard] },
+  { path: 'profile/:id', component: ProfileUserComponent, canActivate: [profileGuard] },
   { path: 'register/user', component: RegisterUserComponent },
   { path: 'manage/users', component: ManageUsersComponent, canActivate: [registerGuard], },
   { path: 'galleries', component: GalleriesComponent },
@@ -51,6 +54,10 @@ const routes: Routes = [
   { path: 'manage/artworks/new', component: ArtworkFormComponent, canActivate: [registerGuard], },
   { path: 'manage/artworks/:id/edit', component: ArtworkFormComponent, canActivate: [registerGuard], },
   { path: 'promotions', component: PromotionsComponent },
+  { path: 'promotions/:id/profile', component: PromotionProfileComponent },
+  { path: 'manage/promotions', component: ManagePromotionsComponent, canActivate: [registerGuard] },
+  { path: 'manage/promotions/new', component: PromotionFormComponent, canActivate: [registerGuard], },
+  { path: 'manage/promotions/:id/edit', component: PromotionFormComponent, canActivate: [registerGuard], },
   { path: '**', redirectTo: 'home' } // catch-all
 ];
 

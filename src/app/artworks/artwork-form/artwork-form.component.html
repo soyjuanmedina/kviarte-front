@@ -7,7 +7,7 @@
       <!-- Título -->
       <mat-form-field appearance="outline" class="span-2">
         <mat-label>Título de la Obra</mat-label>
-        <input matInput formControlName="titulo" required />
+        <input matInput formControlName="title" required />
         <mat-error *ngIf="form.get('titulo')?.hasError('required')">
           El título es obligatorio
         </mat-error>
@@ -16,7 +16,7 @@
       <!-- Descripción -->
       <mat-form-field appearance="outline" class="span-2">
         <mat-label>Descripción</mat-label>
-        <textarea matInput formControlName="descripcion"></textarea>
+        <textarea matInput formControlName="description"></textarea>
       </mat-form-field>
 
       <!-- Imagen -->
@@ -33,12 +33,12 @@
       <!-- Galería (obligatoria) -->
       <mat-form-field appearance="outline">
         <mat-label>Galería</mat-label>
-        <mat-select formControlName="galeria_id" required>
+        <mat-select formControlName="gallery_id" required>
           <mat-option *ngFor="let gallery of galleries" [value]="gallery.id">
             {{ gallery.name }}
           </mat-option>
         </mat-select>
-        <mat-error *ngIf="form.get('galeria_id')?.hasError('required')">
+        <mat-error *ngIf="form.get('gallery_id')?.hasError('required')">
           Debes seleccionar una galería
         </mat-error>
       </mat-form-field>
@@ -46,22 +46,23 @@
       <!-- Exposición (opcional, filtrada por galería) -->
       <mat-form-field appearance="outline">
         <mat-label>Exposición</mat-label>
-        <mat-select formControlName="exposicion_id">
+        <mat-select formControlName="exhibition_id">
           <mat-option [value]="null">Ninguna</mat-option>
           <mat-option *ngFor="let exhibition of filteredExhibitions" [value]="exhibition.id">
             {{ exhibition.title }}
           </mat-option>
         </mat-select>
-        <mat-hint *ngIf="!form.get('exposicion_id')?.value">
+        <mat-hint *ngIf="!form.get('exhibition_id')?.value">
           Esta obra no pertenece a ninguna exposición
         </mat-hint>
       </mat-form-field>
 
-      <!-- Artista (obligatorio) -->
+      <!-- Artista (obligatorio, depende de galería) -->
       <mat-form-field appearance="outline">
         <mat-label>Artista</mat-label>
-        <mat-select formControlName="artist_id" required>
-          <mat-option *ngFor="let artist of artists" [value]="artist.id">
+        <mat-select formControlName="artist_id" required
+          [disabled]="!form.get('gallery_id')?.value">
+          <mat-option *ngFor="let artist of filteredArtists" [value]="artist.id">
             {{ artist.name }}
           </mat-option>
         </mat-select>

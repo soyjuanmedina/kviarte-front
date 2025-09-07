@@ -54,7 +54,6 @@ export class ArtworkProfileComponent implements OnInit {
       next: ( result: any ) => {
         this.artwork = result?.data?.artwork;
         this.loading = false;
-        console.log( this.artwork );
       },
       error: ( err ) => {
         console.error( err );

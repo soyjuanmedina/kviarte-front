@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { ConfirmDialog } from '../../shared/components/confirm-dialog/confirm-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 export interface ConfirmModalData {
   title: string;
@@ -15,6 +17,8 @@ export class ModalService {
   private loginModalSubject = new BehaviorSubject<boolean>( false );
   loginModal$ = this.loginModalSubject.asObservable();
 
+  constructor ( private dialog: MatDialog ) { }
+
   openLogin () {
     this.loginModalSubject.next( true );
   }
@@ -25,16 +29,12 @@ export class ModalService {
 
   // Mostrar el modal y devolver Observable
   openConfirm ( data: ConfirmModalData ): Observable<boolean> {
-    this.confirmDataSubject.next( data );
-
-    return new Observable<boolean>( observer => {
-      const subscription = this.confirmSubject.subscribe( confirmed => {
-        observer.next( confirmed );
-        observer.complete();
-        subscription.unsubscribe();
-        this.confirmDataSubject.next( null );
-      } );
+    const dialogRef = this.dialog.open( ConfirmDialog, {
+      width: '400px',
+      data
     } );
+
+    return dialogRef.afterClosed(); // Observable<boolean>
   }
 
   // Método llamado por el modal para confirmar/cancelar

@@ -12,11 +12,11 @@ import { ModalService } from '../../core/services/modal.service';
 import { ConfirmDialog } from '../../shared/components/confirm-dialog/confirm-dialog.component';
 import { SuccessDialog } from '../../shared/components/success-dialog/success-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
-import { ArtworkItemComponent } from './promotion-item/promotion-item.component';
-import { Artwork, ArtworkService } from '../../core/services/artwork.service';
+import { PromotionItemComponent } from './promotion-item/promotion-item.component';
+import { Promotion, PromotionService } from '../../core/services/promotion.service';
 
 @Component( {
-  selector: 'app-manage-artwork',
+  selector: 'app-manage-promotion',
   standalone: true,
   imports: [
     CommonModule,
@@ -25,19 +25,19 @@ import { Artwork, ArtworkService } from '../../core/services/artwork.service';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    ArtworkItemComponent
+    PromotionItemComponent
   ],
-  templateUrl: './manage-artworks.component.html',
-  styleUrls: ['./manage-artworks.component.scss']
+  templateUrl: './manage-promotions.component.html',
+  styleUrls: ['./manage-promotions.component.scss']
 } )
-export class ManageArtworksComponent {
-  artworks: Artwork[] = [];
+export class ManagePromotionsComponent {
+  promotions: Promotion[] = [];
   errorMessage = '';
   filterText = '';
 
   constructor (
     private authService: AuthService,
-    private artworkService: ArtworkService,
+    private promotionService: PromotionService,
     private router: Router,
     private dialog: MatDialog
   ) { }
@@ -46,39 +46,39 @@ export class ManageArtworksComponent {
     return this.authService.getUser()?.role === 'ADMIN';
   }
 
-  filteredArtworks () {
-    if ( !this.filterText.trim() ) return this.artworks;
-    return this.artworks.filter( u =>
-      u.titulo.toLowerCase().includes( this.filterText.toLowerCase() )
+  filteredPromotions () {
+    if ( !this.filterText.trim() ) return this.promotions;
+    return this.promotions.filter( u =>
+      u.gallery.name.toLowerCase().includes( this.filterText.toLowerCase() )
     );
   }
 
-  addArtwork () {
-    this.router.navigate( ['manage/artworks/new'] );
+  addPromotion () {
+    this.router.navigate( ['manage/promotions/new'] );
   }
 
-  editArtwork ( artwork: Artwork ) {
-    this.router.navigate( ['manage/artworks', artwork.id, 'edit'] );
+  editPromotion ( promotion: Promotion ) {
+    this.router.navigate( ['manage/promotions', promotion.id, 'edit'] );
   }
 
-  viewArtworkProfile ( artwork: Artwork ) {
-    this.router.navigate( ['artworks', artwork.id, 'profile'] );
+  viewPromotionProfile ( promotion: Promotion ) {
+    this.router.navigate( ['promotions', promotion.id, 'profile'] );
   }
 
-  deleteArtwork ( artwork: Artwork ) {
+  deletePromotion ( promotion: Promotion ) {
     const dialogRef = this.dialog.open( ConfirmDialog, {
       data: {
-        title: 'Eliminar Obra',
-        message: `¿Seguro que deseas eliminar a ${artwork.title}?`
+        title: 'Eliminar Promoción',
+        message: `¿Seguro que deseas eliminar la promoción de la galeria ${promotion.gallery.name}?`
       }
     } );
 
     dialogRef.afterClosed().subscribe( confirmed => {
       if ( !confirmed ) return;
 
-      this.artworkService.deleteArtwork( artwork.id ).subscribe( {
+      this.promotionService.deletePromotion( promotion.id ).subscribe( {
         next: () => {
-          this.artworks = this.artworks.filter( u => u.id_obra !== artwork.id );
+          this.promotions = this.promotions.filter( u => u.id !== promotion.id );
           this.dialog.open( SuccessDialog, { data: { message: 'Obra eliminada correctamente ✅' } } );
         },
         error: err => {
@@ -92,11 +92,11 @@ export class ManageArtworksComponent {
 
   ngOnInit () {
     if ( this.isAdmin ) {
-      this.artworkService.getArtworks().subscribe( {
-        next: artworks => ( this.artworks = artworks ),
+      this.promotionService.getPromotions().subscribe( {
+        next: promotions => ( this.promotions = promotions ),
         error: err => {
-          console.error( 'Error cargando obras', err );
-          this.errorMessage = 'No se pudieron cargar las obras ❌';
+          console.error( 'Error cargando promociones', err );
+          this.errorMessage = 'No se pudieron cargar las promociones ❌';
         }
       } );
     }

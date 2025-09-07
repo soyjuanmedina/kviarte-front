@@ -12,13 +12,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { SuccessDialog } from '../../shared/components/success-dialog/success-dialog.component'
 import { Artist, ArtistService } from '../../core/services/artist.service';
-import { CREATE_ARTWORK, GET_ARTWORK, UPDATE_ARTWORK } from '../../../graphql/artworks';
-import { Exhibition } from '../../exhibitions/exhibition-card/exhibition-card.component';
-import { ExhibitionService } from '../../core/services/exhibition.service';
+import { CREATE_PROMOTION, GET_PROMOTION, UPDATE_PROMOTION } from '../../../graphql/promotions';
+import { Exhibition, ExhibitionService } from '../../core/services/exhibition.service';
 import { Gallery, GalleryService } from '../../core/services/gallery.service';
+import { Artwork, ArtworkService } from '../../core/services/artwork.service';
 
 @Component( {
-  selector: 'app-artwork-form',
+  selector: 'app-promotion-form',
   standalone: true,
   imports: [
     CommonModule,
@@ -31,28 +31,30 @@ import { Gallery, GalleryService } from '../../core/services/gallery.service';
     MatCardModule,
     MatDialogModule
   ],
-  templateUrl: './artwork-form.component.html',
-  styleUrls: ['./artwork-form.component.scss']
+  templateUrl: './promotion-form.component.html',
+  styleUrls: ['./promotion-form.component.scss']
 } )
-export class ArtworkFormComponent implements OnInit {
+export class PromotionFormComponent implements OnInit {
 
   registered = false;
   loading = false;
   errorMessage = '';
   isEdit = false;
-  artworkId?: number;
+  promotionId?: number;
   exhibitions: Exhibition[] = [];
   artists: Artist[] = [];
   galleries: Gallery[] = [];
+  artworks: Artwork[] = [];
 
   form = this.fb.group( {
-    titulo: ['', Validators.required],
-    descripcion: [''],
-    estilo: [''],
-    picture: [''],
-    galeria_id: ['', Validators.required],
-    artist_id: ['', Validators.required],
-    exposicion_id: [''],
+    code: ['', Validators.required], // código obligatorio
+    discount: [null, [Validators.required, Validators.min( 0 ), Validators.max( 100 )]], // porcentaje 0-100
+    description: [''],
+    active: [true, Validators.required],
+    startDate: [''], // puedes usar input type="date"
+    endDate: [''],
+    gallery_id: ['', Validators.required], // selección de galería obligatoria
+    artworks: [[] as ( Artwork | number )[]],
   } );
 
   constructor (
@@ -61,6 +63,7 @@ export class ArtworkFormComponent implements OnInit {
     private exhibitionService: ExhibitionService,
     private artistService: ArtistService,
     private galleryService: GalleryService,
+    private artworkService: ArtworkService,
     private router: Router,
     private route: ActivatedRoute,
     private dialog: MatDialog
@@ -70,40 +73,36 @@ export class ArtworkFormComponent implements OnInit {
     const id = this.route.snapshot.paramMap.get( 'id' );
     if ( id ) {
       this.isEdit = true;
-      this.artworkId = +id;
-      this.loadArtwork( this.artworkId );
+      this.promotionId = +id;
+      this.loadPromotion( this.promotionId );
     }
 
     this.exhibitionService.getExhibitions().subscribe( g => this.exhibitions = g );
     this.artistService.getArtists().subscribe( a => this.artists = a );
     this.galleryService.getGalleries().subscribe( g => this.galleries = g );
+    this.artworkService.getArtworks().subscribe( a => this.artworks = a );
 
-    // Limpiar exposición si no pertenece a la galería seleccionada
-    this.form.get( 'galeria_id' )?.valueChanges.subscribe( () => {
-      const exposicionControl = this.form.get( 'exposicion_id' );
-      const exposicionId = exposicionControl?.value ? +exposicionControl.value : null; // convertimos a número
-      if ( !this.filteredExhibitions.some( e => e.id_exposicion === exposicionId ) ) {
-        exposicionControl?.setValue( null );
-      }
-    } );
   }
 
-  loadArtwork ( id: number ) {
+  loadPromotion ( id: number ) {
     this.apollo.watchQuery( {
-      query: GET_ARTWORK,
+      query: GET_PROMOTION,
       variables: { id }
     } ).valueChanges.subscribe( {
       next: ( result: any ) => {
-        const artwork = result?.data?.obra;
-        if ( artwork ) {
+        const promotion = result?.data?.promotion;
+        if ( promotion ) {
           this.form.patchValue( {
-            titulo: artwork.title,
-            descripcion: artwork.description,
-            picture: artwork.picture,
-            artist_id: artwork.artist?.id ?? null,
-            exposicion_id: artwork.exhibition?.id_exposicion ?? null,
-            galeria_id: artwork.gallery?.id_galeria ?? null // ✅ corregido
+            code: promotion.code ?? '',
+            discount: promotion.discount ?? null,
+            description: promotion.description ?? '',
+            active: promotion.active ?? true,
+            startDate: promotion.startDate ? promotion.startDate.substring( 0, 10 ) : '',
+            endDate: promotion.endDate ? promotion.endDate.substring( 0, 10 ) : '',
+            gallery_id: promotion.gallery?.id ?? null,
+            artworks: promotion.artworks?.map( ( a: Artwork ) => a.id ) ?? [],
           } );
+
         }
       },
       error: ( err ) => {
@@ -113,13 +112,6 @@ export class ArtworkFormComponent implements OnInit {
     } );
   }
 
-  get filteredExhibitions () {
-    const galleryIdStr = this.form.get( 'galeria_id' )?.value;
-    if ( !galleryIdStr ) return [];
-    const galleryId = +galleryIdStr;
-    return this.exhibitions.filter( expo => expo.galeria?.id_galeria === galleryId );
-  }
-
   onSubmit () {
     if ( this.form.invalid ) return;
 
@@ -127,49 +119,51 @@ export class ArtworkFormComponent implements OnInit {
     this.errorMessage = '';
 
     const input = {
-      titulo: this.form.value.titulo,
-      descripcion: this.form.value.descripcion ?? null,
-      estilo: this.form.value.estilo ?? null,
-      picture: this.form.value.picture ?? null,
-      id: +this.form.value.artist_id!,
-      id_exposicion: this.form.value.exposicion_id ? +this.form.value.exposicion_id : null,
-      id_galeria: +this.form.value.galeria_id! // ✅ agregamos galería al input
+      code: this.form.value.code ?? null,
+      discount: +this.form.value.discount!,
+      description: this.form.value.description ?? null,
+      active: this.form.value.active,
+      startDate: this.form.value.startDate ?? null,
+      endDate: this.form.value.endDate ?? null,
+      gallery_id: +this.form.value.gallery_id!,
+      artworks: this.form.value.artworks?.map( ( a: Artwork | number ) => typeof a === 'number' ? a : a.id ) ?? [],
     };
 
-    const mutation = this.isEdit ? UPDATE_ARTWORK : CREATE_ARTWORK;
+    const mutation = this.isEdit ? UPDATE_PROMOTION : CREATE_PROMOTION;
     const variables: any = this.isEdit
-      ? { id: this.artworkId, input }
+      ? { id: this.promotionId, input }
       : { input };
 
     this.apollo.mutate( {
       mutation,
       variables,
-      refetchQueries: this.isEdit && this.artworkId
-        ? [{ query: GET_ARTWORK, variables: { id: this.artworkId } }]
+      refetchQueries: this.isEdit && this.promotionId
+        ? [{ query: GET_PROMOTION, variables: { id: this.promotionId } }]
         : []
     } ).subscribe( {
       next: () => {
         this.loading = false;
         this.openSuccessDialog(
           this.isEdit
-            ? 'Obra actualizada correctamente<br><small>Volviendo al listado...</small>'
-            : 'Obra creada correctamente<br><small>Volviendo al listado...</small>'
+            ? 'Promoción actualizada correctamente<br><small>Volviendo al listado...</small>'
+            : 'Promoción creada correctamente<br><small>Volviendo al listado...</small>'
         );
         setTimeout( () => {
           this.dialog.closeAll();
-          this.router.navigate( ['/manage/artworks'] );
+          this.router.navigate( ['/manage/promotions'] );
         }, 3000 );
       },
       error: ( err ) => {
         this.loading = false;
         console.error( 'Error en mutation:', err );
-        this.errorMessage = err.message || 'Error al guardar la obra ❌';
+        this.errorMessage = err.message || 'Error al guardar la promoción ❌';
       }
     } );
   }
 
+
   goToList () {
-    this.router.navigate( ['/manage/artworks'] );
+    this.router.navigate( ['/manage/promotions'] );
   }
 
   private openSuccessDialog ( message: string ) {

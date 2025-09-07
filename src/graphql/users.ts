@@ -49,7 +49,7 @@ export const GET_USER = gql`
 // Obtener usuarios por rol
 export const GET_USERS_BY_ROLE = gql`
   query GetUsersByRole($role: String!) {
-    usersPorRol(role: $role) {
+    usersByRole(role: $role) {
       id
       name
       email
@@ -72,6 +72,6 @@ export const GET_USERS_BY_ROLE = gql`
 // Borrar usuario
 export const DELETE_USER = gql`
   mutation DeleteUser($id: Int!) {
-    deleteUsuario(id: $id)
+    deleteUser(id: $id)
   }
 `;

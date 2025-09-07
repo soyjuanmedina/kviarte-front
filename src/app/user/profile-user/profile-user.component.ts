@@ -1,28 +1,52 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService, User } from '../../core/services/auth.service';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService, User } from '../../core/services/auth.service';
 import { UserService } from '../../core/services/user.service';
+import { Observable, of } from 'rxjs';
+import { switchMap, tap } from 'rxjs/operators';
 
 @Component( {
   selector: 'app-profile-user',
   standalone: true,
   imports: [CommonModule, MatCardModule],
   templateUrl: './profile-user.component.html',
-  styleUrl: './profile-user.component.scss'
+  styleUrls: ['./profile-user.component.scss']
 } )
 export class ProfileUserComponent implements OnInit {
-  user: User | null = null;
+  user$: Observable<User | null> = of( null ); // observable para el template
 
-  constructor ( private authService: AuthService, private router: Router,
+  constructor (
+    private authService: AuthService,
+    private router: Router,
     private activatedRoute: ActivatedRoute,
     private userService: UserService
   ) { }
 
-  get isAdmin (): boolean {
-    return this.user?.role === 'ADMIN';
+  get isAdmin$ (): Observable<boolean> {
+    return this.user$.pipe(
+      switchMap( user => of( user?.role === 'ADMIN' ) )
+    );
   }
+
+  ngOnInit (): void {
+    const idParam = this.activatedRoute.snapshot.paramMap.get( 'id' );
+
+    const currentUser = this.authService.getUser();
+
+    if ( idParam ) {
+      const id = +idParam;
+      if ( currentUser?.role !== 'ADMIN' ) {
+        this.router.navigate( ['/profile'] );
+        return;
+      }
+      this.user$ = this.userService.getUserById( id );
+    } else {
+      this.user$ = of( currentUser );
+    }
+  }
+
 
   goToManageUsers () {
     this.router.navigate( ['/manage/users'] );
@@ -32,26 +56,19 @@ export class ProfileUserComponent implements OnInit {
     this.router.navigate( ['/manage/galleries'] );
   }
 
-  goToProfile () {
-    this.router.navigate( ['/profile'] );
-  }
-
   goToManageArtists () {
     this.router.navigate( ['/manage/artists'] );
   }
 
-  ngOnInit (): void {
-    const idParam = this.activatedRoute.snapshot.paramMap.get( 'id' );
-    if ( idParam ) {
-      // perfil de otro usuario
-      const id = +idParam;
-      this.userService.getUsuarioById( id ).subscribe( user => {
-        this.user = user;
-      } );
-    } else {
-      // perfil propio
-      this.user = this.authService.getUser();
-    }
+  goToManageExhibitions () {
+    this.router.navigate( ['/manage/exhibitions'] );
   }
 
+  goToManageArtworks () {
+    this.router.navigate( ['/manage/artworks'] );
+  }
+
+  goToManagePromotions () {
+    this.router.navigate( ['/manage/promotions'] );
+  }
 }

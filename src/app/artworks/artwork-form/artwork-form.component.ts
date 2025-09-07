@@ -10,7 +10,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { SuccessDialog } from '../../shared/components/success-dialog/success-dialog.component'
+import { SuccessDialog } from '../../shared/components/success-dialog/success-dialog.component';
 import { Artist, ArtistService } from '../../core/services/artist.service';
 import { CREATE_ARTWORK, GET_ARTWORK, UPDATE_ARTWORK } from '../../../graphql/artworks';
 import { Exhibition, ExhibitionService } from '../../core/services/exhibition.service';
@@ -45,13 +45,13 @@ export class ArtworkFormComponent implements OnInit {
   galleries: Gallery[] = [];
 
   form = this.fb.group( {
-    titulo: ['', Validators.required],
-    descripcion: [''],
-    estilo: [''],
+    title: ['', Validators.required],
+    description: [''],
+    style: [''],
     picture: [''],
-    galeria_id: ['', Validators.required],
+    gallery_id: ['', Validators.required],
     artist_id: ['', Validators.required],
-    exposicion_id: [''],
+    exhibition_id: [''],
   } );
 
   constructor (
@@ -73,17 +73,15 @@ export class ArtworkFormComponent implements OnInit {
       this.loadArtwork( this.artworkId );
     }
 
-    this.exhibitionService.getExhibitions().subscribe( g => this.exhibitions = g );
-    this.artistService.getArtists().subscribe( a => this.artists = a );
+    // Cargar catálogos
     this.galleryService.getGalleries().subscribe( g => this.galleries = g );
+    this.artistService.getArtists().subscribe( a => this.artists = a );
+    this.exhibitionService.getExhibitions().subscribe( ex => this.exhibitions = ex );
 
-    // Limpiar exposición si no pertenece a la galería seleccionada
-    this.form.get( 'galeria_id' )?.valueChanges.subscribe( () => {
-      const exposicionControl = this.form.get( 'exposicion_id' );
-      const exposicionId = exposicionControl?.value ? +exposicionControl.value : null; // convertimos a número
-      if ( !this.filteredExhibitions.some( e => e.id === exposicionId ) ) {
-        exposicionControl?.setValue( null );
-      }
+    // Si cambia la galería seleccionada, limpiar artista y exposición
+    this.form.get( 'gallery_id' )?.valueChanges.subscribe( () => {
+      this.form.get( 'artist_id' )?.setValue( null );
+      this.form.get( 'exhibition_id' )?.setValue( null );
     } );
   }
 
@@ -93,15 +91,16 @@ export class ArtworkFormComponent implements OnInit {
       variables: { id }
     } ).valueChanges.subscribe( {
       next: ( result: any ) => {
-        const artwork = result?.data?.obra;
+        const artwork = result?.data?.artwork;
         if ( artwork ) {
           this.form.patchValue( {
-            titulo: artwork.title,
-            descripcion: artwork.description,
+            title: artwork.title,
+            description: artwork.description,
+            style: artwork.style,
             picture: artwork.picture,
             artist_id: artwork.artist?.id ?? null,
-            exposicion_id: artwork.exhibition?.id_exposicion ?? null,
-            galeria_id: artwork.gallery?.id_galeria ?? null // ✅ corregido
+            gallery_id: artwork.gallery?.id ?? null,
+            exhibition_id: artwork.exhibition?.id ?? null
           } );
         }
       },
@@ -112,11 +111,20 @@ export class ArtworkFormComponent implements OnInit {
     } );
   }
 
+  // 🔹 Filtrar exposiciones por galería
   get filteredExhibitions () {
-    const galleryIdStr = this.form.get( 'galeria_id' )?.value;
+    const galleryIdStr = this.form.get( 'gallery_id' )?.value;
     if ( !galleryIdStr ) return [];
     const galleryId = +galleryIdStr;
     return this.exhibitions.filter( expo => expo.gallery?.id === galleryId );
+  }
+
+  // 🔹 Filtrar artistas por galería
+  get filteredArtists () {
+    const galleryIdStr = this.form.get( 'gallery_id' )?.value;
+    if ( !galleryIdStr ) return [];
+    const galleryId = +galleryIdStr;
+    return this.artists.filter( artist => artist.gallery?.id === galleryId );
   }
 
   onSubmit () {
@@ -126,13 +134,13 @@ export class ArtworkFormComponent implements OnInit {
     this.errorMessage = '';
 
     const input = {
-      titulo: this.form.value.titulo,
-      descripcion: this.form.value.descripcion ?? null,
-      estilo: this.form.value.estilo ?? null,
+      title: this.form.value.title,
+      description: this.form.value.description ?? null,
+      style: this.form.value.style ?? null,
       picture: this.form.value.picture ?? null,
-      id: +this.form.value.artist_id!,
-      id_exposicion: this.form.value.exposicion_id ? +this.form.value.exposicion_id : null,
-      id_galeria: +this.form.value.galeria_id! // ✅ agregamos galería al input
+      artist_id: +this.form.value.artist_id!,
+      exhibition_id: this.form.value.exhibition_id ? +this.form.value.exhibition_id : null,
+      gallery_id: +this.form.value.gallery_id!
     };
 
     const mutation = this.isEdit ? UPDATE_ARTWORK : CREATE_ARTWORK;

@@ -12,13 +12,13 @@ import { User } from './auth.service';
 export class UserService {
   constructor ( private apollo: Apollo ) { }
 
-  getUsuariosPorRol ( role: string ): Observable<User[]> {
+  getUsersByRole ( role: string ): Observable<User[]> {
     return this.apollo
-      .watchQuery<{ usuariosPorRol: User[] }>( {
+      .watchQuery<{ usersByRole: User[] }>( {
         query: GET_USERS_BY_ROLE,
         variables: { role },
       } )
-      .valueChanges.pipe( map( result => result.data.usuariosPorRol ) );
+      .valueChanges.pipe( map( result => result.data.usersByRole ) );
   }
 
   getUsers (): Observable<User[]> {
@@ -33,13 +33,13 @@ export class UserService {
       );
   }
 
-  getUsuarioById ( id: number ): Observable<User> {
+  getUserById ( id: number ): Observable<User> {
     return this.apollo
-      .watchQuery<{ usuario: User }>( {
+      .watchQuery<{ user: User }>( {
         query: GET_USER,
         variables: { id }
       } )
-      .valueChanges.pipe( map( result => result.data.usuario ) );
+      .valueChanges.pipe( map( result => result.data.user ) );
   }
 
   deleteUser ( id: number ): Observable<any> {

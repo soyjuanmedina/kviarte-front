@@ -2,11 +2,11 @@ import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import { map, Observable } from 'rxjs';
 import { GET_GALLERIES, GET_GALLERY, DELETE_GALLERY } from '../../../graphql/galleries';
-import { Artist } from './artist.service';
 import { Promotion } from './promotion.service';
 import { Artwork } from './artwork.service';
 import { Exhibition } from './exhibition.service';
 import { User } from './auth.service';
+import { Artist } from './artist.service';
 
 export interface Gallery {
   id: number;
@@ -51,12 +51,12 @@ export class GalleryService {
 
   getGallery ( id: number ): Observable<Gallery> {
     return this.apollo
-      .watchQuery<{ galeria: Gallery }>( {
+      .watchQuery<{ gallery: Gallery }>( {
         query: GET_GALLERY,
         variables: { id },
       } )
       .valueChanges.pipe(
-        map( result => result.data.galeria )
+        map( result => result.data.gallery )
       );
   }
 }

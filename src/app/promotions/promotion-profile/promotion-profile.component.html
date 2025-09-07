@@ -1,52 +1,53 @@
-<ng-container *ngIf="artwork; else loadingOrError">
-  <div class="artwork-container">
+<ng-container *ngIf="promotion; else loadingOrError">
+  <div class="promotion-container">
 
-    <!-- Card principal de la obra -->
-    <mat-card class="artwork-card">
+    <!-- Card principal de la promoción -->
+    <mat-card class="promotion-card">
       <mat-card-header>
-        <mat-card-title>{{ artwork.title }}</mat-card-title>
-        <mat-card-subtitle *ngIf="artwork.style">{{ artwork.style }}</mat-card-subtitle>
+        <mat-card-title>{{ promotion.code || 'Promoción sin código' }}</mat-card-title>
+        <mat-card-subtitle>Descuento: {{ promotion.discount }}%</mat-card-subtitle>
       </mat-card-header>
 
-      <!-- Bloque de Galería, Artista y Exposición -->
+      <!-- Bloque de Galería -->
       <div class="lists-container">
-        <!-- Galería -->
-        <ng-container *ngIf="artwork.gallery as gal">
+        <ng-container *ngIf="promotion.gallery as gal">
           <mat-card class="list-card">
             <mat-card-title>Galería</mat-card-title>
-            <a class="link" [routerLink]="['/galleries', gal.id_galeria, 'profile']">
+            <a class="link" [routerLink]="['/galleries', gal.id, 'profile']">
               🖼️ {{ gal.name }}
             </a>
           </mat-card>
         </ng-container>
 
-        <!-- Artista -->
-        <ng-container *ngIf="artwork.artist as artist">
+        <!-- Obras asociadas -->
+        <ng-container *ngIf="promotion.artworks && promotion.artworks.length > 0; else noArtworks">
           <mat-card class="list-card">
-            <mat-card-title>Artista</mat-card-title>
-            <a class="link" [routerLink]="['/artists', artist.id, 'profile']">
-              👤 {{ artist.name }}
-            </a>
+            <mat-card-title>Obras asociadas</mat-card-title>
+            <ul>
+              <li *ngFor="let artwork of promotion.artworks">
+                <a class="link" [routerLink]="['/artworks', artwork.id, 'profile']">
+                  🎨 {{ artwork.title }}
+                </a>
+              </li>
+            </ul>
           </mat-card>
         </ng-container>
-
-        <!-- Exposición -->
-        <ng-container *ngIf="artwork.exhibition as exhibition">
+        <ng-template #noArtworks>
           <mat-card class="list-card">
-            <mat-card-title>Exposición</mat-card-title>
-            <a class="link" [routerLink]="['/exhibitions', exhibition.id, 'profile']">
-              🎨 {{ exhibition.title }}
-            </a>
+            <mat-card-title>Obras asociadas</mat-card-title>
+            <p class="empty-text">No hay obras asociadas a esta promoción.</p>
           </mat-card>
-        </ng-container>
+        </ng-template>
       </div>
 
-      <!-- Imagen de la obra -->
-      <img *ngIf="artwork.picture" mat-card-image [src]="artwork.picture" alt="{{ artwork.title }}">
-
-      <!-- Descripción -->
+      <!-- Descripción y fechas -->
       <mat-card-content>
-        <p *ngIf="artwork.description">{{ artwork.description }}</p>
+        <p *ngIf="promotion.description">{{ promotion.description }}</p>
+        <p><strong>Activa:</strong> {{ promotion.active ? 'Sí' : 'No' }}</p>
+        <p *ngIf="promotion.startDate"><strong>Inicio:</strong> {{ promotion.startDate |
+          date:'shortDate' }}</p>
+        <p *ngIf="promotion.endDate"><strong>Fin:</strong> {{ promotion.endDate | date:'shortDate'
+          }}</p>
       </mat-card-content>
     </mat-card>
 

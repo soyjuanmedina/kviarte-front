@@ -25,12 +25,12 @@ export class ExhibitionService {
 
   getExhibitions (): Observable<Exhibition[]> {
     return this.apollo
-      .watchQuery<{ exposiciones: Exhibition[] }>( {
+      .watchQuery<{ exhibitions: Exhibition[] }>( {
         query: GET_EXHIBITIONS,
         fetchPolicy: 'network-only'
       } )
       .valueChanges.pipe(
-        map( result => result.data.exposiciones )
+        map( result => result.data.exhibitions )
       );
   }
 
@@ -43,12 +43,12 @@ export class ExhibitionService {
 
   getExhibition ( id: number ): Observable<Exhibition> {
     return this.apollo
-      .watchQuery<{ exposicion: Exhibition }>( {
+      .watchQuery<{ exhibition: Exhibition }>( {
         query: GET_EXHIBITION,
         variables: { id },
       } )
       .valueChanges.pipe(
-        map( result => result.data.exposicion )
+        map( result => result.data.exhibition )
       );
   }
 }

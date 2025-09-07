@@ -4,11 +4,11 @@ import { Apollo } from 'apollo-angular';
 import { GET_ARTISTS } from '../../graphql/artists';
 import { Router } from '@angular/router';
 import { AuthService, User } from '../core/services/auth.service';
-import { Artist, ArtistService } from '../core/services/artist.service';
 import { ArtistCardComponent } from './artist-card/artist-card.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialog } from '../shared/components/confirm-dialog/confirm-dialog.component';
 import { SuccessDialog } from '../shared/components/success-dialog/success-dialog.component';
+import { Artist, ArtistService } from '../core/services/artist.service';
 
 @Component( {
   selector: 'app-artists',

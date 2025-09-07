@@ -8,9 +8,9 @@
       <!-- Usuario propietario (solo visible si eres admin) -->
       <mat-form-field appearance="outline" *ngIf="isAdmin">
         <mat-label>Propietario</mat-label>
-        <mat-select formControlName="usuario_id" [disabled]="isEdit" required>
-          <mat-option *ngFor="let user of galleryUsers" [value]="user.id">
-            {{ user.name }} ({{ user.email }})
+        <mat-select formControlName="owner" required>
+          <mat-option *ngFor="let owner of galleryUsers" [value]="owner.id">
+            {{ owner.name }} ({{ owner.email }})
           </mat-option>
         </mat-select>
       </mat-form-field>

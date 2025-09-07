@@ -31,11 +31,11 @@
         </ng-container>
 
         <!-- Exposición -->
-        <ng-container *ngIf="artwork.exhibition as expo">
+        <ng-container *ngIf="artwork.exhibition as exhibition">
           <mat-card class="list-card">
             <mat-card-title>Exposición</mat-card-title>
-            <a class="link" [routerLink]="['/exhibitions', expo.id_exposicion, 'profile']">
-              🎨 {{ expo.titulo }}
+            <a class="link" [routerLink]="['/exhibitions', exhibition.id, 'profile']">
+              🎨 {{ exhibition.title }}
             </a>
           </mat-card>
         </ng-container>

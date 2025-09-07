@@ -44,16 +44,15 @@ export class GalleryFormComponent implements OnInit {
   galleryId?: number;
 
   form = this.fb.group( {
-    id: [null as number | null, Validators.required], // siempre el ID
-    name: ['', Validators.required],
-    email: ['', [Validators.email]],
+    name: [''],
+    email: [''],
     address: [''],
     city: [''],
     website: [''],
     description: [''],
     phone: [''],
     picture: [''],
-    owner: ['']
+    owner: [null as number | null]
   } );
 
   constructor (
@@ -73,36 +72,41 @@ export class GalleryFormComponent implements OnInit {
 
   ngOnInit () {
     const id = this.route.snapshot.paramMap.get( 'id' );
-    if ( id ) {
-      this.isEdit = true;
-      this.galleryId = +id;
-      this.loadGallery( this.galleryId );
-    }
-
     if ( this.isAdmin ) {
-      this.usersService.getUsuariosPorRol( 'GALLERY' ).subscribe( {
-        next: users => ( this.galleryUsers = users ),
+      this.usersService.getUsersByRole( 'GALLERY' ).subscribe( {
+        next: users => {
+          this.galleryUsers = users;
+
+          if ( id ) {
+            this.isEdit = true;
+            this.galleryId = +id;
+            this.loadGallery( this.galleryId );
+          }
+        },
         error: err => {
           console.error( 'Error cargando usuarios GALLERY', err );
           this.errorMessage = 'No se pudieron cargar los usuarios de galería ❌';
         }
       } );
     } else {
-      const user = this.authService.getUser();
-      if ( user ) {
-        this.form.patchValue( { id: user.id } ); // solo el ID
+      if ( !id ) {
+        const user = this.authService.getUser();
+        if ( user ) this.form.patchValue( { owner: +user.id } );
+      } else {
+        this.isEdit = true;
+        this.galleryId = +id;
+        this.loadGallery( this.galleryId );
       }
     }
   }
 
   loadGallery ( id: number ) {
-    this.apollo.watchQuery( {
-      query: GET_GALLERY,
-      variables: { id }
-    } ).valueChanges.subscribe( {
-      next: ( result: any ) => {
-        if ( result?.data?.gallery ) {
-          const gallery = result.data.gallery;
+    this.apollo.watchQuery( { query: GET_GALLERY, variables: { id } } )
+      .valueChanges.subscribe( {
+        next: ( result: any ) => {
+          const gallery = result?.data?.gallery;
+          if ( !gallery ) return;
+
           this.form.patchValue( {
             name: gallery.name,
             description: gallery.description,
@@ -112,19 +116,16 @@ export class GalleryFormComponent implements OnInit {
             email: gallery.email,
             phone: gallery.phone,
             picture: gallery.picture,
-            owner: gallery.owner?.id // solo el ID
+            owner: gallery.owner?.id ?? null,
           } );
+        },
+        error: err => {
+          console.error( 'Error cargando galería', err );
+          this.errorMessage = 'No se pudo cargar la galería ❌';
         }
-        if ( this.isEdit ) {
-          this.form.get( 'usuario_id' )?.disable();
-        }
-      },
-      error: err => {
-        console.error( 'Error cargando galería', err );
-        this.errorMessage = 'No se pudo cargar la galería ❌';
-      }
-    } );
+      } );
   }
+
 
   onSubmit () {
     if ( this.form.invalid ) return;
@@ -132,16 +133,18 @@ export class GalleryFormComponent implements OnInit {
     this.loading = true;
     this.errorMessage = '';
 
-    const payload = {
-      name: this.form.value.name,
-      description: this.form.value.description ?? null,
-      address: this.form.value.address ?? null,
-      city: this.form.value.city ?? null,
-      website: this.form.value.website ?? null,
-      phone: this.form.value.phone ?? null,
-      email: this.form.value.email ?? null,
-      picture: this.form.value.picture ?? null,
-      id: this.form.value.id // solo el ID, obligatorio
+    const formData = this.form.getRawValue();  // incluye controles deshabilitados
+
+    const payload: any = {
+      name: formData.name,
+      description: formData.description ?? null,
+      address: formData.address ?? null,
+      city: formData.city ?? null,
+      website: formData.website ?? null,
+      phone: formData.phone ?? null,
+      email: formData.email ?? null,
+      picture: formData.picture ?? null,
+      owner_id: formData.owner  // ⚡ esto ahora sí traerá el número correcto
     };
 
     let variables: any;
@@ -149,7 +152,10 @@ export class GalleryFormComponent implements OnInit {
 
     if ( this.isEdit && this.galleryId ) {
       // UPDATE
-      variables = { id: this.galleryId, data: payload };
+      variables = {
+        id: this.galleryId,  // id separado
+        data: payload        // payload sin id
+      };
       mutation = UPDATE_GALLERY;
     } else {
       // CREATE
@@ -184,6 +190,7 @@ export class GalleryFormComponent implements OnInit {
       }
     } );
   }
+
 
   cancel () {
     this.router.navigate( ['/manage/galleries'] );

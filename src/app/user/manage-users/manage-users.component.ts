@@ -67,6 +67,8 @@ export class ManageUsersComponent {
   }
 
   deleteUser ( user: User ) {
+
+    console.log( 'user', user );
     this.modalService
       .openConfirm( {
         title: 'Eliminar Usuario',

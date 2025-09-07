@@ -44,7 +44,7 @@
         <mat-select formControlName="gallery_id">
           <mat-option [value]="null">Sin galería</mat-option>
           <mat-option *ngFor="let gallery of galleries" [value]="gallery.id">
-            {{ gallery.id }}
+            {{ gallery.name }}
           </mat-option>
         </mat-select>
         <mat-icon matSuffix>museum</mat-icon>

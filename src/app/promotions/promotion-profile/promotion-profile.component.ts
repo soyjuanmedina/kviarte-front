@@ -8,12 +8,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Router, ActivatedRoute, RouterModule } from '@angular/router';
 import { Apollo } from 'apollo-angular';
-import { GET_ARTWORK } from '../../../graphql/artworks';
-import { Artwork } from '../../core/services/artwork.service';
+import { GET_PROMOTION } from '../../../graphql/promotions';
+import { Promotion } from '../../core/services/promotion.service';
 
 
 @Component( {
-  selector: 'app-artwork-profile',
+  selector: 'app-promotion-profile',
   standalone: true,
   imports: [
     CommonModule,
@@ -23,12 +23,12 @@ import { Artwork } from '../../core/services/artwork.service';
     MatProgressSpinnerModule,
     RouterModule
   ],
-  templateUrl: './artwork-profile.component.html',
-  styleUrls: ['./artwork-profile.component.scss']
+  templateUrl: './promotion-profile.component.html',
+  styleUrls: ['./promotion-profile.component.scss']
 } )
-export class ArtworkProfileComponent implements OnInit {
+export class PromotionProfileComponent implements OnInit {
 
-  artwork?: Artwork;
+  promotion?: Promotion;
   loading = true;
   error?: string;
 
@@ -49,17 +49,17 @@ export class ArtworkProfileComponent implements OnInit {
     this.loading = true;
 
     this.apollo.watchQuery( {
-      query: GET_ARTWORK,
+      query: GET_PROMOTION,
       variables: { id }
     } ).valueChanges.subscribe( {
       next: ( result: any ) => {
-        this.artwork = result?.data?.obra;
+        this.promotion = result?.data?.promotion;
         this.loading = false;
-        console.log( this.artwork );
+        console.log( this.promotion );
       },
       error: ( err ) => {
         console.error( err );
-        this.error = 'No se pudo cargar la obra';
+        this.error = 'No se pudo cargar la promoción';
         this.loading = false;
       }
     } );

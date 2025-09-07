@@ -36,11 +36,11 @@ export class ArtworkService {
 
   getArtworks (): Observable<Artwork[]> {
     return this.apollo
-      .watchQuery<{ obras: Artwork[] }>( {
+      .watchQuery<{ artworks: Artwork[] }>( {
         query: GET_ARTWORKS,
         fetchPolicy: 'network-only',
       } )
-      .valueChanges.pipe( map( result => result.data.obras ) );
+      .valueChanges.pipe( map( result => result.data.artworks ) );
   }
 
   getArtwork ( id: number ): Observable<Artwork> {

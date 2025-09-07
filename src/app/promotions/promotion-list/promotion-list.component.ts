@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 
 @Component( {
-  selector: 'app-artwork-list',
+  selector: 'app-promotion-list',
   standalone: true,
   imports: [],
-  templateUrl: './artwork-list.component.html',
-  styleUrl: './artwork-list.component.scss'
+  templateUrl: './promotion-list.component.html',
+  styleUrl: './promotion-list.component.scss'
 } )
-export class ArtworkListComponent {
+export class PromotionListComponent {
 
 }

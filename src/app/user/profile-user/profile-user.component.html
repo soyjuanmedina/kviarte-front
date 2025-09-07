@@ -1,4 +1,4 @@
-<mat-card *ngIf="user; else notLoggedIn" class="profile-card">
+<mat-card *ngIf="user$ | async as user; else notLoggedIn" class="profile-card">
   <mat-card-title>Perfil de Usuario</mat-card-title>
   <mat-card-content>
     <p><strong>ID:</strong> {{ user.id }}</p>
@@ -13,7 +13,7 @@
 </ng-template>
 
 <!-- Opciones de administrador fuera del mat-card -->
-<div *ngIf="user?.role === 'ADMIN'" class="admin-panel">
+<div *ngIf="(user$ | async)?.role === 'ADMIN'" class="admin-panel">
   <h2 class="panel-title">Opciones de Administrador</h2>
 
   <div class="admin-buttons">
@@ -25,6 +25,15 @@
     </button>
     <button class="general-btn" (click)="goToManageArtists()">
       Administrar Artistas
+    </button>
+    <button class="general-btn" (click)="goToManageExhibitions()">
+      Administrar Exposiciones
+    </button>
+    <button class="general-btn" (click)="goToManageArtworks()">
+      Administrar Obras
+    </button>
+    <button class="general-btn" (click)="goToManagePromotions()">
+      Administrar Promociones
     </button>
   </div>
 </div>

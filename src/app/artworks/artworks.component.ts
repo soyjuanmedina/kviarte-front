@@ -51,9 +51,7 @@ export class ArtworksComponent implements OnInit {
       .valueChanges
       .subscribe( {
         next: ( result: any ) => {
-          console.log( 'this.artworks', this.artworks );
           this.artworks = result?.data?.artworks ?? [];
-          console.log( 'this.artworks2', this.artworks );
           this.loading = false;
         },
         error: ( err ) => {
@@ -66,8 +64,6 @@ export class ArtworksComponent implements OnInit {
 
 
   editArtwork ( artwork: Artwork ) {
-
-    console.log( 'artwork.id', artwork.id );
     this.router.navigate( ['manage/artworks', artwork.id, 'edit'] );
   }
 

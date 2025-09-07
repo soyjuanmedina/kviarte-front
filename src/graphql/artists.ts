@@ -31,19 +31,12 @@ export const GET_ARTISTS = gql`
 `;
 
 export const GET_ARTIST = gql`
-  query GetArtists {
-  artists {
-    id
-    name
-    biography
-    style
-    picture
-    gallery {
-      id
-      name
+  query GetArtist($id: Int!) {
+    artist(id: $id) {
+      ...ArtistFields
     }
   }
-}
+  ${ARTIST_FIELDS}
 `;
 
 export const CREATE_ARTIST = gql`
@@ -56,17 +49,10 @@ export const CREATE_ARTIST = gql`
 `;
 
 export const UPDATE_ARTIST = gql`
-  mutation UpdateArtist($id: Int!, $data: UpdateArtistInput!, $galleryId: Int) {
-    updateArtist(id: $id, data: $data, galleryId: $galleryId) {
-      id
-      name
-      biography
-      style
-      picture
-      gallery {
-        id
-        name
-      }
+  mutation UpdateArtist($id: Int!, $data: UpdateArtistInput!, $gallery_id: Int) {
+    updateArtist(id: $id, data: $data, gallery_id: $gallery_id) {
+      ...ArtistFields
     }
   }
+  ${ARTIST_FIELDS}
 `;

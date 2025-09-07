@@ -79,7 +79,7 @@ export class ArtistFormComponent implements OnInit {
       variables: { id }
     } ).valueChanges.subscribe( {
       next: ( result: any ) => {
-        const artist = result?.data?.artista;
+        const artist = result?.data?.artist;
         if ( artist ) {
           this.form.patchValue( {
             name: artist.name,

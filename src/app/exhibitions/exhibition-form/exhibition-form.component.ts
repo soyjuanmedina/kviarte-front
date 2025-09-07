@@ -43,10 +43,10 @@ export class ExhibitionFormComponent implements OnInit {
   artists: Artist[] = [];
 
   form = this.fb.group( {
-    titulo: ['', Validators.required],
-    descripcion: [''],
+    title: ['', Validators.required],
+    description: [''],
     picture: [''],
-    galeria_id: ['', Validators.required],
+    gallery_id: ['', Validators.required],
     artist_id: ['', Validators.required],
   } );
 
@@ -78,13 +78,13 @@ export class ExhibitionFormComponent implements OnInit {
       variables: { id }
     } ).valueChanges.subscribe( {
       next: ( result: any ) => {
-        const exhibition = result?.data?.exposicion;
+        const exhibition = result?.data?.exhibition;
         if ( exhibition ) {
           this.form.patchValue( {
-            titulo: exhibition.title,
-            descripcion: exhibition.description,
+            title: exhibition.title,
+            description: exhibition.description,
             picture: exhibition.picture,
-            galeria_id: exhibition.galeria?.id_galeria ?? null, // asigna el ID correcto
+            gallery_id: exhibition.gallery?.id ?? null, // asigna el ID correcto
             artist_id: exhibition.artist?.id ?? null     // asigna el ID correcto
           } );
         }
@@ -105,11 +105,11 @@ export class ExhibitionFormComponent implements OnInit {
 
     // Construimos el input que espera GraphQL
     const dataInput = {
-      titulo: this.form.value.titulo,
-      descripcion: this.form.value.descripcion ?? null,
+      title: this.form.value.title,
+      description: this.form.value.description ?? null,
       picture: this.form.value.picture ?? null,
-      id_galeria: +this.form.value.galeria_id!,
-      id: +this.form.value.artist_id!,
+      gallery_id: +this.form.value.gallery_id!,
+      artist_id: +this.form.value.artist_id!,
     };
 
     // Variables para la mutation

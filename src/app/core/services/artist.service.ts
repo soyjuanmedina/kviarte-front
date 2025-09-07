@@ -23,12 +23,12 @@ export class ArtistService {
 
   getArtists (): Observable<Artist[]> {
     return this.apollo
-      .watchQuery<{ artistas: Artist[] }>( {
+      .watchQuery<{ artists: Artist[] }>( {
         query: GET_ARTISTS,
         fetchPolicy: 'network-only'
       } )
       .valueChanges.pipe(
-        map( result => result.data.artistas )
+        map( result => result.data.artists )
       );
   }
 
@@ -41,12 +41,12 @@ export class ArtistService {
 
   getArtist ( id: number ): Observable<Artist> {
     return this.apollo
-      .watchQuery<{ artista: Artist }>( {
+      .watchQuery<{ artist: Artist }>( {
         query: GET_ARTIST,
         variables: { id },
       } )
       .valueChanges.pipe(
-        map( result => result.data.artista )
+        map( result => result.data.artist )
       );
   }
 }
